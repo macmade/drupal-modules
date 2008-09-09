@@ -1,0 +1,16 @@
+<?php
+
+function helloworld_help( $path, $arg )
+{
+    return ClassManager::getInstance()->getModule( 'helloworld' )->help( $path, $arg );
+}
+
+function helloworld_perm()
+{
+    return ClassManager::getInstance()->getModule( 'helloworld' )->perm();
+}
+
+function helloworld_block( $op = 'list', $delta = 0 )
+{
+    return ClassManager::getInstance()->getModule( 'helloworld' )->block( $op, $delta );
+}
