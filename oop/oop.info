@@ -1,0 +1,4 @@
+name = OOP
+description = The base framework for developping object oriented Drupal modules
+core = 6.x
+package = Framework
