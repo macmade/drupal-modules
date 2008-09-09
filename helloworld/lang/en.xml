@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<labels>
+    <blockInfo>Hello World</blockInfo>
+    <blockSubject>Hello World</blockSubject>
+    <help>Displays Hello World</help>
+    <hello>Hello World! I'm a Drupal module, but on a PHP5 class!</hello>
+    <method>Called method was: %s</method>
+</labels>
