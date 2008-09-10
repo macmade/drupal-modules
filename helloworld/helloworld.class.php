@@ -21,9 +21,23 @@ class helloworld extends Drupal_ModuleBase
     /**
      * 
      */
-    protected function _getView( SimpleXMLElement $content, $delta )
+    protected function _getView( Html_Tag $content, $delta )
     {
-        $content->div = self::$_lang->hello;
+        $firstBlock = $content->div->strong;
+        $firstBlock->addTextData( self::$_lang->hello );
+        
+        $content->spacer( 20 );
+        $content->hr;
+        $content->spacer( 20 );
+        
         $content->div = sprintf( self::$_lang->method, __METHOD__ );
+        
+        $content->spacer( 20 );
+        $content->hr;
+        $content->spacer( 20 );
+        
+        $content->div->strong = self::$_lang->modules;
+        
+        $modulesBlock = $content->div;
     }
 }
