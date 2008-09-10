@@ -48,6 +48,7 @@ abstract class Exception_Base extends Exception
      * Returns the exception message with the backtrace if required
      * 
      * @return string   The exception message prepended with the backtrace if required
+     * @see     getInfos
      */
     public function __toString()
     {
@@ -97,6 +98,9 @@ abstract class Exception_Base extends Exception
      * Gets the trace history
      * 
      * @return  string  The formatted full backtrace
+     * @see     _traceInfo
+     * @see     _getArgs
+     * @see     _getCode
      */
     protected function _traceHistory()
     {
@@ -270,6 +274,9 @@ abstract class Exception_Base extends Exception
      * Gets the informations about the exception
      * 
      * @return  string  The formatted informations bout the exception
+     * @see     _traceTitle
+     * @see     _traceInfo
+     * @see     _traceHistory
      */
     public function getInfos()
     {
