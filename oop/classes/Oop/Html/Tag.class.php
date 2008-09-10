@@ -391,6 +391,30 @@ class Oop_Html_Tag implements ArrayAccess, Iterator
     /**
      * 
      */
+    public function addChildNode( Oop_Html_Tag $child )
+    {
+        if( !isset( $this->_childrenByName[ $child->_tagName ] ) ) {
+            
+            $this->_childrenByName[ $child->_tagName ]      = array();
+            $this->_childrenCountByName[ $child->_tagName ] = 0;
+        }
+        
+        $child->_parent = $this;
+        
+        $this->_children[]                           = $child;
+        $this->_childrenByName[ $child->_tagName ][] = $child;
+        
+        $this->_childrenCountByName[ $child->_tagName ]++;
+        $this->_childrenCount++;
+        
+        $this->_hasNodeChildren = true;
+        
+        return $child;
+    }
+    
+    /**
+     * 
+     */
     public function addTextData( $data )
     {
         $this->_children[] = ( string )$data;
