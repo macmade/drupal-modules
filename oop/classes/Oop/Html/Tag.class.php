@@ -30,6 +30,18 @@ class Oop_Html_Tag implements ArrayAccess, Iterator
     protected static $_hasStatic       = false;
     
     /**
+     * The list of the HTML self closed tags
+     */
+    protected static $_selfCloseTags   = array(
+        'br'    => true,
+        'img'   => true,
+        'input' => true,
+        'hr'    => true,
+        'link'  => true,
+        'meta'  => true
+    );
+    
+    /**
      * The new line character
      */
     protected static $_NL              = '';
@@ -325,8 +337,8 @@ class Oop_Html_Tag implements ArrayAccess, Iterator
         // Checks if we children to display
         if( !$this->_childrenCount ) {
             
-            // No - Tag is self closed
-            $tag .= ' />';
+            // No - Checks if the tag is self closed
+            $tag .= ( isset( self::$_selfCloseTags[ $this->_tagName ] ) ) ? ' />' : '></' . $this->_tagName . '>';
             
         } else {
             
