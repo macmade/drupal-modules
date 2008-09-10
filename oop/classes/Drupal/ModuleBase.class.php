@@ -125,6 +125,9 @@ abstract class Drupal_ModuleBase
         // Only includes the script once
         if( !self::$_hasScriptaculous ) {
             
+            // Includes the Prototype JS framework
+            $this->_includePrototype();
+            
             // Adds the JS script
             drupal_add_js(
                 drupal_get_path( 'module', 'oop' )
