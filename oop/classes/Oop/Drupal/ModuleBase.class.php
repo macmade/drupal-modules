@@ -30,6 +30,11 @@ abstract class Oop_Drupal_ModuleBase
     protected static $_hasStatic      = false;
     
     /**
+     * Whether the Mootools JS framework has been included
+     */
+    private static $_hasMootools      = false;
+    
+    /**
      * Whether the Prototype JS framework has been included
      */
     private static $_hasPrototype     = false;
@@ -126,6 +131,28 @@ abstract class Oop_Drupal_ModuleBase
         
         // Sets the new line character
         self::$_NL           = chr( 10 );
+    }
+    
+    /**
+     * Includes the Mootools JS framework
+     * 
+     * @return NULL
+     */
+    protected function _includeMootools()
+    {
+        // Only includes the script once
+        if( !self::$_hasMootools ) {
+            
+            // Adds the JS script
+            drupal_add_js(
+                drupal_get_path( 'module', 'oop' )
+              . '/ressources/javascript/mootools/mootools.js',
+                'module'
+            );
+        }
+        
+        // Script has been included
+        self::$_hasMootools = true;
     }
     
     /**
