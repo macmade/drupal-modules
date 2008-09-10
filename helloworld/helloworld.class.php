@@ -31,7 +31,7 @@ class helloworld extends Drupal_ModuleBase
     {
         // Adds the hello world message
         $firstBlock = $content->div->strong;
-        $firstBlock->addTextData( self::$_lang->hello );
+        $firstBlock->addTextData( $this->_lang->hello );
         
         // Adds a divider
         $content->spacer( 20 );
@@ -39,7 +39,7 @@ class helloworld extends Drupal_ModuleBase
         $content->spacer( 20 );
         
         // Adds the name of this method
-        $content->div = sprintf( self::$_lang->method, __METHOD__ );
+        $content->div = sprintf( $this->_lang->method, __METHOD__ );
         
         // Adds a divider
         $content->spacer( 20 );
@@ -47,7 +47,7 @@ class helloworld extends Drupal_ModuleBase
         $content->spacer( 20 );
         
         // Adds the title for the module section
-        $content->div->strong = self::$_lang->modules;
+        $content->div->strong = $this->_lang->modules;
         
         // Adds a spacer
         $content->spacer( 20 );
@@ -75,6 +75,9 @@ class helloworld extends Drupal_ModuleBase
         // Includes the Scriptaculous JS framework
         $this->_includeScriptaculous();
         
+        // Includes the module script file
+        $this->_includeModuleScript();
+        
         // Process each module
         foreach( $modules as $module ) {
             
@@ -94,13 +97,13 @@ class helloworld extends Drupal_ModuleBase
             $moduleLink->addTextData( $module[ 'name' ] );
             
             // Gets the load state
-            $loadState = ( $module[ 'status' ] == 1 ) ? self::$_lang->yes : self::$_lang->no;
+            $loadState = ( $module[ 'status' ] == 1 ) ? $this->_lang->yes : $this->_lang->no;
             
             // Adds the loaded state
-            $loadedDiv->addTextData( sprintf( self::$_lang->loaded, $loadState ) );
+            $loadedDiv->addTextData( sprintf( $this->_lang->loaded, $loadState ) );
             
             // Adds the module file name
-            $fileNameDiv->addTextData( sprintf( self::$_lang->fileName, $module[ 'filename' ] ) );
+            $fileNameDiv->addTextData( sprintf( $this->_lang->fileName, $module[ 'filename' ] ) );
         }
         
         // Ends the HTML comment
