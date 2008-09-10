@@ -10,6 +10,11 @@
 function helloworld()
 {
     /**
+     * The div that have been displayed
+     */
+    var _displayed = new Array();
+    
+    /**
      * Makes a div appear using Scriptaculous
      * 
      * @param   id      The ID of the div to display
@@ -20,8 +25,23 @@ function helloworld()
         // Gets the requested div
         var infos = $( id );
         
-        // Makes it appear
-        Effect.BlindDown( infos );
+        // Checks the display state
+        if( _displayed[ id ] === undefined || _displayed[ id ] === false ) {
+            
+            // Makes it appear
+            Effect.BlindDown( infos );
+            
+            // Sets the display state
+            _displayed[ id ] = true;
+            
+        } else {
+            
+            // Makes it disappear
+            Effect.BlindUp( infos );
+            
+            // Sets the display state
+            _displayed[ id ] = false;
+        }
     }
 }
 
