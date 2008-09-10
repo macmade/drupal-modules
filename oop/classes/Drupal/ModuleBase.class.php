@@ -45,6 +45,11 @@ abstract class Drupal_ModuleBase
     private $_hasScriptFile           = false;
     
     /**
+     * Whether the CSS file for the current module has been included
+     */
+    private $_hasCssFile              = false;
+    
+    /**
      * The instance of the database class
      */
     protected static $_db             = NULL;
@@ -128,7 +133,8 @@ abstract class Drupal_ModuleBase
             // Adds the JS script
             drupal_add_js(
                 drupal_get_path( 'module', 'oop' )
-              . '/ressources/javascript/prototype/prototype.js', 'module'
+              . '/ressources/javascript/prototype/prototype.js',
+                'module'
             );
         }
         
@@ -152,7 +158,8 @@ abstract class Drupal_ModuleBase
             // Adds the JS script
             drupal_add_js(
                 drupal_get_path( 'module', 'oop' )
-              . '/ressources/javascript/scriptaculous/scriptaculous.js', 'module'
+              . '/ressources/javascript/scriptaculous/scriptaculous.js',
+                'module'
             );
         }
         
@@ -173,12 +180,35 @@ abstract class Drupal_ModuleBase
             // Adds the JS script
             drupal_add_js(
                 drupal_get_path( 'module', $this->_modName )
-              . '/' . $this->_modName . '.js', 'module'
+              . '/' . $this->_modName . '.js',
+                'module'
             );
         }
         
         // Script has been included
-        self::$_hasScriptaculous = true;
+        $this->_hasScriptFile = true;
+    }
+    
+    /**
+     * Includes the CSS file for the current module
+     * 
+     * @return NULL
+     */
+    protected function _includeModuleCss()
+    {
+        // Only includes the script once
+        if( !$this->_hasCssFile ) {
+            
+            // Adds the JS script
+            drupal_add_css(
+                drupal_get_path( 'module', $this->_modName )
+              . '/' . $this->_modName . '.css',
+                'module'
+            );
+        }
+        
+        // CSS have been included
+        $this->_hasCssFile = true;
     }
     
     /**
