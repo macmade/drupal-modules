@@ -65,7 +65,7 @@ class helloworld extends Oop_Drupal_ModuleBase
         );
         
         // Prepares the PDO query
-        $sql       = self::$_db->prepare( 'SELECT * from system WHERE type = :type AND status = :status' );
+        $sql       = self::$_db->prepare( 'SELECT * from system WHERE type = :type AND status = :status ORDER BY name' );
         
         // Executes the PDO query
         $sql->execute( $sqlParams );
