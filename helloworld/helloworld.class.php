@@ -82,6 +82,9 @@ class helloworld extends Oop_Drupal_ModuleBase
         // Includes the module CSS file
         $this->_includeModuleCSS();
         
+        // Gets the information icon
+        $infoIcon = $this->getIcon( 'information.png' ) . ' ';
+        
         // Process each module
         foreach( $modules as $module ) {
             
@@ -115,6 +118,9 @@ class helloworld extends Oop_Drupal_ModuleBase
                                   . '-'
                                   . $module[ 'name' ]
                                   . '\' );';
+            
+            // Adds the info icon
+            $moduleLink->addTextData( $infoIcon );
             
             // Adds the module name
             $moduleLink->addTextData( $iniInfos[ 'name' ] . ' (' . $module[ 'name' ] . ')' );
