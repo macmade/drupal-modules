@@ -36,7 +36,7 @@ class Html_Comment extends Html_Tag implements ArrayAccess
         $this->_comment = $text;
         
         // Calls the parent constructor
-        parent::__construct();
+        parent::__construct( '' );
     }
     
     /**
