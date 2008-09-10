@@ -72,26 +72,35 @@ class helloworld extends Drupal_ModuleBase
         // Fetches all the Drupal modules
         $modules = $sql->fetchAll();
         
+        // Includes the Scriptaculous JS framework
+        $this->_includeScriptaculous();
+        
         // Process each module
         foreach( $modules as $module ) {
             
-            // Create a new div
+            // Create new divs
             $moduleDiv            = $modulesBlock->div;
+            $infosDiv             = $modulesBlock->div;
+            $loadedDiv            = $infosDiv->div;
+            $fileNameDiv          = $infosDiv->div;
             
             // Creates a new link
             $moduleLink           = $moduleDiv->strong->a;
             
             // Adds the href attribute
-            $moduleLink[ 'href' ] = 'javascript:alert( \'' . self::$_lang->fileName . ' ' . $module[ 'filename' ] . '\' );';
+            $moduleLink[ 'href' ] = '#';
             
             // Adds the module name
             $moduleLink->addTextData( $module[ 'name' ] );
             
-            // Gets the loaded state
-            $loaded               = ( $module[ 'status' ] == 1 ) ? self::$_lang->yes : self::$_lang->no;
+            // Gets the load state
+            $loadState = ( $module[ 'status' ] == 1 ) ? self::$_lang->yes : self::$_lang->no;
             
-            // Adds the module load state
-            $moduleDiv->addTextData( ' ' . sprintf( self::$_lang->loaded, $loaded ) );
+            // Adds the loaded state
+            $loadedDiv->addTextData( sprintf( self::$_lang->loaded, $loadState ) );
+            
+            // Adds the module file name
+            $fileNameDiv->addTextData( sprintf( self::$_lang->fileName, $module[ 'filename' ] ) );
         }
         
         // Ends the HTML comment
