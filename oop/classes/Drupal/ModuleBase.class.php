@@ -59,6 +59,8 @@ abstract class Drupal_ModuleBase
      * 
      * @param   string  The path of the module
      * @return  NULL
+     * @see     Drupal_Database::getInstance
+     * @see     Lang::getInstance
      */
     public function __construct( $modPath )
     {
