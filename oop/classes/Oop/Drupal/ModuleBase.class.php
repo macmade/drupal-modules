@@ -8,7 +8,7 @@
  * @package         Drupal
  * @version         0.1
  */
-abstract class Drupal_ModuleBase
+abstract class Oop_Drupal_ModuleBase
 {
     /**
      * Class version constants.
@@ -22,7 +22,7 @@ abstract class Drupal_ModuleBase
     /**
      * Abstract method to get the 'view' section of the modules
      */
-    abstract protected function _getView( Html_Tag $content, $delta );
+    abstract protected function _getView( Oop_Html_Tag $content, $delta );
     
     /**
      * Wether the static variables are set or not
@@ -89,8 +89,8 @@ abstract class Drupal_ModuleBase
      * 
      * @param   string  The path of the module
      * @return  NULL
-     * @see     Drupal_Database::getInstance
-     * @see     Lang::getInstance
+     * @see     Oop_Drupal_Database::getInstance
+     * @see     Oop_Lang_Getter::getInstance
      */
     public function __construct( $modPath )
     {
@@ -101,7 +101,7 @@ abstract class Drupal_ModuleBase
         $this->_modName = get_class( $this );
             
         // Gets the instance of the database class
-        $this->_lang    = Lang::getInstance( $this->_modName );
+        $this->_lang    = Oop_Lang_Getter::getInstance( $this->_modName );
         
         // Checks if the static variables are set
         if( !self::$_hasStatic ) {
@@ -119,10 +119,10 @@ abstract class Drupal_ModuleBase
     protected static function _setStaticVars()
     {
         // Gets the instance of the database class
-        self::$_db           = Drupal_Database::getInstance();
+        self::$_db           = Oop_Drupal_Database::getInstance();
         
         // Gets the instance of the class manager
-        self::$_classManager = Core_ClassManager::getInstance();
+        self::$_classManager = Oop_Core_ClassManager::getInstance();
         
         // Sets the new line character
         self::$_NL           = chr( 10 );
@@ -274,7 +274,7 @@ abstract class Drupal_ModuleBase
         } elseif( $op === 'view' ) {
             
             // Creates the storage tag for the module
-            $content            = new Html_Tag( 'div' );
+            $content            = new Oop_Html_Tag( 'div' );
             
             // Adds the base CSS class
             $content[ 'class' ] = 'module-' . $this->_modName;

@@ -29,11 +29,11 @@ require_once(
 );
 
 // Checks the PHP version required to use the class manager
-if( version_compare( PHP_VERSION, Core_ClassManager::PHP_COMPATIBLE, '<' ) ) {
+if( version_compare( PHP_VERSION, Oop_Core_ClassManager::PHP_COMPATIBLE, '<' ) ) {
     
     // PHP version is too old
-    trigger_error( 'Class ClassManager requires PHP version ' . Core_ClassManager::PHP_COMPATIBLE . ' (actual version is ' . PHP_VERSION . ')' , E_USER_ERROR );
+    trigger_error( 'Class ClassManager requires PHP version ' . Oop_Core_ClassManager::PHP_COMPATIBLE . ' (actual version is ' . PHP_VERSION . ')' , E_USER_ERROR );
 }
 
 // Registers an SPL autoload method to use to load the classes form this package
-spl_autoload_register( array( 'Core_ClassManager', 'autoLoad' ) );
+spl_autoload_register( array( 'Oop_Core_ClassManager', 'autoLoad' ) );

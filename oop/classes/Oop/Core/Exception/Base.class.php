@@ -5,10 +5,10 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Exception
+ * @package         Oop/Core/Exception
  * @version         0.1
  */
-abstract class Exception_Base extends Exception
+abstract class Oop_Core_Exception_Base extends Exception
 {
     /**
      * Class version constants.

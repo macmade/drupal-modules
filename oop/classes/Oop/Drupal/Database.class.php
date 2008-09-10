@@ -8,10 +8,10 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Drupal
+ * @package         Oop/Drupal
  * @version         0.1
  */
-final class Drupal_Database
+final class Oop_Drupal_Database
 {
     /**
      * Class version constants.
@@ -44,8 +44,8 @@ final class Drupal_Database
      * class (singleton).
      * 
      * @return  NULL
-     * @throws  Drupal_Database_Exception   If the PDO class is not available
-     * @throws  Drupal_Database_Exception   If the PDO object cannot be created
+     * @throws  Oop_Drupal_Database_Exception   If the PDO class is not available
+     * @throws  Oop_Drupal_Database_Exception   If the PDO object cannot be created
      */
     private function __construct()
     {
@@ -53,7 +53,7 @@ final class Drupal_Database
         if( !class_exists( 'PDO' ) ) {
             
             // PDO is not available
-            throw new Drupal_Database_Exception( 'PDO is not available', Drupal_Database_Exception::EXCEPTION_NO_CONNECTION );
+            throw new Oop_Drupal_Database_Exception( 'PDO is not available', Oop_Drupal_Database_Exception::EXCEPTION_NO_CONNECTION );
         }
         
         // Storage
@@ -82,7 +82,7 @@ final class Drupal_Database
         } catch( Exception $e ) {
             
             // The PDO object cannot be created - Reroute the exception
-            throw new Drupal_Database_Exception( $e->getMessage(), Drupal_Database_Exception::EXCEPTION_NO_CONNECTION );
+            throw new Oop_Drupal_Database_Exception( $e->getMessage(), Oop_Drupal_Database_Exception::EXCEPTION_NO_CONNECTION );
         }
     }
     
@@ -103,10 +103,10 @@ final class Drupal_Database
      * 
      * This method will reroute all the call on this object to the PDO object.
      * 
-     * @param   string                      The name of the called method
-     * @param   array                       The arguments for the called method
-     * @return  mixed                       The result of the PDO method called
-     * @throws  Drupal_Database_Exception   If the called method does not exist
+     * @param   string                          The name of the called method
+     * @param   array                           The arguments for the called method
+     * @return  mixed                           The result of the PDO method called
+     * @throws  Oop_Drupal_Database_Exception   If the called method does not exist
      */
     public function __call( $name, array $args = array() )
     {
@@ -114,7 +114,7 @@ final class Drupal_Database
         if( !is_callable( array( $this->_pdo, $name ) ) ) {
             
             // Called method does not exist
-            throw new Drupal_Database_Exception( 'The method \'' . $name . '\' cannot be called on the PDO object', Drupal_Database_Exception::EXCEPTION_BAD_METHOD );
+            throw new Oop_Drupal_Database_Exception( 'The method \'' . $name . '\' cannot be called on the PDO object', Oop_Drupal_Database_Exception::EXCEPTION_BAD_METHOD );
         }
         
         // Gets the number of arguments
@@ -163,11 +163,11 @@ final class Drupal_Database
      * be cloned (singleton).
      * 
      * @return  NULL
-     * @throws  Singleton_Exception Always, as the class cannot be cloned (singleton)
+     * @throws  Oop_Core_Singleton_Exception    Always, as the class cannot be cloned (singleton)
      */
     public function __clone()
     {
-        throw new Singleton_Exception( 'Class ' . __CLASS__ . ' cannot be cloned', Singleton_Exception::EXCEPTION_CLONE );
+        throw new Oop_Core_Singleton_Exception( 'Class ' . __CLASS__ . ' cannot be cloned', Oop_Core_Singleton_Exception::EXCEPTION_CLONE );
     }
     
     /**

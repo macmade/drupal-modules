@@ -8,7 +8,7 @@
  * @package         Html
  * @version         0.1
  */
-class Html_Comment extends Html_Tag implements ArrayAccess
+class Oop_Html_Comment extends Oop_Html_Tag implements ArrayAccess
 {
     /**
      * Class version constants.
@@ -28,7 +28,7 @@ class Html_Comment extends Html_Tag implements ArrayAccess
      * Class constructor
      * 
      * @return NULL
-     * @see     Html_Tag::__construct
+     * @see     Oop_Html_Tag::__construct
      */
     public function __construct( $text )
     {

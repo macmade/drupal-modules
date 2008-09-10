@@ -8,10 +8,10 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Core
+ * @package         Oop/Core
  * @version         0.1
  */
-final class Core_ClassManager
+final class Oop_Core_ClassManager
 {
     /**
      * Class version constants.
@@ -117,11 +117,11 @@ final class Core_ClassManager
      * be cloned (singleton).
      * 
      * @return  NULL
-     * @throws  Singleton_Exception Always, as the class cannot be cloned (singleton)
+     * @throws  Oop_Core_Singleton_Exception    Always, as the class cannot be cloned (singleton)
      */
     public function __clone()
     {
-        throw new Singleton_Exception( 'Class ' . __CLASS__ . ' cannot be cloned', Singleton_Exception::EXCEPTION_CLONE );
+        throw new Oop_Core_Singleton_Exception( 'Class ' . __CLASS__ . ' cannot be cloned', Oop_Core_Singleton_Exception::EXCEPTION_CLONE );
     }
     
     /**
@@ -130,7 +130,7 @@ final class Core_ClassManager
      * This method is used to get the unique instance of the class
      * (singleton). If no instance is available, it will create it.
      * 
-     * @return  Core_ClassManager   The unique instance of the class
+     * @return  Oop_Core_ClassManager   The unique instance of the class
      */
     public static function getInstance()
     {
@@ -169,15 +169,19 @@ final class Core_ClassManager
             $instance = self::getInstance();
         }
         
-        // Gets the class root package
-        $rootPkg = substr( $className, 0, strpos( $className, '_' ) );
-        
-        // Checks if the requested class belongs to this project
-        if( isset( $instance->_packages[ $rootPkg ] ) || isset( $instance->_packages[ $className . '.class.php' ] ) ) {
+        // Checks if the class belongs to the 'Oop' package
+        if( substr( $className, 0, 4 ) === 'Oop_' ) {
             
-            // Loads the class
-            return $instance->_loadClass( $className );
+            // Gets the class root package
+            $rootPkg = substr( $className, 4, strpos( $className, '_', 4 ) - 4 );
             
+            // Checks if the requested class belongs to this project
+            if( isset( $instance->_packages[ $rootPkg ] ) || isset( $instance->_packages[ $className . '.class.php' ] ) ) {
+                
+                // Loads the class
+                return $instance->_loadClass( $className );
+                
+            }
         }
         
         // The requested class does not belong to this project
@@ -193,7 +197,7 @@ final class Core_ClassManager
     private function _loadClass( $className )
     {
         // Gets the class path
-        $classPath = $this->_classDir . str_replace( '_', DIRECTORY_SEPARATOR, $className ) . '.class.php';
+        $classPath = $this->_classDir . str_replace( '_', DIRECTORY_SEPARATOR, substr( $className, 4 ) ) . '.class.php';
         
         // Checks if the class file exists
         if( file_exists( $classPath ) ) {
@@ -232,13 +236,13 @@ final class Core_ClassManager
     /**
      * Gets an instance of a Drupal module
      * 
-     * @param   string                      The name of the Drupal module
-     * @return  Drupal_ModuleBase           An instance of the requested module
-     * @throws  Core_ClassManager_Exception If the module does not exist
-     * @throws  Core_ClassManager_Exception If the class file for the module does not exist
-     * @throws  Core_ClassManager_Exception If the module class is not defined
-     * @throws  Core_ClassManager_Exception If the module class does not contain the PHP_COMPATIBLE constant
-     * @throws  Core_ClassManager_Exception If the module class is incompatible with the current PHP version
+     * @param   string                          The name of the Drupal module
+     * @return  Oop_Drupal_ModuleBase           An instance of the requested module
+     * @throws  Oop_Core_ClassManager_Exception If the module does not exist
+     * @throws  Oop_Core_ClassManager_Exception If the class file for the module does not exist
+     * @throws  Oop_Core_ClassManager_Exception If the module class is not defined
+     * @throws  Oop_Core_ClassManager_Exception If the module class does not contain the PHP_COMPATIBLE constant
+     * @throws  Oop_Core_ClassManager_Exception If the module class is incompatible with the current PHP version
      */
     public function getModule( $name )
     {
@@ -253,7 +257,7 @@ final class Core_ClassManager
         if( !isset( $this->_moduleList[ $name ] ) ) {
             
             // The module does not seem to be loaded
-            throw new Core_ClassManager_Exception( 'The module ' . $name . ' is not loaded', Core_ClassManager_Exception::EXCEPTION_MODULE_NOT_LOADED );
+            throw new Oop_Core_ClassManager_Exception( 'The module ' . $name . ' is not loaded', Oop_Core_ClassManager_Exception::EXCEPTION_MODULE_NOT_LOADED );
         }
         
         // Path to the module class file
@@ -265,7 +269,7 @@ final class Core_ClassManager
         if( !file_exists( $path ) ) {
             
             // The class file does not exist
-            throw new Core_ClassManager_Exception( 'The class file for module ' . $name . ' does not exists (path: ' . $path . ')', Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS_FILE );
+            throw new Oop_Core_ClassManager_Exception( 'The class file for module ' . $name . ' does not exists (path: ' . $path . ')', Oop_Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS_FILE );
         }
         
         // Includes the class file
@@ -275,14 +279,14 @@ final class Core_ClassManager
         if( !class_exists( $name ) ) {
             
             // The class is not defined
-            throw new Core_ClassManager_Exception( 'The class for module ' . $name . ' is not defined', Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS );
+            throw new Oop_Core_ClassManager_Exception( 'The class for module ' . $name . ' is not defined', Oop_Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS );
         }
         
         // Checks if the PHP_COMPATIBLE constant is defined
         if( !defined( $name . '::PHP_COMPATIBLE' ) ) {
             
             // Class does not respect the project conventions
-            throw new Core_ClassManager_Exception( 'The requested constant PHP_COMPATIBLE is not defined in class ' . $name, Core_ClassManager_Exception::EXCEPTION_NO_PHP_VERSION );
+            throw new Oop_Core_ClassManager_Exception( 'The requested constant PHP_COMPATIBLE is not defined in class ' . $name, Oop_Core_ClassManager_Exception::EXCEPTION_NO_PHP_VERSION );
         }
         
         // Gets the minimal PHP version required (eval() is required as late static bindings are implemented only in PHP 5.3)
@@ -292,7 +296,7 @@ final class Core_ClassManager
         if( version_compare( PHP_VERSION, $phpCompatible, '<' ) ) {
             
             // PHP version is too old
-            throw new Core_ClassManager_Exception( 'Class ' . $name . ' requires PHP version ' . $phpCompatible . ' (actual version is ' . PHP_VERSION . ')' , Core_ClassManager_Exception::EXCEPTION_PHP_VERSION_TOO_OLD );
+            throw new Oop_Core_ClassManager_Exception( 'Class ' . $name . ' requires PHP version ' . $phpCompatible . ' (actual version is ' . PHP_VERSION . ')' , Oop_Core_ClassManager_Exception::EXCEPTION_PHP_VERSION_TOO_OLD );
         }
         
         // Creates an instance of the module

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Exception class for the Core_ClassManager class
+ * Exception class for the Oop_Core_ClassManager class
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Core/ClassManager
+ * @package         Oop/Core/ClassManager
  * @version         0.1
  */
-class Core_ClassManager_Exception extends Exception_Base
+class Oop_Core_ClassManager_Exception extends Oop_Core_Exception_Base
 {
     /**
      * Class version constants.

@@ -5,9 +5,10 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
+ * @package         Oop/Lang
  * @version         0.1
  */
-final class Lang
+final class Oop_Lang_Getter
 {
     /**
      * Class version constants.
@@ -74,7 +75,7 @@ final class Lang
         // Checks if we are constructing the default instance
         if( !self::$_nbInstances ) {
             
-            self::$_classManager = Core_ClassManager::getInstance();
+            self::$_classManager = Oop_Core_ClassManager::getInstance();
             
             self::$_language     = $GLOBALS[ 'language' ]->language;
         }
@@ -90,7 +91,7 @@ final class Lang
         
         if( !file_exists( $langFile ) ) {
             
-            throw new Lang_Exception( 'The lang file for module ' . $this->_instanceName . ' does not exist (path: ' . $langFile . ')', Lang_Exception::EXCEPTION_NO_LANG_FILE );
+            throw new Oop_Lang_Exception( 'The lang file for module ' . $this->_instanceName . ' does not exist (path: ' . $langFile . ')', Oop_Lang_Exception::EXCEPTION_NO_LANG_FILE );
         }
         
         try {
@@ -99,7 +100,7 @@ final class Lang
             
         } catch( Exception $e ) {
             
-            throw new Lang_Exception( $e->getMessage(), Lang_Exception::EXCEPTION_BAD_XML );
+            throw new Oop_Lang_Exception( $e->getMessage(), Oop_Lang_Exception::EXCEPTION_BAD_XML );
         }
         
         // Registers the current instance
@@ -114,11 +115,11 @@ final class Lang
      * be cloned (singleton).
      * 
      * @return  NULL
-     * @throws  Singleton_Exception Always, as the class cannot be cloned (singleton)
+     * @throws  Oop_Core_Singleton_Exception    Always, as the class cannot be cloned (singleton)
      */
     public function __clone()
     {
-        throw new Singleton_Exception( 'Class ' . __CLASS__ . ' cannot be cloned', Singleton_Exception::EXCEPTION_CLONE );
+        throw new Oop_Core_Singleton_Exception( 'Class ' . __CLASS__ . ' cannot be cloned', Oop_Core_Singleton_Exception::EXCEPTION_CLONE );
     }
     
     /**

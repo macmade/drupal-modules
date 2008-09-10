@@ -5,10 +5,10 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Singleton
+ * @package         Oop/Core/Singleton
  * @version         0.1
  */
-class Singleton_Exception extends Exception_Base
+class Oop_Core_Singleton_Exception extends Oop_Core_Exception_Base
 {
     /**
      * Class version constants.

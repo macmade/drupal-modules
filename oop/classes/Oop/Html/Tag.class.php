@@ -8,7 +8,7 @@
  * @package         Html
  * @version         0.1
  */
-class Html_Tag implements ArrayAccess, Iterator
+class Oop_Html_Tag implements ArrayAccess, Iterator
 {
     /**
      * Class version constants.
@@ -188,7 +188,7 @@ class Html_Tag implements ArrayAccess, Iterator
     /**
      * Returns the current tag (SPL Iterator method)
      * 
-     * @return  Html_Tag    The current HTML tag object
+     * @return  Oop_Html_Tag    The current HTML tag object
      */
     public function current()
     {
@@ -264,7 +264,7 @@ class Html_Tag implements ArrayAccess, Iterator
             $this->_childrenCountByName[ $name ] = 0;
         }
         
-        $comment          = new Html_Comment( $text );
+        $comment          = new Oop_Html_Comment( $text );
         $comment->_parent = $this;
         
         $this->_children[]                = $comment;

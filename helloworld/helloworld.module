@@ -2,15 +2,15 @@
 
 function helloworld_help( $path, $arg )
 {
-    return Core_ClassManager::getInstance()->getModule( 'helloworld' )->help( $path, $arg );
+    return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->help( $path, $arg );
 }
 
 function helloworld_perm()
 {
-    return Core_ClassManager::getInstance()->getModule( 'helloworld' )->perm();
+    return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->perm();
 }
 
 function helloworld_block( $op = 'list', $delta = 0 )
 {
-    return Core_ClassManager::getInstance()->getModule( 'helloworld' )->block( $op, $delta );
+    return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->block( $op, $delta );
 }

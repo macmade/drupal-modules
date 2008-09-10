@@ -9,7 +9,7 @@
  * @copyright       Copyright &copy; 2008
  * @version         0.1
  */
-class helloworld extends Drupal_ModuleBase
+class helloworld extends Oop_Drupal_ModuleBase
 {
     /**
      * Class version constants.
@@ -23,11 +23,11 @@ class helloworld extends Drupal_ModuleBase
     /**
      * Gets the 'view' section of the module
      * 
-     * @param   Html_Tag    The placeholder for the module content
-     * @param   int         The delta offset, used to generate different contents for different blocks
+     * @param   Oop_Html_Tag    The placeholder for the module content
+     * @param   int             The delta offset, used to generate different contents for different blocks
      * @return  NULL
      */
-    protected function _getView( Html_Tag $content, $delta )
+    protected function _getView( Oop_Html_Tag $content, $delta )
     {
         // Adds the hello world message
         $firstBlock = $content->div->strong;

@@ -5,10 +5,10 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Lang
+ * @package         Oop/Lang
  * @version         0.1
  */
-class Lang_Exception extends Exception_Base
+class Oop_Lang_Exception extends Oop_Core_Exception_Base
 {
     /**
      * Class version constants.

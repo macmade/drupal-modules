@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Exception class for the Drupal_Database class
+ * Exception class for the Oop_Drupal_Database_Exception class
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Drupal/Exception
+ * @package         Oop/Drupal/Exception
  * @version         0.1
  */
-class Drupal_Database_Exception extends Exception_Base
+class Oop_Drupal_Database_Exception extends Oop_Core_Exception_Base
 {
     /**
      * Class version constants.
