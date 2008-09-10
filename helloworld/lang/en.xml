@@ -3,8 +3,8 @@
     <blockInfo>Hello World</blockInfo>
     <blockSubject>Hello World</blockSubject>
     <help>Displays Hello World</help>
-    <hello>Hello World! I'm a Drupal module, but on a PHP5 class!</hello>
+    <hello>Hello World! I'm a Drupal module, but on a PHP5 class with full OOP support!</hello>
     <method>Called method was: %s</method>
-    <modules>Here's the list of the available modules:</modules>
+    <modules>Here's the list of the available modules (to test the PDO link):</modules>
     <loaded>(loaded: %s)</loaded>
 </labels>
