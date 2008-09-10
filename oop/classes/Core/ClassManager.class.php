@@ -8,9 +8,10 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
+ * @package         Core
  * @version         0.1
  */
-final class ClassManager
+final class Core_ClassManager
 {
     /**
      * Class version constants.
@@ -129,7 +130,7 @@ final class ClassManager
      * This method is used to get the unique instance of the class
      * (singleton). If no instance is available, it will create it.
      * 
-     * @return  ClassManager    The unique instance of the class
+     * @return  Core_ClassManager   The unique instance of the class
      */
     public static function getInstance()
     {
@@ -231,13 +232,13 @@ final class ClassManager
     /**
      * Gets an instance of a Drupal module
      * 
-     * @param   string                  The name of the Drupal module
-     * @return  Drupal_ModuleBase       An instance of the requested module
-     * @throws  ClassManager_Exception  If the module does not exist
-     * @throws  ClassManager_Exception  If the class file for the module does not exist
-     * @throws  ClassManager_Exception  If the module class is not defined
-     * @throws  ClassManager_Exception  If the module class does not contain the PHP_COMPATIBLE constant
-     * @throws  ClassManager_Exception  If the module class is incompatible with the current PHP version
+     * @param   string                      The name of the Drupal module
+     * @return  Drupal_ModuleBase           An instance of the requested module
+     * @throws  Core_ClassManager_Exception If the module does not exist
+     * @throws  Core_ClassManager_Exception If the class file for the module does not exist
+     * @throws  Core_ClassManager_Exception If the module class is not defined
+     * @throws  Core_ClassManager_Exception If the module class does not contain the PHP_COMPATIBLE constant
+     * @throws  Core_ClassManager_Exception If the module class is incompatible with the current PHP version
      */
     public function getModule( $name )
     {
@@ -252,7 +253,7 @@ final class ClassManager
         if( !isset( $this->_moduleList[ $name ] ) ) {
             
             // The module does not seem to be loaded
-            throw new ClassManager_Exception( 'The module ' . $name . ' is not loaded', ClassManager_Exception::EXCEPTION_MODULE_NOT_LOADED );
+            throw new Core_ClassManager_Exception( 'The module ' . $name . ' is not loaded', Core_ClassManager_Exception::EXCEPTION_MODULE_NOT_LOADED );
         }
         
         // Path to the module class file
@@ -264,7 +265,7 @@ final class ClassManager
         if( !file_exists( $path ) ) {
             
             // The class file does not exist
-            throw new ClassManager_Exception( 'The class file for module ' . $name . ' does not exists (path: ' . $path . ')', ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS_FILE );
+            throw new Core_ClassManager_Exception( 'The class file for module ' . $name . ' does not exists (path: ' . $path . ')', Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS_FILE );
         }
         
         // Includes the class file
@@ -274,14 +275,14 @@ final class ClassManager
         if( !class_exists( $name ) ) {
             
             // The class is not defined
-            throw new ClassManager_Exception( 'The class for module ' . $name . ' is not defined', ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS );
+            throw new Core_ClassManager_Exception( 'The class for module ' . $name . ' is not defined', Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS );
         }
         
         // Checks if the PHP_COMPATIBLE constant is defined
         if( !defined( $name . '::PHP_COMPATIBLE' ) ) {
             
             // Class does not respect the project conventions
-            throw new ClassManager_Exception( 'The requested constant PHP_COMPATIBLE is not defined in class ' . $name, ClassManager_Exception::EXCEPTION_NO_PHP_VERSION );
+            throw new Core_ClassManager_Exception( 'The requested constant PHP_COMPATIBLE is not defined in class ' . $name, Core_ClassManager_Exception::EXCEPTION_NO_PHP_VERSION );
         }
         
         // Gets the minimal PHP version required (eval() is required as late static bindings are implemented only in PHP 5.3)
@@ -291,7 +292,7 @@ final class ClassManager
         if( version_compare( PHP_VERSION, $phpCompatible, '<' ) ) {
             
             // PHP version is too old
-            throw new ClassManager_Exception( 'Class ' . $name . ' requires PHP version ' . $phpCompatible . ' (actual version is ' . PHP_VERSION . ')' , ClassManager_Exception::EXCEPTION_PHP_VERSION_TOO_OLD );
+            throw new Core_ClassManager_Exception( 'Class ' . $name . ' requires PHP version ' . $phpCompatible . ' (actual version is ' . PHP_VERSION . ')' , Core_ClassManager_Exception::EXCEPTION_PHP_VERSION_TOO_OLD );
         }
         
         // Creates an instance of the module

@@ -5,10 +5,10 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         ClassManager
+ * @package         Core/ClassManager
  * @version         0.1
  */
-class ClassManager_Exception extends Exception_Base
+class Core_ClassManager_Exception extends Exception_Base
 {
     /**
      * Class version constants.
