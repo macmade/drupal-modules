@@ -87,11 +87,21 @@ class helloworld extends Drupal_ModuleBase
             $loadedDiv            = $infosDiv->div;
             $fileNameDiv          = $infosDiv->div;
             
+            // Adds the attributes to the info div
+            $infosDiv[ 'id' ]     = $this->_modName . '-' . $module[ 'name' ];
+            $infosDiv[ 'style' ]  = 'display: none;';
+            
             // Creates a new link
             $moduleLink           = $moduleDiv->strong->a;
             
             // Adds the href attribute
-            $moduleLink[ 'href' ] = '#';
+            $moduleLink[ 'href' ] = 'javascript:'
+                                  . $this->_modName
+                                  . '.display( \''
+                                  . $this->_modName
+                                  . '-'
+                                  . $module[ 'name' ]
+                                  . '\' );';
             
             // Adds the module name
             $moduleLink->addTextData( $module[ 'name' ] );
