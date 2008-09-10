@@ -25,6 +25,11 @@ abstract class Drupal_ModuleBase
     abstract protected function _getView( Html_Tag $content, $delta );
     
     /**
+     * Wether the static variables are set or not
+     */
+    protected static $_hasStatic      = false;
+    
+    /**
      * Whether the Prototype JS framework has been included
      */
     private static $_hasPrototype     = false;
@@ -35,14 +40,14 @@ abstract class Drupal_ModuleBase
     private static $_hasScriptaculous = false;
     
     /**
+     * Whether the JS file for the current module has been included
+     */
+    private $_hasScriptFile           = false;
+    
+    /**
      * The instance of the database class
      */
     protected static $_db             = NULL;
-    
-    /**
-     * The language object for the module
-     */
-    protected static $_lang           = NULL;
     
     /**
      * An array with the Drupal permission for the module
@@ -55,14 +60,19 @@ abstract class Drupal_ModuleBase
     protected static $_NL             = '';
     
     /**
+     * The language object for the module
+     */
+    protected $_lang                  = NULL;
+    
+    /**
      * The full (absolute) path of the module
      */
-    protected static $_modPath        = '';
+    protected $_modPath               = '';
     
     /**
      * The name of the module
      */
-    protected static $_modName        = '';
+    protected $_modName               = '';
     
     /**
      * Class constructor
@@ -74,24 +84,35 @@ abstract class Drupal_ModuleBase
      */
     public function __construct( $modPath )
     {
+        // Sets the module path
+        $this->_modPath = $modPath;
+        
+        // Sets the module name
+        $this->_modName = get_class( $this );
+            
+        // Gets the instance of the database class
+        $this->_lang    = Lang::getInstance( $this->_modName );
+        
         // Checks if the static variables are set
-        if( !self::$_modPath ) {
+        if( !self::$_hasStatic ) {
             
-            // Sets the module path
-            self::$_modPath = $modPath;
-            
-            // Sets the module name
-            self::$_modName = get_class( $this );
-            
-            // Gets the instance of the database class
-            self::$_db      = Drupal_Database::getInstance();
-            
-            // Gets the instance of the database class
-            self::$_lang    = Lang::getInstance( self::$_modName );
-            
-            // Sets the new line character
-            self::$_NL      = chr( 10 );
+            // Sets the static variables
+            self::_setStaticVars();
         }
+    }
+    
+    /**
+     * Sets the needed static variables
+     * 
+     * @return  NULL
+     */
+    protected static function _setStaticVars()
+    {
+        // Gets the instance of the database class
+        self::$_db = Drupal_Database::getInstance();
+        
+        // Sets the new line character
+        self::$_NL = chr( 10 );
     }
     
     /**
@@ -140,6 +161,27 @@ abstract class Drupal_ModuleBase
     }
     
     /**
+     * Includes the script file for the current module
+     * 
+     * @return NULL
+     */
+    protected function _includeModuleScript()
+    {
+        // Only includes the script once
+        if( !$this->_hasScriptFile ) {
+            
+            // Adds the JS script
+            drupal_add_js(
+                drupal_get_path( 'module', 'oop' )
+              . '/' . $this->_modName . '.js', 'module'
+            );
+        }
+        
+        // Script has been included
+        self::$_hasScriptaculous = true;
+    }
+    
+    /**
      * Drupal 'help' hook
      * 
      * @param   string  The path for which to display help
@@ -152,10 +194,10 @@ abstract class Drupal_ModuleBase
         switch( $path ) {
             
             // Admin help
-            case 'admin/help#' . self::$_modName:
+            case 'admin/help#' . $this->_modName:
                 
                 // Returns the localized help text
-                return '<p>' . self::$_lang->help . '</p>';
+                return '<p>' . $this->_lang->help . '</p>';
                 break;
         }
         
@@ -188,7 +230,7 @@ abstract class Drupal_ModuleBase
             
             // Returns the help text
             $block[0] = array(
-                'info' => self::$_lang->help
+                'info' => $this->_lang->help
             );
             
         } elseif( $op === 'view' ) {
@@ -197,22 +239,22 @@ abstract class Drupal_ModuleBase
             $content            = new Html_Tag( 'div' );
             
             // Adds the base CSS class
-            $content[ 'class' ] = 'module-' . self::$_modName;
+            $content[ 'class' ] = 'module-' . $this->_modName;
             
             // Gets the 'view' section from the child class
             $this->_getView( $content, $delta );
             
             // Adds the title and the content, wrapped in HTML comments
-            $block['subject'] = self::$_lang->blockSubject; 
+            $block['subject'] = $this->_lang->blockSubject; 
             $block['content'] = self::$_NL
                               . self::$_NL
-                              . '<!-- Start of module \'' . self::$_modName . '\' -->'
+                              . '<!-- Start of module \'' . $this->_modName . '\' -->'
                               . self::$_NL
                               . self::$_NL
                               . $content
                               . self::$_NL
                               . self::$_NL
-                              . '<!-- End of module \'' . self::$_modName . '\' -->'
+                              . '<!-- End of module \'' . $this->_modName . '\' -->'
                               . self::$_NL
                               . self::$_NL;
         }
