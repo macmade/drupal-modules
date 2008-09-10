@@ -22,14 +22,11 @@ function helloworld()
      */
     this.display = function( id )
     {
-        // Gets the requested div
-        var infos = $( id );
-        
         // Checks the display state
         if( _displayed[ id ] === undefined || _displayed[ id ] === false ) {
             
             // Makes it appear
-            Effect.BlindDown( infos );
+            $( 'div#' + id ).slideDown();
             
             // Sets the display state
             _displayed[ id ] = true;
@@ -37,7 +34,7 @@ function helloworld()
         } else {
             
             // Makes it disappear
-            Effect.BlindUp( infos );
+            $( 'div#' + id ).slideUp( 'slow' );
             
             // Sets the display state
             _displayed[ id ] = false;

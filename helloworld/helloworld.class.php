@@ -73,9 +73,6 @@ class helloworld extends Oop_Drupal_ModuleBase
         // Fetches all the Drupal modules
         $modules = $sql->fetchAll();
         
-        // Includes the Scriptaculous JS framework
-        $this->_includeScriptaculous();
-        
         // Includes the module script file
         $this->_includeModuleScript();
         
