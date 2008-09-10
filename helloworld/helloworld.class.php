@@ -93,6 +93,7 @@ class helloworld extends Drupal_ModuleBase
             // Adds the attributes to the info div
             $infosDiv[ 'id' ]     = $this->_modName . '-' . $module[ 'name' ];
             $infosDiv[ 'style' ]  = 'display: none;';
+            $infosDiv[ 'class' ]  = $this->_modName . '-moduleInfos';
             
             // Creates a new link
             $moduleLink           = $moduleDiv->strong->a;
