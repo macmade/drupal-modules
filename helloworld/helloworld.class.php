@@ -40,6 +40,8 @@ class helloworld extends Drupal_ModuleBase
         
         $content->spacer( 20 );
         
+        $content->comment( 'Start of the module list' );
+        
         $modulesBlock = $content->div;
         
         $sqlParams = array(
@@ -60,5 +62,7 @@ class helloworld extends Drupal_ModuleBase
             
             $moduleDiv->addTextData( ' ' . sprintf( self::$_lang->loaded, $loaded ) );
         }
+        
+        $content->comment( 'End of the module list' );
     }
 }
