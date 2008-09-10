@@ -24,6 +24,21 @@ class Html_Tag implements ArrayAccess
     protected static $_formattedOutput = true;
     
     /**
+     * Wether the static variables are set or not
+     */
+    protected static $_hasStatic       = false;
+    
+    /**
+     * 
+     */
+    protected static $_NL              = '';
+    
+    /**
+     * 
+     */
+    protected static $_TAB             = '';
+    
+    /**
      * 
      */
     protected $_tagName                = '';
@@ -68,6 +83,14 @@ class Html_Tag implements ArrayAccess
      */
     public function __construct( $tagName )
     {
+        // Checks if the static variables are set
+        if( !self::$_hasStatic ) {
+            
+            // Sets the static variables
+            self::_setStaticVars();
+        }
+        
+        // Sets the tag name
         $this->_tagName = ( string )$tagName;
     }
     
@@ -142,6 +165,23 @@ class Html_Tag implements ArrayAccess
     }
     
     /**
+     * Sets the needed static variables
+     * 
+     * @return  NULL
+     */
+    protected static function _setStaticVars()
+    {
+        // Sets the new line character
+        self::$_NL        = chr( 10 );
+        
+        // Sets the tabulation character
+        self::$_TAB       = chr( 9 );
+        
+        // Static variables are set
+        self::$_hasStatic = true;
+    }
+    
+    /**
      * 
      */
     protected function _addSpacer( $pixels )
@@ -177,7 +217,7 @@ class Html_Tag implements ArrayAccess
         return $child;
     }
     
-    protected function _output( $xmlCompliant = false )
+    protected function _output( $xmlCompliant = false, $level = 0 )
     {
         $tag = '<' . $this->_tagName;
         
@@ -186,13 +226,29 @@ class Html_Tag implements ArrayAccess
             $tag .= ' ' . $key . '="' . $value . '"';
         }
         
-        if( $this->_childrenCount ) {
+        if( !$this->_childrenCount ) {
+            
+            $tag .= ' />';
+            
+        } else {
             
             $tag .= '>';
             
             foreach( $this->_children as $child ) {
                 
-                if( is_string( $child ) && $xmlCompliant ) {
+                if( $child instanceof self ) {
+                    
+                    if( self::$_formattedOutput ) {
+                        
+                        $tag .= self::$_NL . str_pad( '', $level + 1, self::$_TAB );
+                        $tag .= $child->_output( $xmlCompliant, $level + 1 );
+                        
+                    } else {
+                        
+                        $tag .= $child->_output( $xmlCompliant, $level + 1 );
+                    }
+                    
+                } elseif( $xmlCompliant ) {
                     
                     if( $this->_hasNodeChildren ) {
                         
@@ -209,11 +265,12 @@ class Html_Tag implements ArrayAccess
                 }
             }
             
+            if( self::$_formattedOutput && $this->_hasNodeChildren ) {
+                
+                $tag .= self::$_NL . str_pad( '', $level, self::$_TAB );
+            }
+            
             $tag .= '</' . $this->_tagName . '>';
-            
-        } else {
-            
-            $tag .= ' />';
         }
         
         return $tag;
@@ -242,5 +299,13 @@ class Html_Tag implements ArrayAccess
     public function asXml()
     {
         return $this->_output( true );
+    }
+    
+    public function useFormattedOutput( $value )
+    {
+        $oldValue               = self::$_formattedOutput;
+        self::$_formattedOutput = ( boolean )$value;
+        
+        return $oldValue;
     }
 }
