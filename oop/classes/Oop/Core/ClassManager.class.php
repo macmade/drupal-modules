@@ -68,8 +68,14 @@ final class Oop_Core_ClassManager
         // Process the module list
         foreach( $this->_moduleList as $modName => &$modPath ) {
             
-            // Sets the module path
-            $modPath = realpath( drupal_get_path( 'module', $modName ) ) . DIRECTORY_SEPARATOR;
+            // Gets the relative path
+            $relPath = drupal_get_path( 'module', $modName );
+            
+            // Sets the module paths (absolute and relative)
+            $modPath = array(
+                realpath( $relPath ) . DIRECTORY_SEPARATOR,
+                $relPath
+            );
         }
         
         // Stores the directory containing the classes
@@ -261,7 +267,7 @@ final class Oop_Core_ClassManager
         }
         
         // Path to the module class file
-        $path = $this->_moduleList[ $name ]
+        $path = $this->_moduleList[ $name ][ 0 ]
               . $name
               . '.class.php';
         
@@ -314,7 +320,18 @@ final class Oop_Core_ClassManager
      */
     public function getModulePath( $name )
     {
-        return ( isset( $this->_moduleList[ $name ] ) ) ? $this->_moduleList[ $name ] : false;
+        return ( isset( $this->_moduleList[ $name ] ) ) ? $this->_moduleList[ $name ][ 0 ] : false;
+    }
+    
+    /**
+     * Gets the relative path of a Drupal module
+     * 
+     * @param   string  The name of the module
+     * @return  mixed   The path of the module, or false is the module is not available
+     */
+    public function getModuleRelativePath( $name )
+    {
+        return ( isset( $this->_moduleList[ $name ] ) ) ? $this->_moduleList[ $name ][ 1 ] : false;
     }
     
     /**

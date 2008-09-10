@@ -205,7 +205,7 @@ abstract class Oop_Drupal_ModuleBase
             
             // Adds the JS script
             drupal_add_js(
-                drupal_get_path( 'module', 'oop' )
+                self::$_classManager->getModuleRelativePath( 'oop' )
               . '/ressources/javascript/mootools/mootools.js',
                 'module'
             );
@@ -227,7 +227,7 @@ abstract class Oop_Drupal_ModuleBase
             
             // Adds the JS script
             drupal_add_js(
-                drupal_get_path( 'module', 'oop' )
+                self::$_classManager->getModuleRelativePath( 'oop' )
               . '/ressources/javascript/prototype/prototype.js',
                 'module'
             );
@@ -252,7 +252,7 @@ abstract class Oop_Drupal_ModuleBase
             
             // Adds the JS script
             drupal_add_js(
-                drupal_get_path( 'module', 'oop' )
+                self::$_classManager->getModuleRelativePath( 'oop' )
               . '/ressources/javascript/scriptaculous/scriptaculous.js',
                 'module'
             );
@@ -274,7 +274,7 @@ abstract class Oop_Drupal_ModuleBase
             
             // Adds the JS script
             drupal_add_js(
-                drupal_get_path( 'module', $this->_modName )
+                self::$_classManager->getModuleRelativePath( $this->_modName )
               . '/' . $this->_modName . '.js',
                 'module'
             );
@@ -296,7 +296,7 @@ abstract class Oop_Drupal_ModuleBase
             
             // Adds the JS script
             drupal_add_css(
-                drupal_get_path( 'module', $this->_modName )
+                self::$_classManager->getModuleRelativePath( $this->_modName )
               . '/' . $this->_modName . '.css',
                 'module'
             );
