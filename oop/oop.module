@@ -16,7 +16,17 @@ if( !function_exists( 'spl_autoload_register' ) ) {
 }
 
 // Includes the class manager
-require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'ClassManager.class.php' );
+require_once(
+    dirname( __FILE__ )
+  . DIRECTORY_SEPARATOR
+  . 'classes'
+  . DIRECTORY_SEPARATOR
+  . 'Oop'
+  . DIRECTORY_SEPARATOR
+  . 'Core'
+  . DIRECTORY_SEPARATOR
+  . 'ClassManager.class.php'
+);
 
 // Checks the PHP version required to use the class manager
 if( version_compare( PHP_VERSION, Core_ClassManager::PHP_COMPATIBLE, '<' ) ) {
