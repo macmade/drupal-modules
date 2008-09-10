@@ -27,7 +27,7 @@ abstract class Oop_Core_Exception_Base extends Exception
     /**
      * The common CSS styles for the HTML elements produced by this class
      */
-    protected static $_commonStyles = 'font-family: Verdana, sans-serif; font-size: 10px; color: #666666;';
+    protected static $_commonStyles = 'font-family: Verdana, sans-serif; font-size: 10px; color: #898989;';
     
     /**
      * Class constructor
@@ -72,7 +72,7 @@ abstract class Oop_Core_Exception_Base extends Exception
     protected function _traceTitle( $title )
     {
         // Returns a title
-        return '<h1 style="' . self::$_commonStyles . ' color: #FF0000;">' . $title . '</h1>';
+        return '<h1 style="' . self::$_commonStyles . ' color: #0062A0;">' . $title . '</h1>';
     }
     
     /**
@@ -135,7 +135,7 @@ abstract class Oop_Core_Exception_Base extends Exception
                     $args = '';
                 }
                 
-                $str .= '<div style="margin-top: 5px; padding: 5px; border: solid 1px #58B4EC; background-color: #FFFFFF;">' . $class . $function . $type . $file . $line . $args . $code . '</div>';
+                $str .= '<div style="margin-top: 5px; padding: 5px; border: solid 1px #D3E7F4; background-color: #FFFFFF;">' . $class . $function . $type . $file . $line . $args . $code . '</div>';
             }
         }
         
@@ -233,7 +233,7 @@ abstract class Oop_Core_Exception_Base extends Exception
             $lineLength = strlen( $line + 3 );
             
             // Gets the given line
-            $line3      = ( isset( $lines[ $line - 1 ] ) ) ? '<strong style="color: #000000;">' . str_pad( $line, $lineLength, 0, STR_PAD_LEFT ) . ': ' . $lines[ $line -1 ] . '</strong>' : '';
+            $line3      = ( isset( $lines[ $line - 1 ] ) ) ? '<strong style="color: #0062A0;">' . str_pad( $line, $lineLength, 0, STR_PAD_LEFT ) . ': ' . $lines[ $line -1 ] . '</strong>' : '';
             
             // Gets some lines above and below the given one
             $line0      = ( isset( $lines[ $line - 4 ] ) ) ? str_pad( $line - 3, $lineLength, 0, STR_PAD_LEFT ) . ': ' . htmlspecialchars( $lines[ $line - 4 ] ) : '';
@@ -244,7 +244,7 @@ abstract class Oop_Core_Exception_Base extends Exception
             $line6      = ( isset( $lines[ $line + 2 ] ) ) ? str_pad( $line + 3, $lineLength, 0, STR_PAD_LEFT ) . ': ' . htmlspecialchars( $lines[ $line + 2 ] ) : '';
             
             // Returns the lines
-            return '<div style="' . self::$_commonStyles . ' white-space: pre; font-family: monospace; border: solid 1px #58B4EC; color: #FFFFFF; background-color: #58B4EC; padding: 5px; margin-top: 5px;">' . $line0 . $line1 . $line2 . $line3 . $line4 . $line5 . $line6 . '</div>';
+            return '<div style="' . self::$_commonStyles . ' white-space: pre; font-family: monospace; border: solid 1px #D3E7F4; background-color: #EDF5FA; padding: 5px; margin-top: 5px;">' . $line0 . $line1 . $line2 . $line3 . $line4 . $line5 . $line6 . '</div>';
         }
         
         // No lines
@@ -281,7 +281,7 @@ abstract class Oop_Core_Exception_Base extends Exception
     public function getInfos()
     {
         // Creates the formatted output
-        $trace = '<div style="' . self::$_commonStyles . ' background-color: #CCE8F9; border: solid 1px #58B4EC; margin: 10px; padding: 10px;">'
+        $trace = '<div style="' . self::$_commonStyles . ' background-color: #EDF5FA; border: solid 1px #D3E7F4; margin: 10px; padding: 10px;">'
                . $this->_traceTitle( 'Exception of type \'' . get_class( $this ) . '\'' )
                . $this->_traceInfo( 'Message:', $this->message )
                . $this->_traceInfo( 'Code:',    $this->code )
