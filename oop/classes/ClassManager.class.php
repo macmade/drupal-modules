@@ -147,6 +147,10 @@ final class ClassManager
     /**
      * SPL autoload method
      * 
+     * When registered with the spl_autoload_register() function, this method
+     * will be called each time a class cannot be found, and will try to
+     * load it.
+     * 
      * @param   string  The name of the class to load
      * @return  boolean
      * @see     getInstance
@@ -225,33 +229,51 @@ final class ClassManager
     }
     
     /**
+     * Gets an instance of a Drupal module
      * 
+     * @param   string                  The name of the Drupal module
+     * @return  Drupal_ModuleBase       An instance of the requested module
+     * @throws  ClassManager_Exception  If the module does not exist
+     * @throws  ClassManager_Exception  If the class file for the module does not exist
+     * @throws  ClassManager_Exception  If the module class is not defined
+     * @throws  ClassManager_Exception  If the module class does not contain the PHP_COMPATIBLE constant
+     * @throws  ClassManager_Exception  If the module class is incompatible with the current PHP version
      */
     public function getModule( $name )
     {
+        // Checks if the module class has already been instanciated
         if( isset( $this->_modules[ $name ] ) ) {
             
+            // Returns the instance
             return $this->_modules[ $name ];
         }
         
+        // Checks if the module is available
         if( !isset( $this->_moduleList[ $name ] ) ) {
             
+            // The module does not seem to be loaded
             throw new ClassManager_Exception( 'The module ' . $name . ' is not loaded', ClassManager_Exception::EXCEPTION_MODULE_NOT_LOADED );
         }
         
+        // Path to the module class file
         $path = $this->_moduleList[ $name ]
               . $name
               . '.class.php';
         
+        // Checks if the class file exists
         if( !file_exists( $path ) ) {
             
+            // The class file does not exist
             throw new ClassManager_Exception( 'The class file for module ' . $name . ' does not exists (path: ' . $path . ')', ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS_FILE );
         }
         
+        // Includes the class file
         require_once( $path );
         
+        // Checks if the class for the module is defined
         if( !class_exists( $name ) ) {
             
+            // The class is not defined
             throw new ClassManager_Exception( 'The class for module ' . $name . ' is not defined', ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS );
         }
         
@@ -280,7 +302,10 @@ final class ClassManager
     }
     
     /**
+     * Gets the full (absolute) path of a Drupal module
      * 
+     * @param   string  The name of the module
+     * @return  mixed   The path of the module, or false is the module is not available
      */
     public function getModulePath( $name )
     {
