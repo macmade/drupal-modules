@@ -21,7 +21,7 @@ abstract class Drupal_ModuleBase
     /**
      * 
      */
-    abstract protected function _getView( SimpleXMLElement $content, $delta );
+    abstract protected function _getView( Html_Tag $content, $delta );
     
     /**
      * The instance of the database class
@@ -115,7 +115,9 @@ abstract class Drupal_ModuleBase
             
         } elseif( $op === 'view' ) {
             
-            $content = new SimpleXMLElement( '<div class="module-' . self::$_modName . '"></div>' );
+            $content            = new Html_Tag( 'div' );
+            $content[ 'class' ] = 'module-' . self::$_modName;
+            
             $this->_getView( $content, $delta );
             
             $block['subject'] = self::$_lang->blockSubject; 
@@ -124,7 +126,7 @@ abstract class Drupal_ModuleBase
                               . '<!-- Start of module \'' . self::$_modName . '\' -->'
                               . self::$_NL
                               . self::$_NL
-                              . $content->asXML()
+                              . $content
                               . self::$_NL
                               . self::$_NL
                               . '<!-- End of module \'' . self::$_modName . '\' -->'
