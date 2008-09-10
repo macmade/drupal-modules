@@ -318,7 +318,7 @@ abstract class Oop_Drupal_ModuleBase
      * 
      * @param   string                          The name of the icon, including the extension
      * @param   string                          The package of the icon (default is famfam). See 'oop/ressources/icons' for details
-     * @return  string                          An image tag for the requested icon
+     * @return  Oop_Html_Tag                    An image tag for the requested icon
      * @throws  Oop_Drupal_ModuleBase_Exception If the image does not exist
      * @see     Oop_Core_ClassManager::getModulePath
      * @see     Oop_Core_ClassManager::getModuleRelativePath
@@ -343,11 +343,18 @@ abstract class Oop_Drupal_ModuleBase
         }
         
         // Gets the relative icon path
-        $iconRelPath = self::$_classManager->getModuleRelativePath( 'oop' )
-                     . 'ressources/icons/'
-                     . $package
-                     . '/'
-                     . $name;
+        $iconRelPath  = self::$_classManager->getModuleRelativePath( 'oop' )
+                      . 'ressources/icons/'
+                      . $package
+                      . '/'
+                      . $name;
+        
+        // Creates the image tag
+        $img          = new Oop_Html_Tag( 'img' );
+        
+        // Adds the source and alt attributes
+        $img[ 'src' ] = $iconRelPath;
+        $img[ 'alt' ] = substr( $name, 0, strrpos( $name, '.' ) );
         
         // Checks if the icon is readable
         if( is_readable( $iconPath ) ) {
@@ -355,25 +362,10 @@ abstract class Oop_Drupal_ModuleBase
             // Gets the image size
             $size = getimagesize( $iconPath );
             
-            // Creates the image tag
-            $img = '<img src="'
-                 . $iconRelPath
-                 . '" alt="'
-                 . substr( $name, strrpos( $name, '.' ) )
-                 . '" width="'
-                 . $size[ 0 ]
-                 . '" height="'
-                 . $size[ 1 ]
-                 . '" />';
+            // Adds the image dimensions
+            $img[ 'width' ]  = $size[ 0 ];
+            $img[ 'height' ] = $size[ 1 ];
             
-        } else {
-            
-            // Creates the image tag
-            $img = '<img src="'
-                 . $iconRelPath
-                 . '" alt="'
-                 . substr( $name, strrpos( $name, '.' ) )
-                 . '" />';
         }
         
         // Returns the image tag
