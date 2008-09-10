@@ -25,34 +25,44 @@ abstract class Drupal_ModuleBase
     abstract protected function _getView( Html_Tag $content, $delta );
     
     /**
+     * Whether the Prototype JS framework has been included
+     */
+    private static $_hasPrototype     = false;
+    
+    /**
+     * Whether the Prototype JS framework has been included
+     */
+    private static $_hasScriptaculous = false;
+    
+    /**
      * The instance of the database class
      */
-    protected static $_db      = NULL;
+    protected static $_db             = NULL;
     
     /**
      * The language object for the module
      */
-    protected static $_lang    = NULL;
+    protected static $_lang           = NULL;
     
     /**
      * An array with the Drupal permission for the module
      */
-    protected static $_perms   = array();
+    protected static $_perms          = array();
     
     /**
      * The new line character
      */
-    protected static $_NL      = '';
+    protected static $_NL             = '';
     
     /**
      * The full (absolute) path of the module
      */
-    protected static $_modPath = '';
+    protected static $_modPath        = '';
     
     /**
      * The name of the module
      */
-    protected static $_modName = '';
+    protected static $_modName        = '';
     
     /**
      * Class constructor
@@ -82,6 +92,48 @@ abstract class Drupal_ModuleBase
             // Sets the new line character
             self::$_NL      = chr( 10 );
         }
+    }
+    
+    /**
+     * Includes the Prototype JS framework
+     * 
+     * @return NULL
+     */
+    protected function _includePrototype()
+    {
+        // Only includes the script once
+        if( !self::$_hasPrototype ) {
+            
+            // Adds the JS script
+            drupal_add_js(
+                drupal_get_path( 'module', 'oop' )
+              . '/ressources/javascript/prototype/prototype.js', 'module'
+            );
+        }
+        
+        // Script has been included
+        self::$_hasPrototype = true;
+    }
+    
+    /**
+     * Includes the Scriptaculous JS framework
+     * 
+     * @return NULL
+     */
+    protected function _includeScriptaculous()
+    {
+        // Only includes the script once
+        if( !self::$_hasScriptaculous ) {
+            
+            // Adds the JS script
+            drupal_add_js(
+                drupal_get_path( 'module', 'oop' )
+              . '/ressources/javascript/scriptaculous/scriptaculous.js', 'module'
+            );
+        }
+        
+        // Script has been included
+        self::$_hasScriptaculous = true;
     }
     
     /**
