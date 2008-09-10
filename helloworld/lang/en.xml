@@ -7,4 +7,5 @@
     <method>Called method was: %s</method>
     <modules>Here's the list of the available modules (to test the PDO link):</modules>
     <loaded>(loaded: %s)</loaded>
+    <fileName>File name:</fileName>
 </labels>

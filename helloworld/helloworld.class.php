@@ -76,13 +76,19 @@ class helloworld extends Drupal_ModuleBase
         foreach( $modules as $module ) {
             
             // Create a new div
-            $moduleDiv         = $modulesBlock->div;
+            $moduleDiv            = $modulesBlock->div;
+            
+            // Creates a new link
+            $moduleLink           = $moduleDiv->strong->a;
+            
+            // Adds the href attribute
+            $moduleLink[ 'href' ] = 'javascript:alert( \'' . self::$_lang->fileName . ' ' . $module[ 'filename' ] . '\' );';
             
             // Adds the module name
-            $moduleDiv->strong = $module[ 'name' ];
+            $moduleLink->addTextData( $module[ 'name' ] );
             
             // Gets the loaded state
-            $loaded            = ( $module[ 'status' ] == 1 ) ? self::$_lang->yes : self::$_lang->no;
+            $loaded               = ( $module[ 'status' ] == 1 ) ? self::$_lang->yes : self::$_lang->no;
             
             // Adds the module load state
             $moduleDiv->addTextData( ' ' . sprintf( self::$_lang->loaded, $loaded ) );
