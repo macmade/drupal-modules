@@ -172,7 +172,7 @@ abstract class Drupal_ModuleBase
             
             // Adds the JS script
             drupal_add_js(
-                drupal_get_path( 'module', 'oop' )
+                drupal_get_path( 'module', $this->_modName )
               . '/' . $this->_modName . '.js', 'module'
             );
         }
