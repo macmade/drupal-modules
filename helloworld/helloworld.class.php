@@ -78,6 +78,9 @@ class helloworld extends Drupal_ModuleBase
         // Includes the module script file
         $this->_includeModuleScript();
         
+        // Includes the module CSS file
+        $this->_includeModuleCSS();
+        
         // Process each module
         foreach( $modules as $module ) {
             
