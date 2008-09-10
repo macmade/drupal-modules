@@ -129,6 +129,11 @@ class Html_Tag implements ArrayAccess
                 
                 return $this->_addSpacer( $args[ 0 ] );
                 break;
+            
+            case 'comment':
+                
+                return $this->_addComment( $args[ 0 ] );
+                break;
         }
     }
     
@@ -186,10 +191,35 @@ class Html_Tag implements ArrayAccess
      */
     protected function _addSpacer( $pixels )
     {
-        $spacer            = $this->div;
+        $spacer            = $this->_addChild( 'div' );
         $spacer[ 'class' ] = 'spacer';
         $spacer[ 'style' ] = 'margin-top: ' . $pixels . 'px';
         return $spacer;
+    }
+    
+    /**
+     * 
+     */
+    protected function _addComment( $text )
+    {
+        if( !isset( $this->_childrenByName[ '<!--' ] ) ) {
+            
+            $this->_childrenByName[ $name ]      = array();
+            $this->_childrenCountByName[ $name ] = 0;
+        }
+        
+        $comment          = new Html_Comment( $text );
+        $comment->_parent = $this;
+        
+        $this->_children[]                = $comment;
+        $this->_childrenByName[ '<!--' ][] = $comment;
+        
+        $this->_childrenCountByName[ '<!--' ]++;
+        $this->_childrenCount++;
+        
+        $this->_hasNodeChildren = true;
+        
+        return $comment;
     }
     
     /**
@@ -217,6 +247,9 @@ class Html_Tag implements ArrayAccess
         return $child;
     }
     
+    /**
+     * 
+     */
     protected function _output( $xmlCompliant = false, $level = 0 )
     {
         $tag = '<' . $this->_tagName;
@@ -301,6 +334,9 @@ class Html_Tag implements ArrayAccess
         return $this->_output( true );
     }
     
+    /**
+     * 
+     */
     public function useFormattedOutput( $value )
     {
         $oldValue               = self::$_formattedOutput;
