@@ -50,6 +50,11 @@ abstract class Drupal_ModuleBase
     private $_hasCssFile              = false;
     
     /**
+     * The instance of the class manager
+     */
+    protected static $_classManager   = NULL;
+    
+    /**
      * The instance of the database class
      */
     protected static $_db             = NULL;
@@ -114,10 +119,13 @@ abstract class Drupal_ModuleBase
     protected static function _setStaticVars()
     {
         // Gets the instance of the database class
-        self::$_db = Drupal_Database::getInstance();
+        self::$_db           = Drupal_Database::getInstance();
+        
+        // Gets the instance of the class manager
+        self::$_classManager = ClassManager::getInstance();
         
         // Sets the new line character
-        self::$_NL = chr( 10 );
+        self::$_NL           = chr( 10 );
     }
     
     /**
