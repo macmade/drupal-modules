@@ -73,7 +73,7 @@ final class Core_ClassManager
         }
         
         // Stores the directory containing the classes
-        $this->_classDir   = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
+        $this->_classDir   = realpath( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '..' ) . DIRECTORY_SEPARATOR;
         
         // Creates a directory iterator in the directory containing this file
         $dirIterator       = new DirectoryIterator( $this->_classDir );

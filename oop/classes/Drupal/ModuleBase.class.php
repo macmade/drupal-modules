@@ -122,7 +122,7 @@ abstract class Drupal_ModuleBase
         self::$_db           = Drupal_Database::getInstance();
         
         // Gets the instance of the class manager
-        self::$_classManager = ClassManager::getInstance();
+        self::$_classManager = Core_ClassManager::getInstance();
         
         // Sets the new line character
         self::$_NL           = chr( 10 );

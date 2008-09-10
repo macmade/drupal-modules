@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Exception class for the ClassManager class
+ * Exception class for the Core_ClassManager class
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008

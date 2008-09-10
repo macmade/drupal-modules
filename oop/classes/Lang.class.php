@@ -74,7 +74,7 @@ final class Lang
         // Checks if we are constructing the default instance
         if( !self::$_nbInstances ) {
             
-            self::$_classManager = ClassManager::getInstance();
+            self::$_classManager = Core_ClassManager::getInstance();
             
             self::$_language     = $GLOBALS[ 'language' ]->language;
         }
