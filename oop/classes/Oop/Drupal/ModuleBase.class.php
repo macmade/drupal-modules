@@ -65,6 +65,11 @@ abstract class Oop_Drupal_ModuleBase
     protected static $_db             = NULL;
     
     /**
+     * The instance of the request helper
+     */
+    protected static $_request        = NULL;
+    
+    /**
      * An array with the Drupal permission for the module
      */
     protected static $_perms          = array();
@@ -123,11 +128,14 @@ abstract class Oop_Drupal_ModuleBase
      */
     protected static function _setStaticVars()
     {
+        // Gets the instance of the class manager
+        self::$_classManager = Oop_Core_ClassManager::getInstance();
+        
         // Gets the instance of the database class
         self::$_db           = Oop_Drupal_Database::getInstance();
         
-        // Gets the instance of the class manager
-        self::$_classManager = Oop_Core_ClassManager::getInstance();
+        // Gets the instance of the request class
+        self::$_request      = Oop_Request_Getter::getInstance();
         
         // Sets the new line character
         self::$_NL           = chr( 10 );
