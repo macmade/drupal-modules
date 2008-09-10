@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Exception class for the Oop_Drupal_Database_Exception class
+ * Exception class for the Oop_Drupal_Database class
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
