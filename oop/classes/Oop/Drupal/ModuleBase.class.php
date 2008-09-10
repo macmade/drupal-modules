@@ -353,7 +353,7 @@ abstract class Oop_Drupal_ModuleBase
         $img          = new Oop_Html_Tag( 'img' );
         
         // Adds the source and alt attributes
-        $img[ 'src' ] = $iconRelPath;
+        $img[ 'src' ] = $GLOBALS[ 'base_path' ] . $iconRelPath;
         $img[ 'alt' ] = substr( $name, 0, strrpos( $name, '.' ) );
         
         // Checks if the icon is readable
