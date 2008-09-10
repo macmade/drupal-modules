@@ -87,7 +87,7 @@ abstract class Drupal_ModuleBase
             
             case 'admin/help#' . self::$_modName:
                 
-                return '<p>' . t( self::$_lang->help ) . '</p>';
+                return '<p>' . self::$_lang->help . '</p>';
                 break;
         }
     }
@@ -110,7 +110,7 @@ abstract class Drupal_ModuleBase
         if( $op === 'list' ) {
             
             $block[0] = array(
-                'info' => t( self::$_lang->blockInfo )
+                'info' => self::$_lang->help
             );
             
         } elseif( $op === 'view' ) {
