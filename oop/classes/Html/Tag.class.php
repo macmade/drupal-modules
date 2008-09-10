@@ -8,7 +8,7 @@
  * @package         Html
  * @version         0.1
  */
-class Html_Tag implements ArrayAccess
+class Html_Tag implements ArrayAccess, Iterator
 {
     /**
      * Class version constants.
@@ -78,6 +78,11 @@ class Html_Tag implements ArrayAccess
      * 
      */
     protected $_parent                 = NULL;
+    
+    /**
+     * The current position for the SPL Iterator methods
+     */
+    protected $_iteratorIndex          = 0;
     
     /**
      * 
@@ -168,6 +173,56 @@ class Html_Tag implements ArrayAccess
     public function offsetUnset( $offset )
     {
         unset( $this->_attribs[ $offset ] );
+    }
+    
+    /**
+     * Moves the position to the first tag (SPL Iterator method)
+     * 
+     * @return  NULL
+     */
+    public function rewind()
+    {
+        $this->_iteratorIndex = 0;
+    }
+    
+    /**
+     * Returns the current tag (SPL Iterator method)
+     * 
+     * @return  Html_Tag    The current HTML tag object
+     */
+    public function current()
+    {
+        return $this->_children[ $this->_iteratorIndex ];
+    }
+    
+    /**
+     * Gets the tag name for the current tag (SPL Iterator method)
+     * 
+     * @return  int     The name of the current tag
+     */
+    public function key()
+    {
+        return $this->_children[ $this->_iteratorIndex ]->_tagName;
+    }
+    
+    /**
+     * Moves the position to the next tag (SPL Iterator method)
+     * 
+     * @return  NULL
+     */
+    public function next()
+    {
+        $this->_iteratorIndex++;
+    }
+    
+    /**
+     * Checks for a current tag (SPL Iterator method)
+     * 
+     * @return  boolean
+     */
+    public function valid()
+    {
+        return isset( $this->_children[ $this->_iteratorIndex ] );
     }
     
     /**
