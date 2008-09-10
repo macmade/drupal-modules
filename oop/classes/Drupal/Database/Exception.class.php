@@ -18,4 +18,11 @@ class Drupal_Database_Exception extends Exception_Base
     const CLASS_VERSION  = '0.1';
     const DEVEL_STATE    = 'alpha';
     const PHP_COMPATIBLE = '5.2.0';
+    
+    /**
+     * Error codes for the exceptions
+     */
+    const EXCEPTION_NO_PDO        = 0x01;
+    const EXCEPTION_NO_CONNECTION = 0x02;
+    const EXCEPTION_BAD_METHOD    = 0x03;
 }
