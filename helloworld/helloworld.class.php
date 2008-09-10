@@ -111,13 +111,14 @@ class helloworld extends Oop_Drupal_ModuleBase
             $moduleLink           = $moduleDiv->strong->a;
             
             // Adds the href attribute
-            $moduleLink[ 'href' ] = 'javascript:'
-                                  . $this->_modName
-                                  . '.display( \''
-                                  . $this->_modName
-                                  . '-'
-                                  . $module[ 'name' ]
-                                  . '\' );';
+            $moduleLink[ 'title' ] = $iniInfos[ 'description' ];
+            $moduleLink[ 'href' ]  = 'javascript:'
+                                   . $this->_modName
+                                   . '.display( \''
+                                   . $this->_modName
+                                   . '-'
+                                   . $module[ 'name' ]
+                                   . '\' );';
             
             // Adds the info icon
             $moduleLink->addTextData( $infoIcon );
