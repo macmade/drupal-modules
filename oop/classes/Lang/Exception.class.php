@@ -5,7 +5,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Singleton
+ * @package         Lang
  * @version         0.1
  */
 class Lang_Exception extends Exception_Base

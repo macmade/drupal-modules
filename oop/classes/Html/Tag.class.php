@@ -5,6 +5,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
+ * @package         Html
  * @version         0.1
  */
 class Html_Tag implements ArrayAccess

@@ -5,7 +5,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Parser
+ * @package         Exception
  * @version         0.1
  */
 abstract class Exception_Base extends Exception
