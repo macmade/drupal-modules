@@ -40,7 +40,7 @@ class Html_Comment extends Html_Tag implements ArrayAccess
         if( !$xmlCompliant ) {
             
             $indent = str_pad( '', $level, self::$_TAB );
-            return self::$_NL . $indent . '<!-- ' . $this->_comment . ' -->' . self::$_NL;
+            return self::$_NL . $indent . '<!-- ' . $this->_comment . ' -->' . self::$_NL . $indent;
         }
         
         return '';
