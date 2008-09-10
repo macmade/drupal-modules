@@ -129,7 +129,7 @@ final class ClassManager
      * This method is used to get the unique instance of the class
      * (singleton). If no instance is available, it will create it.
      * 
-     * @return  object  The unique instance of the class
+     * @return  ClassManager    The unique instance of the class
      */
     public static function getInstance()
     {
