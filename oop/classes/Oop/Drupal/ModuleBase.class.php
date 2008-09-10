@@ -27,7 +27,7 @@ abstract class Oop_Drupal_ModuleBase
     /**
      * Wether the static variables are set or not
      */
-    protected static $_hasStatic      = false;
+    private static $_hasStatic        = false;
     
     /**
      * Whether the Mootools JS framework has been included
@@ -95,12 +95,18 @@ abstract class Oop_Drupal_ModuleBase
     protected $_modName               = '';
     
     /**
+     * The request variables for the module
+     */
+    public $_modVars                  = array();
+    
+    /**
      * Class constructor
      * 
      * @param   string  The path of the module
      * @return  NULL
-     * @see     Oop_Drupal_Database::getInstance
      * @see     Oop_Lang_Getter::getInstance
+     * @see     _setStaticVars
+     * @see     _getModuleVariables
      */
     public function __construct( $modPath )
     {
@@ -119,14 +125,20 @@ abstract class Oop_Drupal_ModuleBase
             // Sets the static variables
             self::_setStaticVars();
         }
+        
+        // Gets the request variables for the current module
+        $this->_getModuleVariables();
     }
     
     /**
      * Sets the needed static variables
      * 
      * @return  NULL
+     * @see     Oop_Core_ClassManager::getInstance
+     * @see     Oop_Drupal_Database::getInstance
+     * @see     Oop_Request_Getter::getInstance
      */
-    protected static function _setStaticVars()
+    private static function _setStaticVars()
     {
         // Gets the instance of the class manager
         self::$_classManager = Oop_Core_ClassManager::getInstance();
@@ -139,6 +151,46 @@ abstract class Oop_Drupal_ModuleBase
         
         // Sets the new line character
         self::$_NL           = chr( 10 );
+    }
+    
+    /**
+     * Gets each request variable from this module
+     * 
+     * @return  NULL
+     */
+    private function _getModuleVariables()
+    {
+        // Keys to search in the request variables
+        $requestKeys = array( 'G', 'P', 'C', 'S', 'E' );
+        
+        // Process each request key
+        foreach( $requestKeys as $key ) {
+            
+            // Checks if a variable corresponding to the module name exist
+            if( self::$_request->requestVarExists( $this->_modName, $key ) ) {
+                
+                // Gets the variable
+                $var = self::$_request->getRequestVar( $this->_modName, $key );
+                
+                // Checks for an array
+                if( !is_array( $var ) ) {
+                    
+                    // Process the next request key
+                    continue;
+                }
+                
+                // Process each entry of the array
+                foreach( $var as $varName => &$value ) {
+                    
+                    // Only sets the value if the variable does not already exist
+                    if( !isset( $this->_modVars[ $varName ] ) ) {
+                        
+                        // Stores the variable
+                        $this->_modVars[ $varName ] =& $value; 
+                    }
+                }
+            }
+        }
     }
     
     /**
