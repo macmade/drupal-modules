@@ -45,7 +45,9 @@ abstract class Exception_Base extends Exception
     }
     
     /**
+     * Returns the exception message with the backtrace if required
      * 
+     * @return string   The exception message prepended with the backtrace if required
      */
     public function __toString()
     {
@@ -61,7 +63,10 @@ abstract class Exception_Base extends Exception
     }
     
     /**
+     * Creates an H1 title
      * 
+     * @param   string  The title text
+     * @return  string  The H1 tag
      */
     protected function _traceTitle( $title )
     {
@@ -70,7 +75,11 @@ abstract class Exception_Base extends Exception
     }
     
     /**
+     * Create an information section about a trace information
      * 
+     * @param   string  The label to display
+     * @param   string  The text to display
+     * @return  string  The information section
      */
     protected function _traceInfo( $label, $value )
     {
@@ -85,7 +94,9 @@ abstract class Exception_Base extends Exception
     }
     
     /**
+     * Gets the trace history
      * 
+     * @return  string  The formatted full backtrace
      */
     protected function _traceHistory()
     {
@@ -128,7 +139,10 @@ abstract class Exception_Base extends Exception
     }
     
     /**
+     * Creates informations about arguments (type, value, etc)
      * 
+     * @param   array   The arguments
+     * @return  string  The formatted informations about the arguments
      */
     protected function _getArgs( array $args )
     {
@@ -194,7 +208,14 @@ abstract class Exception_Base extends Exception
     }
     
     /**
+     * Gets some PHP code line from a file
      * 
+     * This method will return the requested line from the requested PHP file,
+     * as well as 4 line before and 4 lines after, if available.
+     * 
+     * @param   string  The path to the PHP file
+     * @param   int     The line to get
+     * @return  string  The formatted PHP lines
      */
     protected function _getCode( $file, $line )
     {
@@ -227,7 +248,11 @@ abstract class Exception_Base extends Exception
     }
     
     /**
+     * Decide wether to display the backtrace or not when an exception is
+     * not caught.
      * 
+     * @param   boolean True if the backtrace must be displayed, otherwise false
+     * @return  boolean The previous value
      */
     public static function setDebugState( $value )
     {
@@ -242,10 +267,13 @@ abstract class Exception_Base extends Exception
     }
     
     /**
+     * Gets the informations about the exception
      * 
+     * @return  string  The formatted informations bout the exception
      */
     public function getInfos()
-    {        
+    {
+        // Creates the formatted output
         $trace = '<div style="' . self::$_commonStyles . ' background-color: #CCE8F9; border: solid 1px #58B4EC; margin: 10px; padding: 10px;">'
                . $this->_traceTitle( 'Exception of type \'' . get_class( $this ) . '\'' )
                . $this->_traceInfo( 'Message:', $this->message )
@@ -256,6 +284,7 @@ abstract class Exception_Base extends Exception
                . $this->_traceHistory()
                . '</div>';
         
+        // Returns the informations
         return $trace;
     }
 }
