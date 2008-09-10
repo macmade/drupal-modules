@@ -74,7 +74,7 @@ final class Oop_Core_ClassManager
             // Sets the module paths (absolute and relative)
             $modPath = array(
                 realpath( $relPath ) . DIRECTORY_SEPARATOR,
-                $relPath
+                $relPath . '/'
             );
         }
         
