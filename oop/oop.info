@@ -1,4 +1,4 @@
-name = OOP
+name = OOP framework
 description = The base framework for developping object oriented Drupal modules
 core = 6.x
 package = Framework
