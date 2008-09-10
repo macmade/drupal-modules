@@ -157,6 +157,8 @@ abstract class Oop_Drupal_ModuleBase
      * Gets each request variable from this module
      * 
      * @return  NULL
+     * @see     Oop_Request_Getter::requestVarExists
+     * @see     Oop_Request_Getter::getRequestVar
      */
     private function _getModuleVariables()
     {
@@ -196,7 +198,8 @@ abstract class Oop_Drupal_ModuleBase
     /**
      * Includes the Mootools JS framework
      * 
-     * @return NULL
+     * @return  NULL
+     * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
     protected function _includeMootools()
     {
@@ -206,7 +209,7 @@ abstract class Oop_Drupal_ModuleBase
             // Adds the JS script
             drupal_add_js(
                 self::$_classManager->getModuleRelativePath( 'oop' )
-              . '/ressources/javascript/mootools/mootools.js',
+              . 'ressources/javascript/mootools/mootools.js',
                 'module'
             );
         }
@@ -218,7 +221,8 @@ abstract class Oop_Drupal_ModuleBase
     /**
      * Includes the Prototype JS framework
      * 
-     * @return NULL
+     * @return  NULL
+     * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
     protected function _includePrototype()
     {
@@ -228,7 +232,7 @@ abstract class Oop_Drupal_ModuleBase
             // Adds the JS script
             drupal_add_js(
                 self::$_classManager->getModuleRelativePath( 'oop' )
-              . '/ressources/javascript/prototype/prototype.js',
+              . 'ressources/javascript/prototype/prototype.js',
                 'module'
             );
         }
@@ -240,7 +244,8 @@ abstract class Oop_Drupal_ModuleBase
     /**
      * Includes the Scriptaculous JS framework
      * 
-     * @return NULL
+     * @return  NULL
+     * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
     protected function _includeScriptaculous()
     {
@@ -253,7 +258,7 @@ abstract class Oop_Drupal_ModuleBase
             // Adds the JS script
             drupal_add_js(
                 self::$_classManager->getModuleRelativePath( 'oop' )
-              . '/ressources/javascript/scriptaculous/scriptaculous.js',
+              . 'ressources/javascript/scriptaculous/scriptaculous.js',
                 'module'
             );
         }
@@ -265,7 +270,8 @@ abstract class Oop_Drupal_ModuleBase
     /**
      * Includes the script file for the current module
      * 
-     * @return NULL
+     * @return  NULL
+     * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
     protected function _includeModuleScript()
     {
@@ -275,7 +281,7 @@ abstract class Oop_Drupal_ModuleBase
             // Adds the JS script
             drupal_add_js(
                 self::$_classManager->getModuleRelativePath( $this->_modName )
-              . '/' . $this->_modName . '.js',
+              . $this->_modName . '.js',
                 'module'
             );
         }
@@ -287,7 +293,8 @@ abstract class Oop_Drupal_ModuleBase
     /**
      * Includes the CSS file for the current module
      * 
-     * @return NULL
+     * @return  NULL
+     * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
     protected function _includeModuleCss()
     {
@@ -297,13 +304,80 @@ abstract class Oop_Drupal_ModuleBase
             // Adds the JS script
             drupal_add_css(
                 self::$_classManager->getModuleRelativePath( $this->_modName )
-              . '/' . $this->_modName . '.css',
+              . $this->_modName . '.css',
                 'module'
             );
         }
         
         // CSS have been included
         $this->_hasCssFile = true;
+    }
+    
+    /**
+     * Gets the image tag for an icon from th 'oop' module
+     * 
+     * @param   string                          The name of the icon, including the extension
+     * @param   string                          The package of the icon (default is famfam). See 'oop/ressources/icons' for details
+     * @return  string                          An image tag for the requested icon
+     * @throws  Oop_Drupal_ModuleBase_Exception If the image does not exist
+     * @see     Oop_Core_ClassManager::getModulePath
+     * @see     Oop_Core_ClassManager::getModuleRelativePath
+     */
+    protected function getIcon( $name, $package = 'famfam' )
+    {
+        // Gets the icon path
+        $iconPath = self::$_classManager->getModulePath( 'oop' )
+                  . 'ressources'
+                  . DIRECTORY_SEPARATOR
+                  . 'icons'
+                  . DIRECTORY_SEPARATOR
+                  . $package
+                  . DIRECTORY_SEPARATOR
+                  . $name;
+        
+        // Checks if the icon exists
+        if( !file_exists( $iconPath ) ) {
+            
+            // Icon deos not exist
+            throw new Oop_Drupal_ModuleBase_Exception( 'The requested icon does not exist (path: ' . $iconPath . ')', Oop_Drupal_ModuleBase_Exception::EXCEPTION_NO_FILE );
+        }
+        
+        // Gets the relative icon path
+        $iconRelPath = self::$_classManager->getModuleRelativePath( 'oop' )
+                     . 'ressources/icons/'
+                     . $package
+                     . '/'
+                     . $name;
+        
+        // Checks if the icon is readable
+        if( is_readable( $iconPath ) ) {
+            
+            // Gets the image size
+            $size = getimagesize( $iconPath );
+            
+            // Creates the image tag
+            $img = '<img src="'
+                 . $iconRelPath
+                 . '" alt="'
+                 . substr( $name, strrpos( $name, '.' ) )
+                 . '" width="'
+                 . $size[ 0 ]
+                 . '" height="'
+                 . $size[ 1 ]
+                 . '" />';
+            
+        } else {
+            
+            // Creates the image tag
+            $img = '<img src="'
+                 . $iconRelPath
+                 . '" alt="'
+                 . substr( $name, strrpos( $name, '.' ) )
+                 . '" />';
+        }
+        
+        // Returns the image tag
+        return $img;
     }
     
     /**
