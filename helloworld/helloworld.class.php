@@ -38,6 +38,27 @@ class helloworld extends Drupal_ModuleBase
         
         $content->div->strong = self::$_lang->modules;
         
+        $content->spacer( 20 );
+        
         $modulesBlock = $content->div;
+        
+        $sqlParams = array(
+            ':type' => 'module'
+        );
+        $sql       = self::$_db->prepare( 'SELECT * from system WHERE type = :type' );
+        
+        $sql->execute( $sqlParams );
+        
+        $modules = $sql->fetchAll();
+        
+        foreach( $modules as $module ) {
+            
+            $moduleDiv         = $modulesBlock->div;
+            $moduleDiv->strong = $module[ 'name' ];
+            
+            $loaded            = ( $module[ 'status' ] == 1 ) ? self::$_lang->yes : self::$_lang->no;
+            
+            $moduleDiv->addTextData( ' ' . sprintf( self::$_lang->loaded, $loaded ) );
+        }
     }
 }

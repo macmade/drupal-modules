@@ -6,4 +6,5 @@
     <hello>Hello World! I'm a Drupal module, but on a PHP5 class!</hello>
     <method>Called method was: %s</method>
     <modules>Here's the list of the available modules:</modules>
+    <loaded>(loaded: %s)</loaded>
 </labels>
