@@ -20,7 +20,7 @@ abstract class Drupal_ModuleBase
     const PHP_COMPATIBLE = '5.2.0';
     
     /**
-     * 
+     * Abstract method to get the 'view' section of the modules
      */
     abstract protected function _getView( Html_Tag $content, $delta );
     
@@ -35,7 +35,7 @@ abstract class Drupal_ModuleBase
     protected static $_lang    = NULL;
     
     /**
-     * 
+     * An array with the Drupal permission for the module
      */
     protected static $_perms   = array();
     
@@ -45,17 +45,20 @@ abstract class Drupal_ModuleBase
     protected static $_NL      = '';
     
     /**
-     * 
+     * The full (absolute) path of the module
      */
     protected static $_modPath = '';
     
     /**
-     * 
+     * The name of the module
      */
     protected static $_modName = '';
     
     /**
+     * Class constructor
      * 
+     * @param   string  The path of the module
+     * @return  NULL
      */
     public function __construct( $modPath )
     {
@@ -80,21 +83,32 @@ abstract class Drupal_ModuleBase
     }
     
     /**
+     * Drupal 'help' hook
      * 
+     * @param   string  The path for which to display help
+     * @param   array   An array that holds the current path as would be returned from arg() function
+     * @return  string  The help text for the Drupal module
      */
     public function help( $path, $arg )
     {
+        // Checks the path
         switch( $path ) {
             
+            // Admin help
             case 'admin/help#' . self::$_modName:
                 
+                // Returns the localized help text
                 return '<p>' . self::$_lang->help . '</p>';
                 break;
         }
+        
+        return '';
     }
     
     /**
+     * Drupal 'perm' hook
      * 
+     * @return array    The permissions array for the Drupal module
      */
     public function perm()
     {
@@ -102,25 +116,36 @@ abstract class Drupal_ModuleBase
     }
     
     /**
+     * Drupal 'block' hook
      * 
+     * @param   string  The kind of block to display
+     * @param   int     The delta offset, used to generate different contents for different blocks
      */
     public function block( $op = 'list', $delta = 0 )
     {
+        // Storage
         $block = array();
         
+        // Checks the block type
         if( $op === 'list' ) {
             
+            // Returns the help text
             $block[0] = array(
                 'info' => self::$_lang->help
             );
             
         } elseif( $op === 'view' ) {
             
+            // Creates the storage tag for the module
             $content            = new Html_Tag( 'div' );
+            
+            // Adds the base CSS class
             $content[ 'class' ] = 'module-' . self::$_modName;
             
+            // Gets the 'view' section from the child class
             $this->_getView( $content, $delta );
             
+            // Adds the title and the content, wrapped in HTML comments
             $block['subject'] = self::$_lang->blockSubject; 
             $block['content'] = self::$_NL
                               . self::$_NL
@@ -135,6 +160,7 @@ abstract class Drupal_ModuleBase
                               . self::$_NL;
         }
         
+        // Returns the block
         return $block;
     }
 }
