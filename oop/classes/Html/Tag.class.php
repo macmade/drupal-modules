@@ -20,7 +20,7 @@ class Html_Tag implements ArrayAccess
     const PHP_COMPATIBLE = '5.2.0';
     
     /**
-     * 
+     * Wether the output is formatted or not
      */
     protected static $_formattedOutput = true;
     
@@ -30,22 +30,22 @@ class Html_Tag implements ArrayAccess
     protected static $_hasStatic       = false;
     
     /**
-     * 
+     * The new line character
      */
     protected static $_NL              = '';
     
     /**
-     * 
+     * The tabulation character
      */
     protected static $_TAB             = '';
     
     /**
-     * 
+     * The name of the current tag
      */
     protected $_tagName                = '';
     
     /**
-     * 
+     * The attributes of the current tag
      */
     protected $_attribs                = array();
     
@@ -249,64 +249,87 @@ class Html_Tag implements ArrayAccess
     }
     
     /**
+     * Returns the output of the current tag
      * 
+     * @param   boolean Wheter the output must be XML compliant
+     * @param   int     The indentation level
+     * @return  string  The output of the current tag (tag name and content)
      */
     protected function _output( $xmlCompliant = false, $level = 0 )
     {
+        // Starts the tag
         $tag = '<' . $this->_tagName;
         
+        // Process each registered attribute
         foreach( $this->_attribs as $key => &$value ) {
             
+            // Adds the current attribute
             $tag .= ' ' . $key . '="' . $value . '"';
         }
         
+        // Checks if we children to display
         if( !$this->_childrenCount ) {
             
+            // No - Tag is self closed
             $tag .= ' />';
             
         } else {
             
+            // Ends the start tag
             $tag .= '>';
             
+            // Process each children
             foreach( $this->_children as $child ) {
                 
+                // Checks the current child is a tag or a string
                 if( $child instanceof self ) {
                     
+                    // Checks if we have to format the output
                     if( self::$_formattedOutput ) {
                         
+                        // Adds the current child
                         $tag .= self::$_NL . str_pad( '', $level + 1, self::$_TAB );
                         $tag .= $child->_output( $xmlCompliant, $level + 1 );
                         
                     } else {
                         
+                        // Adds the current child
                         $tag .= $child->_output( $xmlCompliant, $level + 1 );
                     }
                     
                 } elseif( $xmlCompliant ) {
                     
+                    // If we must be XML compliant, nodes and data are not allwed in a single node
                     if( $this->_hasNodeChildren ) {
                         
+                        // Protect the data with CDATA, and adds a span tag for the XML compliancy
                         $tag .= '<span><![CDATA[' . $child . ']]></span>';
                         
                     } else {
                         
+                        // Protects the data with CDATA
                         $tag .= '<![CDATA[' . $child . ']]>';
                     }
                     
                 } else {
                     
+                    // String - Adds the child data
                     $tag .= ( string )$child;
                 }
             }
             
+            // Checks if we have to format the output
             if( self::$_formattedOutput && $this->_hasNodeChildren ) {
                 
+                // Adds a new line and the current indentation
                 $tag .= self::$_NL . str_pad( '', $level, self::$_TAB );
             }
             
+            // Closes the tag
             $tag .= '</' . $this->_tagName . '>';
         }
         
+        // Returns the tag
         return $tag;
     }
     
