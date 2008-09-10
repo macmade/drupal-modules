@@ -83,7 +83,7 @@ class helloworld extends Oop_Drupal_ModuleBase
         $this->_includeModuleCSS();
         
         // Gets the information icon
-        $infoIcon = $this->getIcon( 'information.png' ) . ' ';
+        $infoIcon = $this->getIcon( 'information.png' );
         
         // Process each module
         foreach( $modules as $module ) {
@@ -121,10 +121,10 @@ class helloworld extends Oop_Drupal_ModuleBase
                                    . '\' );';
             
             // Adds the info icon
-            $moduleLink->addTextData( $infoIcon );
+            $moduleLink->addChildNode( $infoIcon );
             
             // Adds the module name
-            $moduleLink->addTextData( $iniInfos[ 'name' ] . ' (' . $module[ 'name' ] . ')' );
+            $moduleLink->addTextData( ' ' . $iniInfos[ 'name' ] . ' (' . $module[ 'name' ] . ')' );
             
             // Adds the description
             $descriptionDiv->addTextData( sprintf( $this->_lang->description, $iniInfos[ 'description' ] ) );
