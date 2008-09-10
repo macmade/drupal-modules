@@ -1,5 +1,5 @@
 // <![CDATA[
-    
+
 /**
  * JavaScript class for the Drupal 'helloworld' module
  * 
