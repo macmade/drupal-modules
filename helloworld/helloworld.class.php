@@ -60,11 +60,12 @@ class helloworld extends Drupal_ModuleBase
         
         // Parameters for the PDO query
         $sqlParams = array(
-            ':type' => 'module'
+            ':type'   => 'module',
+            ':status' => 1
         );
         
         // Prepares the PDO query
-        $sql       = self::$_db->prepare( 'SELECT * from system WHERE type = :type' );
+        $sql       = self::$_db->prepare( 'SELECT * from system WHERE type = :type AND status = :status' );
         
         // Executes the PDO query
         $sql->execute( $sqlParams );
@@ -84,10 +85,18 @@ class helloworld extends Drupal_ModuleBase
         // Process each module
         foreach( $modules as $module ) {
             
+            // Path of the INI file
+            $iniFile              = self::$_classManager->getModulePath( $module[ 'name' ] )
+                                  . $module[ 'name' ]
+                                  . '.info';
+            
+            // Informations in the INI file
+            $iniInfos             = parse_ini_file( $iniFile );
+            
             // Create new divs
             $moduleDiv            = $modulesBlock->div;
             $infosDiv             = $modulesBlock->div;
-            $loadedDiv            = $infosDiv->div;
+            $descriptionDiv       = $infosDiv->div;
             $fileNameDiv          = $infosDiv->div;
             
             // Adds the attributes to the info div
@@ -108,13 +117,10 @@ class helloworld extends Drupal_ModuleBase
                                   . '\' );';
             
             // Adds the module name
-            $moduleLink->addTextData( $module[ 'name' ] );
+            $moduleLink->addTextData( $iniInfos[ 'name' ] . ' (' . $module[ 'name' ] . ')' );
             
-            // Gets the load state
-            $loadState = ( $module[ 'status' ] == 1 ) ? $this->_lang->yes : $this->_lang->no;
-            
-            // Adds the loaded state
-            $loadedDiv->addTextData( sprintf( $this->_lang->loaded, $loadState ) );
+            // Adds the description
+            $descriptionDiv->addTextData( sprintf( $this->_lang->description, $iniInfos[ 'description' ] ) );
             
             // Adds the module file name
             $fileNameDiv->addTextData( sprintf( $this->_lang->fileName, $module[ 'filename' ] ) );
