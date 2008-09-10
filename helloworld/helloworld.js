@@ -34,7 +34,7 @@ function helloworld()
         } else {
             
             // Makes it disappear
-            $( 'div#' + id ).slideUp( 'slow' );
+            $( 'div#' + id ).slideUp();
             
             // Sets the display state
             _displayed[ id ] = false;
