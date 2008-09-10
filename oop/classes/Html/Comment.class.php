@@ -43,7 +43,7 @@ class Html_Comment extends Html_Tag implements ArrayAccess
      * Returns the HTML comment
      * 
      * @param   boolean Wheter the output must be XML compliant
-     * @param   int     THe indentation level
+     * @param   int     The indentation level
      * @return  string  The HTML comment, if $xmlCompliant is false, otherwise a blank string
      */
     protected function _output( $xmlCompliant = false, $level = 0 )
