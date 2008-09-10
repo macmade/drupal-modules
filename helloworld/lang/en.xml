@@ -5,7 +5,7 @@
     <help>Displays Hello World</help>
     <hello>I'm a Drupal module, but on a PHP5 class with full OOP support!</hello>
     <method>Called method was: %s</method>
-    <modules>Here's the list of the available modules (to test the PDO link):</modules>
+    <modules>Here's the list of the loaded modules (to test the PDO link):</modules>
     <description>Description: %s</description>
     <fileName>File name: %s</fileName>
 </labels>
