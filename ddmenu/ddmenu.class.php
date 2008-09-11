@@ -69,7 +69,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
         );
         
         // Prepares the PDO query
-        $sql       = self::$_db->prepare( 'SELECT * from menu_links WHERE menu_name = :menu_name AND plid = :plid AND hidden = 0 ORDER BY weight, link_title' );
+        $sql       = self::$_db->prepare( 'SELECT * from {menu_links} WHERE menu_name = :menu_name AND plid = :plid AND hidden = 0 ORDER BY weight, link_title' );
         
         // Executes the PDO query
         $sql->execute( $sqlParams );
