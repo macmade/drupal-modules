@@ -30,8 +30,7 @@ class helloworld extends Oop_Drupal_ModuleBase
     protected function _getView( Oop_Html_Tag $content, $delta )
     {
         // Adds the hello world message
-        $firstBlock = $content->div->strong;
-        $firstBlock->addTextData( $this->_lang->hello );
+        $content->div->strong = $this->_lang->hello;
         
         // Adds a divider
         $content->spacer( 20 );
@@ -46,17 +45,33 @@ class helloworld extends Oop_Drupal_ModuleBase
         $content->hr;
         $content->spacer( 20 );
         
-        // Adds the title for the module section
-        $content->div->strong = $this->_lang->modules;
-        
-        // Adds a spacer
-        $content->spacer( 20 );
-        
-        // Starts an HTML comment
+        // Modules container
         $content->comment( 'Start of the module list' );
+        $modulesBlock                = $content->div;
+        $content->comment( 'End of the module list' );
         
-        // Creates a new div
-        $modulesBlock = $content->div;
+        // Backtrace containers
+        $content->comment( 'Start of the backtrace' );
+        $backTraceBlock              = $content->div;
+        $content->comment( 'End of the backtrace' );
+        
+        // CSS class for the containers
+        $modulesBlock[ 'class' ]     = $this->_modName . '-modules';
+        $backTraceBlock[ 'class' ]   = $this->_modName . '-backtrace';
+        
+        // Adds the titles for the containers
+        $modulesBlock->div->strong   = $this->_lang->modules;
+        $backTraceBlock->div->strong = $this->_lang->backTrace;
+        
+        // Adds spacers
+        $modulesBlock->spacer( 20 );
+        $backTraceBlock->spacer( 20 );
+        
+        // Gets the backtrace
+        $backTrace = debug_backtrace( $this );
+        
+        // Gets the info icon
+        $infoIcon  = $this->getIcon( 'information.png' );
         
         // Parameters for the PDO query
         $sqlParams = array(
@@ -79,9 +94,6 @@ class helloworld extends Oop_Drupal_ModuleBase
         // Includes the module CSS file
         $this->_includeModuleCSS();
         
-        // Gets the information icon
-        $infoIcon = $this->getIcon( 'information.png' );
-        
         // Process each module
         foreach( $modules as $module ) {
             
@@ -96,13 +108,11 @@ class helloworld extends Oop_Drupal_ModuleBase
             // Create new divs
             $moduleDiv            = $modulesBlock->div;
             $infosDiv             = $modulesBlock->div;
-            $descriptionDiv       = $infosDiv->div;
-            $fileNameDiv          = $infosDiv->div;
             
             // Adds the attributes to the info div
             $infosDiv[ 'id' ]     = $this->_modName . '-' . $module[ 'name' ];
             $infosDiv[ 'style' ]  = 'display: none;';
-            $infosDiv[ 'class' ]  = $this->_modName . '-moduleInfos';
+            $infosDiv[ 'class' ]  = $this->_modName . '-infos';
             
             // Creates a new link
             $moduleLink           = $moduleDiv->strong->a;
@@ -124,13 +134,51 @@ class helloworld extends Oop_Drupal_ModuleBase
             $moduleLink->addTextData( ' ' . $iniInfos[ 'name' ] . ' (' . $module[ 'name' ] . ')' );
             
             // Adds the description
-            $descriptionDiv->addTextData( sprintf( $this->_lang->description, $iniInfos[ 'description' ] ) );
+            $infosDiv->div = sprintf( $this->_lang->description, $iniInfos[ 'description' ] );
             
             // Adds the module file name
-            $fileNameDiv->addTextData( sprintf( $this->_lang->fileName, $module[ 'filename' ] ) );
+            $infosDiv->div = sprintf( $this->_lang->fileName, $module[ 'filename' ] );
         }
         
-        // Ends the HTML comment
-        $content->comment( 'End of the module list' );
+        // Process the backtrace
+        foreach( $backTrace as $key => $value ) {
+            
+            // Name of the function/method name
+            $funcName            = ( isset( $value[ 'class' ] ) ) ? $value[ 'class' ] . '::' . $value[ 'function' ] . '()' : $value[ 'function' ] . '()';
+            
+            // Create new divs
+            $funcDiv             = $backTraceBlock->div;
+            $infosDiv            = $backTraceBlock->div;
+            
+            // Adds the attributes to the info div
+            $infosDiv[ 'id' ]    = $this->_modName . '-backtrace-' . $key;
+            $infosDiv[ 'style' ] = 'display: none;';
+            $infosDiv[ 'class' ] = $this->_modName . '-infos';
+            
+            // Creates a new link
+            $funcLink            = $funcDiv->strong->a;
+            
+            // Adds the href attribute
+            $funcLink[ 'title' ] = $funcName;
+            $funcLink[ 'href' ]  = 'javascript:'
+                                   . $this->_modName
+                                   . '.display( \''
+                                   . $this->_modName
+                                   . '-backtrace-'
+                                   . $key
+                                   . '\' );';
+            
+            // Adds the info icon
+            $funcLink->addChildNode( $infoIcon );
+            
+            // Adds the module name
+            $funcLink->addTextData( ' ' . $funcName );
+            
+            // Adds the file name
+            $infosDiv->div = sprintf( $this->_lang->fileName, $value[ 'file' ] );
+            
+            // Adds the line number
+            $infosDiv->div = sprintf( $this->_lang->line, $value[ 'line' ] );
+        }
     }
 }
