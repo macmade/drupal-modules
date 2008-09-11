@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <labels>
-    <yes>yes</yes>
-    <no>no</no>
+    <module>
+        <yes>yes</yes>
+        <no>no</no>
+    </module>
 </labels>
