@@ -10,7 +10,7 @@ function helloworld_perm()
     return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->perm();
 }
 
-function helloworld_block( $op = 'list', $delta = 0 )
+function helloworld_block( $op = 'list', $delta = 0, array $edit = array() )
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->block( $op, $delta );
+    return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->block( $op, $delta, $edit );
 }

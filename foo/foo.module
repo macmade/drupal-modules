@@ -10,7 +10,7 @@ function foo_perm()
     return Oop_Core_ClassManager::getInstance()->getModule( 'foo' )->perm();
 }
 
-function foo_block( $op = 'list', $delta = 0 )
+function foo_block( $op = 'list', $delta = 0, array $edit = array() )
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'foo' )->block( $op, $delta );
+    return Oop_Core_ClassManager::getInstance()->getModule( 'foo' )->block( $op, $delta, $edit );
 }
