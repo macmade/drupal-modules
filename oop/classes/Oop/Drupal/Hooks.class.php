@@ -95,6 +95,24 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $block[0] = array(
                 'info' => $this->_lang->getLabel( 'block_help', 'system' )
             );
+        
+        } elseif( $op === 'configure' ) {
+            
+            // Gets the path of the configuration file
+            $confPath = self::$_classManager->getModulePath( $this->_modName )
+                      . 'settings'
+                      . DIRECTORY_SEPARATOR
+                      . 'block.form.php';
+            
+            // Checks for a configuration file
+            if( file_exists( $confPath ) ) {
+                
+                // Creates the form
+                $form  = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+                
+                // Returns the form
+                $block = $form->getConf();
+            }
             
         } elseif( $op === 'view' ) {
             
@@ -212,6 +230,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
                   . DIRECTORY_SEPARATOR
                   . 'admin.form.php';
         
+        // Creates the form
         $form = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
         
         // Returns the form
