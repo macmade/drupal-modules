@@ -220,7 +220,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             'title'            => $this->_lang->getLabel( 'menu_admin_title', 'system' ),
             'description'      => $this->_lang->getLabel( 'menu_admin_description', 'system' ),
             'page callback'    => 'drupal_get_form',
-            'page arguments'   => array( $this->_modName . '_menuAdmin' ),
+            'page arguments'   => array( $this->_modName . '_adminForm' ),
             'access arguments' => array( 'access administration pages' ),
             'type'             => MENU_NORMAL_ITEM,
         );
@@ -232,7 +232,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * 
      */
-    public function getAdminMenu()
+    public function getAdminForm()
     {
         // Gets the path of the configuration file
         $confPath = self::$_classManager->getModulePath( $this->_modName )
