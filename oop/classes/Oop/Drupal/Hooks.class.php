@@ -57,7 +57,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             case 'admin/help#' . $this->_modName:
                 
                 // Returns the localized help text
-                return '<p>' . $this->_lang->getSystemLabel( 'block_help' ) . '</p>';
+                return '<p>' . $this->_lang->getLabel( 'block_help', 'system' ) . '</p>';
                 break;
         }
         
@@ -93,7 +93,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
             // Returns the help text
             $block[0] = array(
-                'info' => $this->_lang->getSystemLabel( 'block_help' )
+                'info' => $this->_lang->getLabel( 'block_help', 'system' )
             );
             
         } elseif( $op === 'view' ) {
@@ -111,7 +111,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $this->_getView( $content, $delta );
             
             // Adds the title and the content, wrapped in HTML comments
-            $block['subject'] = $this->_lang->getSystemLabel( 'block_subject' ); 
+            $block['subject'] = $this->_lang->getLabel( 'block_subject', 'system' ); 
             $block['content'] = self::$_NL
                               . self::$_NL
                               . '<!-- Start of module \'' . $this->_modName . '\' -->'
@@ -148,13 +148,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
             // Returns the filter title
             return array(
-                $this->_lang->getSystemLabel( 'filter_title' )
+                $this->_lang->getLabel( 'filter_title', 'system' )
             );
             
         } elseif( $op === 'description' ) {
             
             // Returns the filter description
-            return $this->_lang->getSystemLabel( 'filter_description' );
+            return $this->_lang->getLabel( 'filter_description', 'system' );
             
         } elseif( $op === 'prepare' ) {
             
@@ -189,15 +189,32 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         
         // Creates the item array
         $items[ 'admin/settings/' . $this->_modName ] = array(
-            'title'            => $this->_lang->getSystemLabel( 'menu_admin_title' ),
-            'description'      => $this->_lang->getSystemLabel( 'menu_admin_description' ),
+            'title'            => $this->_lang->getLabel( 'menu_admin_title', 'system' ),
+            'description'      => $this->_lang->getLabel( 'menu_admin_description', 'system' ),
             'page callback'    => 'drupal_get_form',
-            'page arguments'   => array( 'ddsm_menuAdmin' ),
+            'page arguments'   => array( $this->_modName . '_menuAdmin' ),
             'access arguments' => array( 'access administration pages' ),
             'type'             => MENU_NORMAL_ITEM,
         );
         print_r( $items );
         // Returns the items array
         return $items;
+    }
+    
+    /**
+     * 
+     */
+    public function getAdminMenu()
+    {
+        // Gets the path of the configuration file
+        $confPath = self::$_classManager->getModulePath( $this->_modName )
+                  . 'settings'
+                  . DIRECTORY_SEPARATOR
+                  . 'form.conf.php';
+        
+        $form = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+        
+        // Returns the form
+        return system_settings_form( $form->getConf() );
     }
 }
