@@ -20,6 +20,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
     
     protected $_iconDir  = NULL;
     protected $_iconPage = NULL;
+    protected $_path     = array();
     
     /**
      * Gets the 'view' section of the module
@@ -50,6 +51,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 break;
         }
         
+        $this->_path     = array_flip( explode( '/', self::$_request->q ) );
         $this->_iconDir  = $this->_getIcon( 'folder.png' );
         $this->_iconPage = $this->_getIcon( 'page_white.png' );
         $this->_includeModuleScript();
@@ -95,8 +97,24 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 
                 $subList            = $li->ul;
                 
-                $subList[ 'style' ] = 'display: none;';
                 $subList[ 'id' ]    = 'ddmenu-page-' . $page[ 'mlid' ];
+                
+                $path = $page[ 'link_path' ];
+                
+                if( strstr( $path, '/' ) ) {
+                    
+                    $path = substr( $page[ 'link_path' ], strrpos( $page[ 'link_path' ], '/' ) + 1 );
+                }
+                
+                if( isset( $this->_path[ $path ] ) ) {
+                    
+                    
+                    unset( $this->_path[ $path ] );
+                    
+                } else {
+                    
+                    $subList[ 'style' ] = 'display: none;';
+                }
                 
                 $this->_getPages( $subList, $type, $page[ 'mlid' ] );
                 

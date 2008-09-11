@@ -10,34 +10,26 @@
 function ddmenu()
 {
     /**
-     * The div that have been displayed
-     */
-    var _displayed = new Array();
-    
-    /**
-     * Makes a list appear using jQuery
+     * Makes a element appear using jQuery
      * 
-     * @param   id      The ID of the div to display
+     * @param   id      The ID of the element to display
      * @return  void
      */
     this.display = function( id )
     {
+        // Gets the element
+        var el = $( 'ul#' + id );
+        
         // Checks the display state
-        if( _displayed[ id ] === undefined || _displayed[ id ] === false ) {
+        if( el.is( ':hidden' ) ) {
             
             // Makes it appear
-            $( 'ul#' + id ).slideDown();
-            
-            // Sets the display state
-            _displayed[ id ] = true;
+            el.slideDown();
             
         } else {
             
             // Makes it disappear
-            $( 'ul#' + id ).slideUp();
-            
-            // Sets the display state
-            _displayed[ id ] = false;
+            el.slideUp();
         }
     }
 }
