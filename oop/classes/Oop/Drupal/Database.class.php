@@ -117,6 +117,13 @@ final class Oop_Drupal_Database
             throw new Oop_Drupal_Database_Exception( 'The method \'' . $name . '\' cannot be called on the PDO object', Oop_Drupal_Database_Exception::EXCEPTION_BAD_METHOD );
         }
         
+        // Checks the method
+        if( $name === 'exec' || $name === 'prepare' || $name === 'query' ) {
+            
+            // We need to replace the table name with their real values
+            $args[ 0 ] = db_prefix_tables( $args[ 0 ] );
+        }
+        
         // Gets the number of arguments
         $argCount = count( $args );
         
