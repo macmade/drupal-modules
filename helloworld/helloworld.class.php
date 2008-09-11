@@ -82,7 +82,7 @@ class helloworld extends Oop_Drupal_ModuleBase
         $backTrace = debug_backtrace( $this );
         
         // Gets the info icon
-        $infoIcon  = $this->getIcon( 'information.png' );
+        $infoIcon  = $this->_getIcon( 'information.png' );
         
         // Parameters for the PDO query
         $sqlParams = array(

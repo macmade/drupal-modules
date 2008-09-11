@@ -378,7 +378,7 @@ abstract class Oop_Drupal_ModuleBase
      * @see     Oop_Core_ClassManager::getModulePath
      * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
-    protected function getIcon( $name, $package = 'famfam' )
+    protected function _getIcon( $name, $package = 'famfam' )
     {
         // Gets the icon path
         $iconPath = self::$_classManager->getModulePath( 'oop' )
