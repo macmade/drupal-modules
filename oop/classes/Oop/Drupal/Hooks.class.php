@@ -210,7 +210,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         $confPath = self::$_classManager->getModulePath( $this->_modName )
                   . 'settings'
                   . DIRECTORY_SEPARATOR
-                  . 'form.conf.php';
+                  . 'admin.form.php';
         
         $form = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
         
