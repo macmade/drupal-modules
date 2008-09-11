@@ -79,11 +79,12 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * 
      * @param   string                      The kind of block to display
      * @param   int                         The delta offset, used to generate different contents for different blocks
+     * @param   array                       The edited items (only if $op is 'save')
      * @return  array                       The Drupal block
      * @throws  Oop_Drupal_Hooks_Exception  If the method _getView() is not defined in the module class
      * @see     _checkMethod
      */
-    public function block( $op = 'list', $delta = 0 )
+    public function block( $op, $delta, $edit )
     {
         // Storage
         $block = array();
@@ -112,6 +113,15 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
                 
                 // Returns the form
                 $block = $form->getConf();
+            }
+            
+        } elseif( $op === 'save' ) {
+            
+            // Process each item
+            foreach( $edit as $key => $value ) {
+                
+                // Sets the variable
+                variable_set( $key, $value );
             }
             
         } elseif( $op === 'view' ) {
@@ -159,7 +169,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @throws  Oop_Drupal_Hooks_Exception  If the method _processFilter() is not defined in the module class
      * @see     _checkMethod
      */
-    public function filter( $op, $delta = 0, $format = -1, $text = '' )
+    public function filter( $op, $delta, $format, $text )
     {
         // Checks the operation to perform
         if( $op === 'list' ) {
