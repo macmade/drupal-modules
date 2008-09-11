@@ -3,3 +3,4 @@ description = A Drupal test module
 core = 6.x
 dependencies[] = oop
 package = Testing
+php = 5.2

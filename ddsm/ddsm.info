@@ -3,3 +3,4 @@ description = Displays a drop-down map of the website, with the possibility to e
 core = 6.x
 dependencies[] = oop
 package = Navigation
+php = 5.2

@@ -2,3 +2,4 @@ name = OOP framework
 description = The base framework for developping object oriented Drupal modules
 core = 6.x
 package = Framework
+php = 5.2

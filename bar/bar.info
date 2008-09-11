@@ -3,3 +3,4 @@ description = An override of the Foo module, to demonstrate the override mechani
 core = 6.x
 dependencies[] = foo
 package = Testing
+php = 5.2

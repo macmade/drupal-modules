@@ -3,3 +3,4 @@ description = A Drupal filter that will automatically crypt the email addresses 
 core = 6.x
 dependencies[] = oop
 package = Filters
+php = 5.2
