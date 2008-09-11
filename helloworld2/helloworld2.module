@@ -1,3 +1,0 @@
-<?php
-
-Oop_Core_ClassManager::getInstance()->overrideModule( 'helloworld', 'helloworld2' );

@@ -1,8 +1,0 @@
-<?php
-
-function helloworld2_install()
-{
-    $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = 'oop'" ) );
-    db_query( "UPDATE {system} SET weight = %d WHERE name = 'helloworld2'", $oopWeight + 1 );
-    db_query( "UPDATE {system} SET weight = %d WHERE name = 'helloworld'", $oopWeight + 2 );
-}

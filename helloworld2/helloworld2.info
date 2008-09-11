@@ -1,5 +1,0 @@
-name = Hello World 2
-description = An override of the Hello World module
-core = 6.x
-dependencies[] = helloworld
-package = Testing
