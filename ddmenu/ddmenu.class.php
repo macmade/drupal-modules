@@ -20,7 +20,8 @@ class ddmenu extends Oop_Drupal_ModuleBase
     
     protected $_iconDir  = NULL;
     protected $_iconPage = NULL;
-    protected $_path     = array();
+    protected $_path     = '';
+    protected $_pathInfo = array();
     
     /**
      * Gets the 'view' section of the module
@@ -31,6 +32,9 @@ class ddmenu extends Oop_Drupal_ModuleBase
      */
     protected function _getView( Oop_Xhtml_Tag $content, $delta )
     {
+        // Includes the module CSS file
+        $this->_includeModuleCSS();
+        
         $linkType = variable_get( $this->_modName . '_linktype', 'primary' );
         
         switch( $linkType ) {
@@ -51,7 +55,16 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 break;
         }
         
-        $this->_path     = array_flip( explode( '/', self::$_request->q ) );
+        $this->_path = self::$_request->q; 
+        $pathInfo    = explode( '/', $this->_path );
+        $lastPath    = '';
+        
+        foreach( $pathInfo as $path ) {
+            
+            $lastPath                     = ( $lastPath ) ? $lastPath . '/' . $path : $path;
+            $this->_pathInfo[ $lastPath ] = true;
+        }
+        
         $this->_iconDir  = $this->_getIcon( 'folder.png' );
         $this->_iconPage = $this->_getIcon( 'page_white.png' );
         $this->_includeModuleScript();
@@ -99,17 +112,10 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 
                 $subList[ 'id' ]    = 'ddmenu-page-' . $page[ 'mlid' ];
                 
-                $path = $page[ 'link_path' ];
                 
-                if( strstr( $path, '/' ) ) {
+                if( isset( $this->_pathInfo[ $page[ 'link_path' ] ] ) ) {
                     
-                    $path = substr( $page[ 'link_path' ], strrpos( $page[ 'link_path' ], '/' ) + 1 );
-                }
-                
-                if( isset( $this->_path[ $path ] ) ) {
-                    
-                    
-                    unset( $this->_path[ $path ] );
+                    $this->_cssClass( $li, 'open' );
                     
                 } else {
                     
@@ -121,6 +127,11 @@ class ddmenu extends Oop_Drupal_ModuleBase
             } else {
                 
                 $icon->addChildNode( $this->_iconPage );
+                
+                if( $page[ 'link_path' ] === $this->_path ) {
+                    
+                    $this->_cssClass( $li, 'active' );
+                }
             }
         }
     }

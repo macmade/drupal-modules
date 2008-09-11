@@ -1,0 +1,10 @@
+/* <![CDATA[ */
+
+li.module-ddmenu-open > A {
+    font-weight: bold;
+}
+li.module-ddmenu-active A {
+    font-weight: bold;
+}
+
+/* // ]]> */
