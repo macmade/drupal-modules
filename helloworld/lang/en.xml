@@ -10,4 +10,5 @@
     <fileName>File name: %s</fileName>
     <backTrace>Debug backtrace for this module:</backTrace>
     <line>Line number: %s</line>
+    <cryptEmail>Test for the email crypt process: %s</cryptEmail>
 </labels>

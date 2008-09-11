@@ -45,6 +45,17 @@ class helloworld extends Oop_Drupal_ModuleBase
         $content->hr;
         $content->spacer( 20 );
         
+        // Crypts an email
+        $content->div = sprintf(
+            $this->_lang->cryptEmail,
+            $this->_email( 'macmade@eosgarden.com' )
+        );
+        
+        // Adds a divider
+        $content->spacer( 20 );
+        $content->hr;
+        $content->spacer( 20 );
+        
         // Modules container
         $content->comment( 'Start of the module list' );
         $modulesBlock                = $content->div;
