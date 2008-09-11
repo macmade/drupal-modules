@@ -38,7 +38,7 @@ class helloworld extends Oop_Drupal_ModuleBase
         $content->spacer( 20 );
         
         // Adds the name of this method
-        $content->div = sprintf( $this->_lang->method, __METHOD__ );
+        $content->div = sprintf( $this->_lang->method, $this->_modName . '::' . __FUNCTION__ );
         
         // Adds a divider
         $content->spacer( 20 );
