@@ -1,5 +1,13 @@
 <?xml version="1.0"?>
 <labels>
+    <system>
+        <menu_admin_title>OOP Framework</menu_admin_title>
+        <menu_admin_description>Configures various aspect of the Drupal Object Oriented Programming Framework</menu_admin_description>
+    </system>
+    <settings>
+        <email_crypt_symbol_title>Email crypt symbol</email_crypt_symbol_title>
+        <email_crypt_symbol_description>The symbol to use as a substitute of the @ symbol in the email crypt methods. You will probably have to clear the cache after having changed this value.</email_crypt_symbol_description>
+    </settings>
     <module>
         <yes>yes</yes>
         <no>no</no>
