@@ -125,7 +125,15 @@ final class Oop_Lang_Getter
     /**
      * 
      */
-    protected function _getLabel( $name, $section )
+    public function __get( $name )
+    {
+        return $this->getLabel( $name, 'module' );
+    }
+    
+    /**
+     * 
+     */
+    protected function getLabel( $name, $section )
     {
         if( isset( $this->_labels->$section->$name ) ) {
             
@@ -138,30 +146,6 @@ final class Oop_Lang_Getter
         }
         
         return '[LABEL: ' . $name . ']';
-    }
-    
-    /**
-     * 
-     */
-    public function __get( $name )
-    {
-        return $this->_getLabel( $name, 'module' );
-    }
-    
-    /**
-     * 
-     */
-    public function getLabel( $name )
-    {
-        return $this->_getLabel( $name, 'module' );
-    }
-    
-    /**
-     * 
-     */
-    public function getSystemLabel( $name )
-    {
-        return $this->_getLabel( $name, 'system' );
     }
     
     /**
