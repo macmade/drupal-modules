@@ -50,8 +50,11 @@ function Oop()
      */
     this.cryptEmail = function( email, reverse )
     {
-        // Storage
-        crypt = '';
+        // Local variables
+        var crypt     = '';
+        var charValue = '';
+        var charCode  = 0;
+        var offset    = 0;
         
         // Process each character of the input email
         for ( i = 0; i < email.length; i++ ) {
