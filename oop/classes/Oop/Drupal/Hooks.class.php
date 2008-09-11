@@ -139,7 +139,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  mixed                       Depends on $op
      * @throws  Oop_Drupal_Hooks_Exception  If the method _prepareFilter() is not defined in the module class
      * @throws  Oop_Drupal_Hooks_Exception  If the method _processFilter() is not defined in the module class
-     * @see     _checkMethod 
+     * @see     _checkMethod
      */
     public function filter( $op, $delta = 0, $format = -1, $text = '' )
     {
@@ -175,5 +175,34 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         
         // Returns the text
         return $text;
+    }
+    
+    /**
+     * Drupal 'menu' hook
+     * 
+     * @return  array                       The menu items array
+     * @throws  Oop_Drupal_Hooks_Exception  If the method _admin() is not defined in the module class
+     * @see     _checkMethod
+     */
+    public function menu()
+    {
+        // Storage
+        $items = array();
+        
+        // Checks the admin method
+        $this->_checkMethod( '_admin' );
+        
+        // Creates the item array
+        $items[ 'admin/settings/' . $this->_modName ] = array(
+            'title'            => $this->_lang->getSystemLabel( 'menu_title' ),
+            'description'      => $this->_lang->getSystemLabel( 'menu_description' ),
+            'page callback'    => 'drupal_get_form',
+            'page arguments'   => array( $this, '_admin' ),
+            'access arguments' => array( 'access administration pages' ),
+            'type'             => MENU_NORMAL_ITEM,
+        );
+        
+        // Returns the items array
+        return $items;
     }
 }
