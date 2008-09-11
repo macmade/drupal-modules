@@ -40,9 +40,14 @@ abstract class Oop_Drupal_ModuleBase
     private static $_hasPrototype     = false;
     
     /**
-     * Whether the Prototype JS framework has been included
+     * Whether the Scriptaculous JS framework has been included
      */
     private static $_hasScriptaculous = false;
+    
+    /**
+     * Whether the Oop JS file has been included
+     */
+    private static $_hasOopJs         = false;
     
     /**
      * Whether the JS file for the current module has been included
@@ -68,6 +73,11 @@ abstract class Oop_Drupal_ModuleBase
      * The instance of the request helper
      */
     protected static $_request        = NULL;
+    
+    /**
+     * The instance of the string utilities
+     */
+    protected static $_string         = NULL;
     
     /**
      * An array with the Drupal permission for the module
@@ -148,6 +158,9 @@ abstract class Oop_Drupal_ModuleBase
         
         // Gets the instance of the request class
         self::$_request      = Oop_Request_Getter::getInstance();
+        
+        // Gets the instance of the string utilities class
+        self::$_string       = Oop_String_Utils::getInstance();
         
         // Sets the new line character
         self::$_NL           = chr( 10 );
@@ -272,6 +285,29 @@ abstract class Oop_Drupal_ModuleBase
         
         // Script has been included
         self::$_hasScriptaculous = true;
+    }
+    
+    /**
+     * Includes the Oop JS file
+     * 
+     * @return  NULL
+     * @see     Oop_Core_ClassManager::getModuleRelativePath
+     */
+    protected function _includeOopJs()
+    {
+        // Only includes the script once
+        if( !self::$_hasOopJs ) {
+            
+            // Adds the JS script
+            drupal_add_js(
+                self::$_classManager->getModuleRelativePath( 'oop' )
+              . 'ressources/javascript/oop/oop.js',
+                'module'
+            );
+        }
+        
+        // Script has been included
+        self::$_hasOopJs = true;
     }
     
     /**
@@ -480,6 +516,40 @@ abstract class Oop_Drupal_ModuleBase
         
         // Adds the text
         $link->addTextData( $text );
+        
+        // Returns the link
+        return $link;
+    }
+    
+    /**
+     * 
+     */
+    protected function _email( $email )
+    {
+        // Creates a link
+        $link = new Oop_Xhtml_Tag( 'a' );
+        
+        // Validates the email address
+        if( !valid_email_address( $email ) ) {
+            
+             // Invalid email address
+             $link[ 'href' ] = '#';
+             $link->addTextData( $email );
+             
+             // Returns the link
+             return $link;
+        }
+        
+        // Includes the Oop JS file
+        $this->_includeOopJs();
+        
+        // Crypts the email
+        $link[ 'href' ] = 'javascript:oop.decryptEmail( \''
+                        . self::$_string->cryptEmail( $email )
+                        . '\' );';
+        
+        // Adds the email text without the @ character
+        $link->addTextData( str_replace( '@', '(at)', $email ) );
         
         // Returns the link
         return $link;
