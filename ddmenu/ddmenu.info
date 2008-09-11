@@ -1,0 +1,6 @@
+name = Drop-Down Menu
+description = Displays a drop-down menu for primary, secondary or navigation links
+core = 6.x
+dependencies[] = oop
+package = Navigation
+php = 5.2

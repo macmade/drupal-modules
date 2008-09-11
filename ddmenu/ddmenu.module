@@ -1,0 +1,16 @@
+<?php
+
+function ddmenu_help( $path, $arg )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->help( $path, $arg );
+}
+
+function ddmenu_perm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->perm();
+}
+
+function ddmenu_block( $op = 'list', $delta = 0, array $edit = array() )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->block( $op, $delta, $edit );
+}
