@@ -178,30 +178,25 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
-     * Drupal 'menu' hook
+     * Drupal 'menu' hook for the settings page
      * 
      * @return  array                       The menu items array
-     * @throws  Oop_Drupal_Hooks_Exception  If the method _admin() is not defined in the module class
-     * @see     _checkMethod
      */
-    public function menu()
+    public function menuAdmin()
     {
         // Storage
         $items = array();
         
-        // Checks the admin method
-        $this->_checkMethod( '_admin' );
-        
         // Creates the item array
         $items[ 'admin/settings/' . $this->_modName ] = array(
-            'title'            => $this->_lang->getSystemLabel( 'menu_title' ),
-            'description'      => $this->_lang->getSystemLabel( 'menu_description' ),
+            'title'            => $this->_lang->getSystemLabel( 'menu_admin_title' ),
+            'description'      => $this->_lang->getSystemLabel( 'menu_admin_description' ),
             'page callback'    => 'drupal_get_form',
-            'page arguments'   => array( $this, '_admin' ),
+            'page arguments'   => array( 'ddsm_menuAdmin' ),
             'access arguments' => array( 'access administration pages' ),
             'type'             => MENU_NORMAL_ITEM,
         );
-        
+        print_r( $items );
         // Returns the items array
         return $items;
     }
