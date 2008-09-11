@@ -118,9 +118,10 @@ final class Oop_Request_Getter
     /**
      * 
      */
-    public function getRequestVar( $name, $order = 'GPCSE' )
+    public function getRequestVar( $name, $order = '' )
     {
-        $keys = preg_split( '//', $order );
+        $order = ( $order ) ? $order : $this->_lookupOrder;
+        $keys  = preg_split( '//', $order );
         
         foreach( $keys as $key ) {
             
@@ -136,9 +137,10 @@ final class Oop_Request_Getter
     /**
      * 
      */
-    public function requestVarExists( $name, $order = 'GPCSE' )
+    public function requestVarExists( $name, $order = '' )
     {
-        $keys = preg_split( '//', $order );
+        $order = ( $order ) ? $order : $this->_lookupOrder;
+        $keys  = preg_split( '//', $order );
         
         foreach( $keys as $key ) {
             
