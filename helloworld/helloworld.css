@@ -1,6 +1,6 @@
 /* <![CDATA[ */
 
-div.helloworld-infos {
+div.module-helloworld-infos {
     padding:          5px;
     margin:           5px;
     font-size:        10px;
@@ -8,7 +8,7 @@ div.helloworld-infos {
     border:           solid 1px #D3E7F4;
 }
 
-div.helloworld-modules {
+div.module-helloworld-modules {
     float:            left;
     width:            45%;
     padding:          5px;
@@ -18,7 +18,7 @@ div.helloworld-modules {
     border:           solid 1px #D3E7F4;
 }
 
-div.helloworld-backtrace {
+div.module-helloworld-backtrace {
     float:            right;
     width:            45%;
     padding:          5px;

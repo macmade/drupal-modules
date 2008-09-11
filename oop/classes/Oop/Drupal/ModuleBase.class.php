@@ -373,6 +373,18 @@ abstract class Oop_Drupal_ModuleBase
     }
     
     /**
+     * Adds a CSS class for the module on an XHTML tag object
+     * 
+     * @param   Oop_Xhtml_Tag   The XHTML tag object on which to set the CSS class
+     * @param   string          The CSS class name (will be prepended with the module name)
+     * @return  NULL
+     */
+    protected function _cssClass( Oop_Xhtml_Tag $tag, $className )
+    {
+        $tag[ 'class' ] = 'module-' . $this->_modName . '-' . $className;
+    }
+    
+    /**
      * Drupal 'help' hook
      * 
      * @param   string  The path for which to display help

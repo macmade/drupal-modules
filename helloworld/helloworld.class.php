@@ -56,8 +56,8 @@ class helloworld extends Oop_Drupal_ModuleBase
         $content->comment( 'End of the backtrace' );
         
         // CSS class for the containers
-        $modulesBlock[ 'class' ]     = $this->_modName . '-modules';
-        $backTraceBlock[ 'class' ]   = $this->_modName . '-backtrace';
+        $this->_cssClass( $modulesBlock, 'modules' );
+        $this->_cssClass( $backTraceBlock, 'backtrace' );
         
         // Adds the titles for the containers
         $modulesBlock->div->strong   = $this->_lang->modules;
@@ -112,7 +112,9 @@ class helloworld extends Oop_Drupal_ModuleBase
             // Adds the attributes to the info div
             $infosDiv[ 'id' ]     = $this->_modName . '-' . $module[ 'name' ];
             $infosDiv[ 'style' ]  = 'display: none;';
-            $infosDiv[ 'class' ]  = $this->_modName . '-infos';
+            
+            // Adds the CSS class
+            $this->_cssClass( $infosDiv, 'infos' );
             
             // Creates a new link
             $moduleLink           = $moduleDiv->strong->a;
@@ -153,7 +155,9 @@ class helloworld extends Oop_Drupal_ModuleBase
             // Adds the attributes to the info div
             $infosDiv[ 'id' ]    = $this->_modName . '-backtrace-' . $key;
             $infosDiv[ 'style' ] = 'display: none;';
-            $infosDiv[ 'class' ] = $this->_modName . '-infos';
+            
+            // Adds the CSS class
+            $this->_cssClass( $infosDiv, 'infos' );
             
             // Creates a new link
             $funcLink            = $funcDiv->strong->a;
