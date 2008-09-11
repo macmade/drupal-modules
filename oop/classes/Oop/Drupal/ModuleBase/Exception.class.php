@@ -22,5 +22,6 @@ class Oop_Drupal_ModuleBase_Exception extends Oop_Core_Exception_Base
     /**
      * Error codes for the exceptions
      */
-    const EXCEPTION_NO_FILE = 0x01;
+    const EXCEPTION_NO_FILE   = 0x01;
+    const EXCEPTION_NO_METHOD = 0x02;
 }
