@@ -40,6 +40,11 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     private static $_hasOopJs         = false;
     
     /**
+     * The substitution symbol for the @ character
+     */
+    private static $_emailCryptSymbol = '';
+    
+    /**
      * Whether the JS file for the current module has been included
      */
     private $_hasScriptFile           = false;
@@ -48,6 +53,17 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
      * Whether the CSS file for the current module has been included
      */
     private $_hasCssFile              = false;
+    
+    /**
+     * Sets the substitution character for the @ symbol
+     * 
+     * @param   string  The substitution character
+     * @return  NULL
+     */
+    public static function setEmailCryptSymbol( $symbol )
+    {
+        self::$_emailCryptSymbol = ( string )$symbol;
+    }
     
     /**
      * Includes the Mootools JS framework
@@ -387,7 +403,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
                         . '\' );';
         
         // Adds the email text without the @ character
-        $link->addTextData( str_replace( '@', '(at)', $email ) );
+        $link->addTextData( str_replace( '@', self::$_emailCryptSymbol, $email ) );
         
         // Returns the link
         return $link;
