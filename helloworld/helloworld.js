@@ -15,7 +15,7 @@ function helloworld()
     var _displayed = new Array();
     
     /**
-     * Makes a div appear using Scriptaculous
+     * Makes a div appear using jQuery
      * 
      * @param   id      The ID of the div to display
      * @return  void
