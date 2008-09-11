@@ -196,7 +196,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             'access arguments' => array( 'access administration pages' ),
             'type'             => MENU_NORMAL_ITEM,
         );
-        print_r( $items );
+        
         // Returns the items array
         return $items;
     }
