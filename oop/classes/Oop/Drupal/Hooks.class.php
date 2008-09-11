@@ -27,9 +27,9 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * Checks if a method is defined in a module
      * 
-     * @param   string  The name of the method to check
+     * @param   string                      The name of the method to check
      * @return  NULL
-     * @throws  Oop_Drupal_ModuleBase_Exception If the method does not exist
+     * @throws  Oop_Drupal_Hook_Exceptions  If the method does not exist
      */
     private function _checkMethod( $name )
     {
@@ -77,10 +77,10 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * Drupal 'block' hook
      * 
-     * @param   string                          The kind of block to display
-     * @param   int                             The delta offset, used to generate different contents for different blocks
-     * @return  array                           The Drupal block
-     * @throws  Oop_Drupal_ModuleBase_Exception If the method _getView() is not defined in the module class
+     * @param   string                      The kind of block to display
+     * @param   int                         The delta offset, used to generate different contents for different blocks
+     * @return  array                       The Drupal block
+     * @throws  Oop_Drupal_Hooks_Exception  If the method _getView() is not defined in the module class
      * @see     _checkMethod
      */
     public function block( $op = 'list', $delta = 0 )
@@ -132,13 +132,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * Drupal 'filter' hook
      * 
-     * @param   string  Which filtering operation to perform
-     * @param   int     Which of the module's filters to use
-     * @param   int     Which input format the filter is being used
-     * @param   string  The content to filter
-     * @return  mixed   Depends on $op
-     * @throws  Oop_Drupal_ModuleBase_Exception If the method _prepareFilter() is not defined in the module class
-     * @throws  Oop_Drupal_ModuleBase_Exception If the method _processFilter() is not defined in the module class
+     * @param   string                      Which filtering operation to perform
+     * @param   int                         Which of the module's filters to use
+     * @param   int                         Which input format the filter is being used
+     * @param   string                      The content to filter
+     * @return  mixed                       Depends on $op
+     * @throws  Oop_Drupal_Hooks_Exception  If the method _prepareFilter() is not defined in the module class
+     * @throws  Oop_Drupal_Hooks_Exception  If the method _processFilter() is not defined in the module class
      * @see     _checkMethod 
      */
     public function filter( $op, $delta = 0, $format = -1, $text = '' )
