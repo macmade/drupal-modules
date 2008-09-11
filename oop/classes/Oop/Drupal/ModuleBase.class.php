@@ -22,7 +22,7 @@ abstract class Oop_Drupal_ModuleBase
     /**
      * Abstract method to get the 'view' section of the modules
      */
-    abstract protected function _getView( Oop_Html_Tag $content, $delta );
+    abstract protected function _getView( Oop_Xhtml_Tag $content, $delta );
     
     /**
      * Wether the static variables are set or not
@@ -318,7 +318,7 @@ abstract class Oop_Drupal_ModuleBase
      * 
      * @param   string                          The name of the icon, including the extension
      * @param   string                          The package of the icon (default is famfam). See 'oop/ressources/icons' for details
-     * @return  Oop_Html_Tag                    An image tag for the requested icon
+     * @return  Oop_Xhtml_Tag                   An image tag for the requested icon
      * @throws  Oop_Drupal_ModuleBase_Exception If the image does not exist
      * @see     Oop_Core_ClassManager::getModulePath
      * @see     Oop_Core_ClassManager::getModuleRelativePath
@@ -350,7 +350,7 @@ abstract class Oop_Drupal_ModuleBase
                       . $name;
         
         // Creates the image tag
-        $img          = new Oop_Html_Tag( 'img' );
+        $img          = new Oop_Xhtml_Tag( 'img' );
         
         // Adds the source and alt attributes
         $img[ 'src' ] = $GLOBALS[ 'base_path' ] . $iconRelPath;
@@ -427,7 +427,7 @@ abstract class Oop_Drupal_ModuleBase
         } elseif( $op === 'view' ) {
             
             // Creates the storage tag for the module
-            $content            = new Oop_Html_Tag( 'div' );
+            $content            = new Oop_Xhtml_Tag( 'div' );
             
             // Adds the base CSS class
             $content[ 'class' ] = 'module-' . $this->_modName;
