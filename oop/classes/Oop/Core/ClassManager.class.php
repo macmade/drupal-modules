@@ -48,6 +48,11 @@ final class Oop_Core_ClassManager
     private $_moduleList      = array();
     
     /**
+     * Overrides for the modules
+     */
+    private $_overrides       = array();
+    
+    /**
      * The directory which contains the classes
      */
     private $_classDir        = '';
@@ -240,32 +245,17 @@ final class Oop_Core_ClassManager
     }
     
     /**
-     * Gets an instance of a Drupal module
+     * Loads a module class
      * 
-     * @param   string                          The name of the Drupal module
-     * @return  Oop_Drupal_ModuleBase           An instance of the requested module
-     * @throws  Oop_Core_ClassManager_Exception If the module does not exist
+     * @param   string                          The module name
+     * @return  NULL
      * @throws  Oop_Core_ClassManager_Exception If the class file for the module does not exist
      * @throws  Oop_Core_ClassManager_Exception If the module class is not defined
      * @throws  Oop_Core_ClassManager_Exception If the module class does not contain the PHP_COMPATIBLE constant
      * @throws  Oop_Core_ClassManager_Exception If the module class is incompatible with the current PHP version
      */
-    public function getModule( $name )
+    private function _loadModuleClass( $name )
     {
-        // Checks if the module class has already been instanciated
-        if( isset( $this->_modules[ $name ] ) ) {
-            
-            // Returns the instance
-            return $this->_modules[ $name ];
-        }
-        
-        // Checks if the module is available
-        if( !isset( $this->_moduleList[ $name ] ) ) {
-            
-            // The module does not seem to be loaded
-            throw new Oop_Core_ClassManager_Exception( 'The module ' . $name . ' is not loaded', Oop_Core_ClassManager_Exception::EXCEPTION_MODULE_NOT_LOADED );
-        }
-        
         // Path to the module class file
         $path = $this->_moduleList[ $name ][ 0 ]
               . $name
@@ -304,12 +294,65 @@ final class Oop_Core_ClassManager
             // PHP version is too old
             throw new Oop_Core_ClassManager_Exception( 'Class ' . $name . ' requires PHP version ' . $phpCompatible . ' (actual version is ' . PHP_VERSION . ')' , Oop_Core_ClassManager_Exception::EXCEPTION_PHP_VERSION_TOO_OLD );
         }
+    }
+    
+    /**
+     * Gets an instance of a Drupal module
+     * 
+     * @param   string                          The name of the Drupal module
+     * @return  Oop_Drupal_ModuleBase           An instance of the requested module
+     * @throws  Oop_Core_ClassManager_Exception If the module does not exist
+     * @throws  Oop_Core_ClassManager_Exception If the class file for the module does not exist
+     * @throws  Oop_Core_ClassManager_Exception If the module class is not defined
+     * @throws  Oop_Core_ClassManager_Exception If the module class does not contain the PHP_COMPATIBLE constant
+     * @throws  Oop_Core_ClassManager_Exception If the module class is incompatible with the current PHP version
+     */
+    public function getModule( $name )
+    {
+        // Checks if an override is defined
+        if( isset( $this->_overrides[ $name ] ) ) {
+            
+            // Loads the initial module class, so the override can extend it
+            $this->_loadModuleClass( $name );
+            
+            // Sets the new module name
+            $name = $this->_overrides[ $name ];
+        }
+        
+        // Checks if the module class has already been instanciated
+        if( isset( $this->_modules[ $name ] ) ) {
+            
+            // Returns the instance
+            return $this->_modules[ $name ];
+        }
+        
+        // Checks if the module is available
+        if( !isset( $this->_moduleList[ $name ] ) ) {
+            
+            // The module does not seem to be loaded
+            throw new Oop_Core_ClassManager_Exception( 'The module ' . $name . ' is not loaded', Oop_Core_ClassManager_Exception::EXCEPTION_MODULE_NOT_LOADED );
+        }
+        
+        // Loads the module class
+        $this->_loadModuleClass( $name );
         
         // Creates an instance of the module
         $this->_modules[ $name ] = new $name( dirname( $path ) . DIRECTORY_SEPARATOR );
         
         // Returns the instance of the module
         return $this->_modules[ $name ];
+    }
+    
+    /**
+     * Overrides a module with another
+     * 
+     * @param   string  The name of the module to override
+     * @param   string  The name of the module which will override the other
+     * @return  NULL
+     */
+    public function overrideModule( $module, $override )
+    {
+        $this->_overrides[ $module ] = $override;
     }
     
     /**
