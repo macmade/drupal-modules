@@ -1,6 +1,0 @@
-name = Drop-Down Site Map
-description = Displays a drop-down map of the website, with the possibility to expand / collapse every section.
-core = 6.x
-dependencies[] = oop
-package = Navigation
-php = 5.2
