@@ -215,12 +215,33 @@ final class Oop_Core_ClassManager
             
             // Includes the class file
             require_once( $classPath );
+        
+            // Checks if the class is defined
+            if( !class_exists( $className ) ) {
+                
+                // Error message
+                $errorMsg = 'The class ' . $className . ' is not defined in file ' . $classPath;
+                
+                // The class is not defined
+                trigger_error( $errorMsg, E_USER_ERROR );
+                
+                // Prints the error message and exits the script, as Drupal will intercept the error message
+                print $errorMsg;
+                exit();
+            }
             
             // Checks if the PHP_COMPATIBLE constant is defined
             if( !defined( $className . '::PHP_COMPATIBLE' ) ) {
                 
+                // Error message
+                $errorMsg = 'The requested constant PHP_COMPATIBLE is not defined in class ' . $className;
+                
                 // Class does not respect the project conventions
-                trigger_error( 'The requested constant PHP_COMPATIBLE is not defined in class ' . $className, E_USER_ERROR );
+                trigger_error( $errorMsg, E_USER_ERROR );
+                
+                // Prints the error message and exits the script, as Drupal will intercept the error message
+                print $errorMsg;
+                exit();
             }
             
             // Gets the minimal PHP version required (eval() is required as late static bindings are implemented only in PHP 5.3)
@@ -229,8 +250,15 @@ final class Oop_Core_ClassManager
             // Checks the PHP version
             if( version_compare( PHP_VERSION, $phpCompatible, '<' ) ) {
                 
+                // Error message
+                $errorMsg = 'Class ' . $className . ' requires PHP version ' . $phpCompatible . ' (actual version is ' . PHP_VERSION . ')';
+                
                 // PHP version is too old
-                trigger_error( 'Class ' . $className . ' requires PHP version ' . $phpCompatible . ' (actual version is ' . PHP_VERSION . ')' , E_USER_ERROR );
+                trigger_error( $errorMsg, E_USER_ERROR );
+                
+                // Prints the error message and exits the script, as Drupal will intercept the error message
+                print $errorMsg;
+                exit();
             }
             
             // Adds the class to the loaded classes array
@@ -275,7 +303,7 @@ final class Oop_Core_ClassManager
         if( !class_exists( $name ) ) {
             
             // The class is not defined
-            throw new Oop_Core_ClassManager_Exception( 'The class for module ' . $name . ' is not defined', Oop_Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS );
+            throw new Oop_Core_ClassManager_Exception( 'The class for module ' . $name . ' is not defined in file ' . $path, Oop_Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS );
         }
         
         // Checks if the PHP_COMPATIBLE constant is defined
@@ -300,7 +328,7 @@ final class Oop_Core_ClassManager
      * Gets an instance of a Drupal module
      * 
      * @param   string                          The name of the Drupal module
-     * @return  Oop_Drupal_ModuleBase           An instance of the requested module
+     * @return  Oop_Drupal_Modul                An instance of the requested module
      * @throws  Oop_Core_ClassManager_Exception If the module does not exist
      * @throws  Oop_Core_ClassManager_Exception If the class file for the module does not exist
      * @throws  Oop_Core_ClassManager_Exception If the module class is not defined
