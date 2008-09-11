@@ -30,15 +30,19 @@ class Oop_Html_Tag implements ArrayAccess, Iterator
     protected static $_hasStatic       = false;
     
     /**
-     * The list of the HTML self closed tags
+     * The list of the XHTML empty tags (as in the XHTML 1.0 Strict DTD)
      */
-    protected static $_selfCloseTags   = array(
+    protected static $_emptyTags      = array(
+        'area'  => true,
+        'base'  => true,
         'br'    => true,
+        'col'   => true,
         'img'   => true,
         'input' => true,
         'hr'    => true,
         'link'  => true,
-        'meta'  => true
+        'meta'  => true,
+        'param' => true
     );
     
     /**
@@ -338,7 +342,7 @@ class Oop_Html_Tag implements ArrayAccess, Iterator
         if( !$this->_childrenCount ) {
             
             // No - Checks if the tag is self closed
-            $tag .= ( isset( self::$_selfCloseTags[ $this->_tagName ] ) ) ? ' />' : '></' . $this->_tagName . '>';
+            $tag .= ( isset( self::$_emptyTags[ $this->_tagName ] ) ) ? ' />' : '></' . $this->_tagName . '>';
             
         } else {
             
@@ -405,23 +409,28 @@ class Oop_Html_Tag implements ArrayAccess, Iterator
      */
     public function addChildNode( Oop_Html_Tag $child )
     {
-        if( !isset( $this->_childrenByName[ $child->_tagName ] ) ) {
+        if( !isset( self::$_emptyTags[ $this->_tagName ] ) ) {
             
-            $this->_childrenByName[ $child->_tagName ]      = array();
-            $this->_childrenCountByName[ $child->_tagName ] = 0;
+            if( !isset( $this->_childrenByName[ $child->_tagName ] ) ) {
+                
+                $this->_childrenByName[ $child->_tagName ]      = array();
+                $this->_childrenCountByName[ $child->_tagName ] = 0;
+            }
+            
+            $child->_parent = $this;
+            
+            $this->_children[]                           = $child;
+            $this->_childrenByName[ $child->_tagName ][] = $child;
+            
+            $this->_childrenCountByName[ $child->_tagName ]++;
+            $this->_childrenCount++;
+            
+            $this->_hasNodeChildren = true;
+            
+            return $child;
         }
         
-        $child->_parent = $this;
-        
-        $this->_children[]                           = $child;
-        $this->_childrenByName[ $child->_tagName ][] = $child;
-        
-        $this->_childrenCountByName[ $child->_tagName ]++;
-        $this->_childrenCount++;
-        
-        $this->_hasNodeChildren = true;
-        
-        return $child;
+        return NULL;
     }
     
     /**
@@ -429,8 +438,11 @@ class Oop_Html_Tag implements ArrayAccess, Iterator
      */
     public function addTextData( $data )
     {
-        $this->_children[] = ( string )$data;
-        $this->_childrenCount++;
+        if( !isset( self::$_emptyTags[ $this->_tagName ] ) ) {
+            
+            $this->_children[] = ( string )$data;
+            $this->_childrenCount++;
+        }
     }
     
     /**
