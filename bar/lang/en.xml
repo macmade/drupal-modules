@@ -2,7 +2,7 @@
 <labels>
     <system>
         <block_subject>Foo</block_subject>
-        <block_help>Displays Foo</block_help>
+        <block_help>Foo</block_help>
     </system>
     <module>
         <hello>At this place you should see the 'foo' module. But I'm the 'bar' module, and I just overrided the 'foo' module...</hello>
