@@ -184,6 +184,13 @@ abstract class Oop_Drupal_ModuleBase
                 // Process each entry of the array
                 foreach( $var as $varName => &$value ) {
                     
+                    // Checks if we are processing GET variables
+                    if( $key === 'G' ) {
+                        
+                        // Decodes the value
+                        $value = urldecode( $value );
+                    }
+                    
                     // Only sets the value if the variable does not already exist
                     if( !isset( $this->_modVars[ $varName ] ) ) {
                         
@@ -381,7 +388,101 @@ abstract class Oop_Drupal_ModuleBase
      */
     protected function _cssClass( Oop_Xhtml_Tag $tag, $className )
     {
+        // Adds the CSS class name
         $tag[ 'class' ] = 'module-' . $this->_modName . '-' . $className;
+    }
+    
+    /**
+     * Creates a link
+     * 
+     * @param   string          The text of the link
+     * @param   array           The module variables to set, as key/value pairs
+     * @param   mixed           If true, all the existing module variables will be kept, if false, no existing variable will be kept, if an array, only the variables corresponding to the array values will be kept
+     * @param   string          The target path (if not specified, the current one will be used)
+     * @return  Oop_Xhtml_Tag   The link object   
+     */
+    protected function _link( $text, array $setVars = array(), $keepVars = false, $path = '' )
+    {
+        // Gets the path (current if not specified)
+        $path = ( $path ) ? $path : self::$_request->q;
+        
+        // Checks if clean URLs are enabled
+        if( $GLOBALS[ 'conf' ][ 'clean_url' ] == 1 ) {
+            
+            // Target URL
+            $url         = $GLOBALS[ 'base_path' ] . $path;
+            
+            // Flag to know if the query string has been started
+            $queryString = false;
+            
+        } else {
+            
+            // Target URL
+            $url         = $GLOBALS[ 'base_path' ] . '?' . $path;
+            
+            // Flag to know if the query string has been started
+            $queryString = true;
+        }
+        
+        // Checks if we have to keep all variables, only some, or none
+        if( $keepVars === true ) {
+            
+            // Keep all variables
+            $vars = $this->_modVars;
+            
+            // Gets the final URL variables
+            $vars = array_merge( $vars, $setVars );
+            
+        } elseif( is_array( $keepVars ) ) {
+            
+            // Storage
+            $vars = $setVars;
+            
+            // Process each variable to keep
+            foreach( $keepVars as $varName ) {
+                
+                // Checks if the variable can be added
+                if( isset( $this->_modVars[ $varName ] ) && !isset( $vars[ $varName ] ) ) {
+                    
+                    // Adds the variable
+                    $vars[ $varName ] = &$this->_modVars[ $varName ];
+                }
+            }
+            
+        } else {
+            
+            // Only add new variables
+            $vars = $setVars;
+        }
+        
+        // Process the URL parameters
+        foreach( $vars as $key => $value ) {
+            
+            // Checks if we have to start the query string
+            if( $queryString === false ) {
+                
+                // Start of the query string
+                $url        .= '?' . $this->_modName . '[' . $key . ']=' . urlencode( $value );
+                
+                // Query string has been started
+                $queryString = true;
+                
+            } else {
+                
+                // Append the variable to the query string
+                $url .= '&' . $this->_modName . '[' . $key . ']=' . urlencode( $value );
+            }
+        }
+        
+        // Creates the link
+        $link           = new Oop_Xhtml_Tag( 'a' );
+        $link[ 'href' ] = $url;
+        
+        // Adds the text
+        $link->addTextData( $text );
+        
+        // Returns the link
+        return $link;
     }
     
     /**
