@@ -1,0 +1,8 @@
+<?php
+
+function bar_install()
+{
+    $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = 'oop'" ) );
+    db_query( "UPDATE {system} SET weight = %d WHERE name = 'bar'", $oopWeight + 1 );
+    db_query( "UPDATE {system} SET weight = %d WHERE name = 'foo'", $oopWeight + 2 );
+}

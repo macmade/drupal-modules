@@ -1,0 +1,16 @@
+<?php
+
+function foo_help( $path, $arg )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'foo' )->help( $path, $arg );
+}
+
+function foo_perm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'foo' )->perm();
+}
+
+function foo_block( $op = 'list', $delta = 0 )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'foo' )->block( $op, $delta );
+}

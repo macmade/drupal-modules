@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<labels>
+    <blockInfo>Foo</blockInfo>
+    <blockSubject>Foo</blockSubject>
+    <help>Displays Foo</help>
+    <hello>Hello, I'm the 'foo' module</hello>
+</labels>

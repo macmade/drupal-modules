@@ -1,0 +1,5 @@
+name = Foo
+description = A Drupal test module
+core = 6.x
+dependencies[] = oop
+package = Testing
