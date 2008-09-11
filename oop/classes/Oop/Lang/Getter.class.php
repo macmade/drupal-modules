@@ -140,7 +140,7 @@ final class Oop_Lang_Getter
             return ( string )$this->_labels->$section->$name;
         }
         
-        if( isset( self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name ) ) {
+        if( $section === 'module' && isset( self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name ) ) {
             
             return ( string )self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name;
         }
