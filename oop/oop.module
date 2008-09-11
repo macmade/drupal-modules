@@ -37,3 +37,27 @@ if( version_compare( PHP_VERSION, Oop_Core_ClassManager::PHP_COMPATIBLE, '<' ) )
 
 // Registers an SPL autoload method to use to load the classes form this package
 spl_autoload_register( array( 'Oop_Core_ClassManager', 'autoLoad' ) );
+
+// Sets the substitution character for the @ sign
+Oop_Drupal_ModuleBase::setEmailCryptSymbol( variable_get( 'oop_email_crypt_symbol', '(at)' ) );
+
+/**
+ * Drupal 'menu' hook
+ * 
+ * @return  array   The menu items
+ */
+function oop_menu()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->menuAdmin();
+}
+
+/**
+ * Drupal 'menu' callback for the administration settings
+ * 
+ * @return  string  The configuration form
+ */
+function oop_adminForm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->getAdminForm();
+}
+
