@@ -1,0 +1,7 @@
+<?php
+
+function emailcrypt_install()
+{
+    $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = 'oop'" ) );
+    db_query( "UPDATE {system} SET weight = %d WHERE name = 'emailcrypt'", $oopWeight + 1 );
+}

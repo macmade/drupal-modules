@@ -1,0 +1,5 @@
+name = Email crypt
+description = A Drupal filter that will automatically crypt the email addresses to prevent spam
+core = 6.x
+dependencies[] = oop
+package = Filters

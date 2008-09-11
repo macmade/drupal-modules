@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<labels>
+    <filter>Email crypt</filter>
+    <filterDescription>Automatically crypts the email addresses to prevent spam</filterDescription>
+</labels>
