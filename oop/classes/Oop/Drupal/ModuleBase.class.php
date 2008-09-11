@@ -20,11 +20,6 @@ abstract class Oop_Drupal_ModuleBase
     const PHP_COMPATIBLE = '5.2.0';
     
     /**
-     * Abstract method to get the 'view' section of the modules
-     */
-    abstract protected function _getView( Oop_Xhtml_Tag $content, $delta );
-    
-    /**
      * Wether the static variables are set or not
      */
     private static $_hasStatic        = false;
@@ -164,6 +159,23 @@ abstract class Oop_Drupal_ModuleBase
         
         // Sets the new line character
         self::$_NL           = chr( 10 );
+    }
+    
+    /**
+     * Checks if a method is defined in a module
+     * 
+     * @param   string  The name of the method to check
+     * @return  NULL
+     * @throws  Oop_Drupal_ModuleBase_Exception If the method does not exist
+     */
+    private function _checkMethod( $name )
+    {
+        // Checks for the method
+        if( !method_exists( $this, $name ) ) {
+            
+            // The method does not exist
+            throw new Oop_Drupal_ModuleBase_Exception( 'The required method ' . $name . ' is not defined in the class of module ' . $this->_modName, Oop_Drupal_ModuleBase_Exception::EXCEPTION_NO_METHOD );
+        }
     }
     
     /**
@@ -522,7 +534,11 @@ abstract class Oop_Drupal_ModuleBase
     }
     
     /**
+     * Creates an encrypted email link
      * 
+     * @param   string          The email address
+     * @return  Oop_Xhtml_Tag   The link object
+     * @see     Oop_String_Utils::cryptEmail
      */
     protected function _email( $email )
     {
@@ -591,15 +607,18 @@ abstract class Oop_Drupal_ModuleBase
     /**
      * Drupal 'block' hook
      * 
-     * @param   string  The kind of block to display
-     * @param   int     The delta offset, used to generate different contents for different blocks
+     * @param   string                          The kind of block to display
+     * @param   int                             The delta offset, used to generate different contents for different blocks
+     * @return  array                           The Drupal block
+     * @throws  Oop_Drupal_ModuleBase_Exception If the method _getView() is not defined in the module class
+     * @see     _checkMethod
      */
     public function block( $op = 'list', $delta = 0 )
     {
         // Storage
         $block = array();
         
-        // Checks the block type
+        // Checks the operation to perform
         if( $op === 'list' ) {
             
             // Returns the help text
@@ -608,6 +627,9 @@ abstract class Oop_Drupal_ModuleBase
             );
             
         } elseif( $op === 'view' ) {
+            
+            // Checks the view method
+            $this->_checkMethod( '_getView' );
             
             // Creates the storage tag for the module
             $content            = new Oop_Xhtml_Tag( 'div' );
@@ -635,5 +657,53 @@ abstract class Oop_Drupal_ModuleBase
         
         // Returns the block
         return $block;
+    }
+    
+    /**
+     * Drupal 'filter' hook
+     * 
+     * @param   string  Which filtering operation to perform
+     * @param   int     Which of the module's filters to use
+     * @param   int     Which input format the filter is being used
+     * @param   string  The content to filter
+     * @return  mixed   Depends on $op
+     * @throws  Oop_Drupal_ModuleBase_Exception If the method _prepareFilter() is not defined in the module class
+     * @throws  Oop_Drupal_ModuleBase_Exception If the method _processFilter() is not defined in the module class
+     * @see     _checkMethod 
+     */
+    public function filter( $op, $delta = 0, $format = -1, $text = '' )
+    {
+        // Checks the operation to perform
+        if( $op === 'list' ) {
+            
+            // Returns the filter title
+            return array(
+                $this->_lang->filter
+            );
+            
+        } elseif( $op === 'description' ) {
+            
+            // Returns the filter description
+            return $this->_lang->filterDescription;
+            
+        } elseif( $op === 'prepare' ) {
+            
+            // Checks the prepare method
+            $this->_checkMethod( '_prepareFilter' );
+            
+            // Prepares the filter
+            return $this->_prepareFilter( $delta, $format, $text );
+            
+        } elseif( $op === 'process' ) {
+            
+            // Process the filter
+            $this->_checkMethod( '_processFilter' );
+            
+            // Prepares the filter
+            return $this->_processFilter( $delta, $format, $text );
+        }
+        
+        // Returns the text
+        return $text;
     }
 }
