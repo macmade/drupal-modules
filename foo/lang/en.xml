@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <labels>
-    <blockInfo>Foo</blockInfo>
-    <blockSubject>Foo</blockSubject>
-    <help>Displays Foo</help>
-    <hello>Hello, I'm the 'foo' module</hello>
+    <system>
+        <block_subject>Foo</block_subject>
+        <block_help>Foo</block_help>
+    </system>
+    <module>
+        <hello>Hello, I'm the 'foo' module</hello>
+     </module>
 </labels>

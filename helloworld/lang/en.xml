@@ -1,14 +1,17 @@
 <?xml version="1.0"?>
 <labels>
-    <blockInfo>Hello World</blockInfo>
-    <blockSubject>Hello World</blockSubject>
-    <help>Displays Hello World</help>
-    <hello>I'm a Drupal module, but on a PHP5 class with full OOP support!</hello>
-    <method>Called method was: %s</method>
-    <modules>Here's the list of the loaded modules (with PDO):</modules>
-    <description>Description: %s</description>
-    <fileName>File name: %s</fileName>
-    <backTrace>Debug backtrace for this module:</backTrace>
-    <line>Line number: %s</line>
-    <cryptEmail>Test for the email crypt process: %s</cryptEmail>
+    <system>
+        <block_subject>Hello World</block_subject>
+        <block_help>Hello World</block_help>
+    </system>
+    <module>
+        <hello>I'm a Drupal module, but on a PHP5 class with full OOP support!</hello>
+        <method>Called method was: %s</method>
+        <modules>Here's the list of the loaded modules (with PDO):</modules>
+        <description>Description: %s</description>
+        <fileName>File name: %s</fileName>
+        <backTrace>Debug backtrace for this module:</backTrace>
+        <line>Line number: %s</line>
+        <cryptEmail>Test for the email crypt process: %s</cryptEmail>
+    </module>
 </labels>

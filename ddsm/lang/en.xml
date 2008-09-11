@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <labels>
-    <blockInfo>Drop-Down Site Map</blockInfo>
-    <blockSubject>Drop-Down Site Map</blockSubject>
-    <help>Displays a Drop-Down Site Map</help>
+    <system>
+        <block_subject>Drop-Down Site Map</block_subject>
+        <block_help>Displays a Drop-Down Site Map</block_help>
+    </system>
 </labels>

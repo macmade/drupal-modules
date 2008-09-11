@@ -125,19 +125,43 @@ final class Oop_Lang_Getter
     /**
      * 
      */
-    public function __get( $name )
+    protected function _getLabel( $name, $section )
     {
-        if( isset( $this->_labels->$name ) ) {
+        if( isset( $this->_labels->$section->$name ) ) {
             
-            return $this->_labels->$name;
+            return $this->_labels->$section->$name;
         }
         
-        if( isset( self::$_instances[ self::$_defaultInstanceName ]->_labels->$name ) ) {
+        if( isset( self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name ) ) {
             
-            return self::$_instances[ self::$_defaultInstanceName ]->_labels->$name;
+            return self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name;
         }
         
         return '[LABEL: ' . $name . ']';
+    }
+    
+    /**
+     * 
+     */
+    public function __get( $name )
+    {
+        return $this->_getLabel( $name, 'module' );
+    }
+    
+    /**
+     * 
+     */
+    public function getLabel( $name )
+    {
+        return $this->_getLabel( $name, 'module' );
+    }
+    
+    /**
+     * 
+     */
+    public function getSystemLabel( $name )
+    {
+        return $this->_getLabel( $name, 'system' );
     }
     
     /**
