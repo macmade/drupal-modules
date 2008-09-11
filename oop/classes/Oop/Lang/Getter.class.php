@@ -129,12 +129,12 @@ final class Oop_Lang_Getter
     {
         if( isset( $this->_labels->$section->$name ) ) {
             
-            return $this->_labels->$section->$name;
+            return ( string )$this->_labels->$section->$name;
         }
         
         if( isset( self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name ) ) {
             
-            return self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name;
+            return ( string )self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name;
         }
         
         return '[LABEL: ' . $name . ']';
