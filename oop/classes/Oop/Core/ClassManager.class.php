@@ -107,7 +107,7 @@ final class Oop_Core_ClassManager
             // Checks if the directory is hidden
             if( substr( $file, 0, 1 ) === '.' ) {
                 
-                // HIdden - Process the next file
+                // Hidden - Process the next file
                 continue;
             }
             
