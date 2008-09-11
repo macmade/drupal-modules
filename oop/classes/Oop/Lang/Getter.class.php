@@ -133,7 +133,7 @@ final class Oop_Lang_Getter
     /**
      * 
      */
-    protected function getLabel( $name, $section )
+    public function getLabel( $name, $section )
     {
         if( isset( $this->_labels->$section->$name ) ) {
             
