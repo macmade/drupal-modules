@@ -3,5 +3,14 @@
     <system>
         <block_subject>Drop-Down Site Map</block_subject>
         <block_help>Drop-Down Site Map</block_help>
+        <menu_admin_title>Drop-Down Site Map</menu_admin_title>
+        <menu_admin_description>Configuration options for the Drop-Down Site Map module</menu_admin_description>
     </system>
+    <settings>
+        <linktype_title>Link type</linktype_title>
+        <linktype_description>Choose the kind of link to display</linktype_description>
+        <linktype_option_primary>Primary links</linktype_option_primary>
+        <linktype_option_secondary>Secondary links</linktype_option_secondary>
+        <linktype_option_navigation>Navigation links</linktype_option_navigation>
+    </settings>
 </labels>

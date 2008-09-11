@@ -14,3 +14,13 @@ function ddsm_block( $op = 'list', $delta = 0 )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsm' )->block( $op, $delta );
 }
+
+function ddsm_menu()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsm' )->menuAdmin();
+}
+
+function ddsm_menuAdmin()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsm' )->getAdminMenu();
+}
