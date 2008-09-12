@@ -22,7 +22,12 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * An array with the Drupal permission for the module
      */
-    protected $_perms = array();
+    protected $_perms    = array();
+    
+    /**
+     * The number of blocks available
+     */
+    protected $_blockNum = 1;
     
     /**
      * Checks if a method is defined in a module
@@ -39,6 +44,17 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             // The method does not exist
             throw new Oop_Drupal_Hooks_Exception( 'The required method ' . $name . ' is not defined in the class of module ' . $this->_modName, Oop_Drupal_Hooks_Exception::EXCEPTION_NO_METHOD );
         }
+    }
+    
+    /**
+     * Sets the number of available blocks
+     * 
+     * @param   int     The desired number of blocks
+     * @return  NULL
+     */
+    public function setBlocksNumber( $number )
+    {
+        $this->_blockNum = ( int )$number;
     }
     
     /**
@@ -92,10 +108,14 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         // Checks the operation to perform
         if( $op === 'list' ) {
             
-            // Returns the help text
-            $block[0] = array(
-                'info' => $this->_lang->getLabel( 'block_help', 'system' )
-            );
+            // Repeat for each available block
+            for( $i = 0; $i < $this->_blockNum; $i++ ) {
+                
+                // Returns the help text
+                $block[ $i ] = array(
+                    'info' => $this->_lang->getLabel( 'block_' . $i . '_help', 'system' )
+                );
+            }
         
         } elseif( $op === 'configure' ) {
             
@@ -103,7 +123,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $confPath = self::$_classManager->getModulePath( $this->_modName )
                       . 'settings'
                       . DIRECTORY_SEPARATOR
-                      . 'block.form.php';
+                      . 'block.' . $delta . '.form.php';
             
             // Checks for a configuration file
             if( file_exists( $confPath ) ) {
@@ -139,7 +159,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $this->_getView( $content, $delta );
             
             // Adds the title and the content, wrapped in HTML comments
-            $block['subject'] = $this->_lang->getLabel( 'block_subject', 'system' ); 
+            $block['subject'] = $this->_lang->getLabel( 'block_' . $delta . '_subject', 'system' ); 
             $block['content'] = self::$_NL
                               . self::$_NL
                               . '<!-- Start of module \'' . $this->_modName . '\' -->'
