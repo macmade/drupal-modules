@@ -111,7 +111,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 
                 foreach( $argFuncs as $index => $funcName ) {
                     
-                    $pathInfo[ $index ] = $funcName( $map[ $index ], $map, $index );
+                    $pathInfo[ $index ] = $funcName( $pathInfo[ $index ], $pathInfo, $index );
                 }
                 
                 $page->link_path = implode( '/', $pathInfo );
