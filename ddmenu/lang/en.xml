@@ -16,6 +16,8 @@
         <linktype_option_secondary>Secondary links</linktype_option_secondary>
         <linktype_option_navigation>Navigation links</linktype_option_navigation>
         <number_of_blocks_title>Number of blocks</number_of_blocks_title>
-        <number_of_blocks_description>The desired number of blocks. This will allow you to place this module more than once. You will probably have to clear the cache after having changed this value.</number_of_blocks_description>
+        <number_of_blocks_description>The desired number of blocks. This will allow you to place this module more than once.</number_of_blocks_description>
+        <css_file_title>CSS file</css_file_title>
+        <css_file_description>The optional CSS stylesheet to use instead of the default one. Please enter a path relative to the Drupal site.</css_file_description>
     </settings>
 </labels>

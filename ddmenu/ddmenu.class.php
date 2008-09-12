@@ -33,8 +33,16 @@ class ddmenu extends Oop_Drupal_ModuleBase
      */
     protected function _getView( Oop_Xhtml_Tag $content, $delta )
     {
-        // Includes the module CSS file
-        $this->_includeModuleCSS();
+        $css = variable_get( $this->_modName . '_css_file', false );
+        
+        if( $css ) {
+            
+            $this->_includeCss( $css );
+            
+        } else {
+            
+            $this->_includeModuleCSS();
+        }
         
         $this->_delta = $delta;
         
