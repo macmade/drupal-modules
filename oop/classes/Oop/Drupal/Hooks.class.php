@@ -22,12 +22,17 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * An array with the Drupal permission for the module
      */
-    protected $_perms    = array();
+    protected $_perms      = array();
     
     /**
      * The number of blocks available
      */
-    protected $_blockNum = 1;
+    protected $_blockNum   = 1;
+    
+    /**
+     * Wheter the blocks have identical properties (for the labels, configuration, etc)
+     */
+    protected $_sameBlocks = false;
     
     /**
      * Checks if a method is defined in a module
@@ -50,11 +55,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * Sets the number of available blocks
      * 
      * @param   int     The desired number of blocks
+     * @param   boolean Wheter the new blocks must be the same as the first one (for the labels, configuration, etc)
      * @return  NULL
      */
-    public function setBlocksNumber( $number )
+    public function setBlocksNumber( $number, $sameAsFirst = false )
     {
-        $this->_blockNum = ( int )$number;
+        $this->_blockNum   = ( int )$number;
+        $this->_sameBlocks = ( boolean )$sameAsFirst;
     }
     
     /**
@@ -111,25 +118,31 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             // Repeat for each available block
             for( $i = 0; $i < $this->_blockNum; $i++ ) {
                 
+                // Index for the label
+                $langIndex = ( $this->_sameBlocks ) ? 0 : $i;
+                
                 // Returns the help text
                 $block[ $i ] = array(
-                    'info' => $this->_lang->getLabel( 'block_' . $i . '_help', 'system' )
+                    'info' => $this->_lang->getLabel( 'block_' . $langIndex . '_help', 'system' )
                 );
             }
         
         } elseif( $op === 'configure' ) {
             
+            // Index for the forms
+            $formIndex = ( $this->_sameBlocks ) ? 0 : $delta;
+            
             // Gets the path of the configuration file
             $confPath = self::$_classManager->getModulePath( $this->_modName )
                       . 'settings'
                       . DIRECTORY_SEPARATOR
-                      . 'block.' . $delta . '.form.php';
+                      . 'block.' . $formIndex . '.form.php';
             
             // Checks for a configuration file
             if( file_exists( $confPath ) ) {
                 
                 // Creates the form
-                $form  = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+                $form  = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang, $delta );
                 
                 // Returns the form
                 $block = $form->getConf();
@@ -146,6 +159,9 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
         } elseif( $op === 'view' ) {
             
+            // Index for the label
+            $langIndex = ( $this->_sameBlocks ) ? 0 : $delta;
+            
             // Checks the view method
             $this->_checkMethod( '_getView' );
             
@@ -159,7 +175,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $this->_getView( $content, $delta );
             
             // Adds the title and the content, wrapped in HTML comments
-            $block['subject'] = $this->_lang->getLabel( 'block_' . $delta . '_subject', 'system' ); 
+            $block['subject'] = $this->_lang->getLabel( 'block_' . $langIndex . '_subject', 'system' ); 
             $block['content'] = self::$_NL
                               . self::$_NL
                               . '<!-- Start of module \'' . $this->_modName . '\' -->'

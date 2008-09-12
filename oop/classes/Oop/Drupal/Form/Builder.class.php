@@ -23,8 +23,9 @@ class Oop_Drupal_Form_Builder
     protected $_formConf = array();
     protected $_form     = array();
     protected $_modName  = '';
+    protected $_delta    = 0;
     
-    public function __construct( $confPath, $modName, Oop_Lang_Getter $lang )
+    public function __construct( $confPath, $modName, Oop_Lang_Getter $lang, $delta = false )
     {
         // Checks if the file exists
         if( !file_exists( $confPath ) ) {
@@ -52,6 +53,9 @@ class Oop_Drupal_Form_Builder
         // Stores the language object
         $this->_modName  = $modName;
         
+        // Stores the delta
+        $this->_delta    = $delta;
+        
         // Creates the final configuration
         $this->_createFormConf();
     }
@@ -60,7 +64,14 @@ class Oop_Drupal_Form_Builder
     {
         foreach( $this->_formConf as $key => &$value ) {
             
-            $fieldName = $this->_modName . '_' . $key;
+            if( is_numeric( $this->_delta ) ) {
+                
+                $fieldName = $this->_modName . '_' . $key . '_' . $this->_delta;
+                
+            } else {
+                
+                $fieldName = $this->_modName . '_' . $key;
+            }
             
             $this->_form[ $fieldName ] = $value;
             
