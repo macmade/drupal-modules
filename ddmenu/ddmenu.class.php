@@ -83,37 +83,114 @@ class ddmenu extends Oop_Drupal_ModuleBase
             ':plid'      => $parent
         );
         
+        // SQL query
+        $sql = 'SELECT *
+                FROM {menu_links} as page, {menu_router} as router
+                WHERE page.router_path = router.path
+                    AND page.menu_name = :menu_name
+                    AND page.plid = :plid
+                    AND page.hidden = 0
+                ORDER BY page.weight, page.link_title';
+        
         // Prepares the PDO query
-        $sql       = self::$_db->prepare( 'SELECT * from {menu_links} WHERE menu_name = :menu_name AND plid = :plid AND hidden = 0 ORDER BY weight, link_title' );
+        $query       = self::$_db->prepare( $sql );
         
         // Executes the PDO query
-        $sql->execute( $sqlParams );
-        
-        // Fetches all the pages
-        $pages = $sql->fetchAll();
+        $query->execute( $sqlParams );
         
         // Process each pages
-        foreach( $pages as $page ) {
+        while( $page = $query->fetchObject() ) {
+            
+            $pathInfo    = explode( '/', $page->path );
+            $loadObjects = array();
+            $access      = false;
+            
+            if( $page->to_arg_functions ) {
+                
+                $argFuncs = unserialize( $page->to_arg_functions );
+                
+                foreach( $argFuncs as $index => $funcName ) {
+                    
+                    $pathInfo[ $index ] = $funcName( $map[ $index ], $map, $index );
+                }
+                
+                $page->link_path = implode( '/', $pathInfo );
+            }
+            
+            if( $page->load_functions ) {
+                
+                $loadFuncs = unserialize( $page->load_functions );
+                
+                foreach( $loadFuncs as $index => $funcName ) {
+                    
+                    $loadObjects[ $index ] = $funcName( $pathInfo[ $index ] );
+                }
+            }
+            
+            if( is_numeric( $page->access_callback ) ) {
+                
+                $access = ( boolean )$page->access_callback;
+                
+            } elseif( $page->access_callback ) {
+                
+                $args = unserialize( $page->access_arguments );
+                
+                foreach( $args as $key => $value ) {
+                    
+                    if( isset( $loadObjects[ $value ] ) ) {
+                        
+                        $args[ $key ] = &$loadObjects[ $value ];
+                    }
+                }
+                
+                $access = ( boolean )call_user_func_array( $page->access_callback, $args );
+                
+            }
+            
+            if( $page->title_callback ) {
+                
+                $args      = array( $page->title );
+                
+                if( $page->title_arguments ) {
+                    
+                    $titleArgs = unserialize( $page->title_arguments );
+                    
+                    foreach( $titleArgs as $key => $value ) {
+                        
+                        if( isset( $loadObjects[ $value ] ) ) {
+                            
+                            $args[ $key ] = &$loadObjects[ $value ];
+                        }
+                    }
+                }
+                
+                $page->title = call_user_func_array( $page->title_callback, $args );
+            }
+            
+            if( $access === false ) {
+                
+                continue;
+            }
             
             $li   = $list->li;
             $icon = $li->span;
             
             $li->addTextData( ' ' );
-            $li->addChildNode( $this->_link( $page[ 'link_title' ], array(), false, $page[ 'link_path' ] ) );
+            $li->addChildNode( $this->_link( $page->link_title, array(), false, $page->link_path ) );
             
-            if( $page[ 'has_children' ] ) {
+            if( $page->has_children ) {
                 
                 $link           = $icon->a;
-                $link[ 'href' ] = 'javascript:ddmenu.display( \'ddmenu-page-' . $page[ 'mlid' ] . '\' );';
+                $link[ 'href' ] = 'javascript:ddmenu.display( \'ddmenu-page-' . $page->mlid . '\' );';
                 
                 $link->addChildNode( $this->_iconDir );
                 
                 $subList            = $li->ul;
                 
-                $subList[ 'id' ]    = 'ddmenu-page-' . $page[ 'mlid' ];
+                $subList[ 'id' ]    = 'ddmenu-page-' . $page->mlid;
                 
                 
-                if( isset( $this->_pathInfo[ $page[ 'link_path' ] ] ) ) {
+                if( isset( $this->_pathInfo[ $page->link_path ] ) ) {
                     
                     $this->_cssClass( $li, 'open' );
                     
@@ -122,13 +199,13 @@ class ddmenu extends Oop_Drupal_ModuleBase
                     $subList[ 'style' ] = 'display: none;';
                 }
                 
-                $this->_getPages( $subList, $type, $page[ 'mlid' ] );
+                $this->_getPages( $subList, $type, $page->mlid );
                 
             } else {
                 
                 $icon->addChildNode( $this->_iconPage );
                 
-                if( $page[ 'link_path' ] === $this->_path ) {
+                if( $page->link_path === $this->_path ) {
                     
                     $this->_cssClass( $li, 'active' );
                 }
