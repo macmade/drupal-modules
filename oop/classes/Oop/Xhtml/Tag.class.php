@@ -93,7 +93,7 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
     /**
      * 
      */
-    protected $_parent                 = NULL;
+    protected $_parents                = array();
     
     /**
      * The current position for the SPL Iterator methods
@@ -280,8 +280,8 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
             $this->_childrenCountByName[ $name ] = 0;
         }
         
-        $comment          = new Oop_Xhtml_Comment( $text );
-        $comment->_parent = $this;
+        $comment             = new Oop_Xhtml_Comment( $text );
+        $comment->_parents[] = $this;
         
         $this->_children[]                = $comment;
         $this->_childrenByName[ '<!--' ][] = $comment;
@@ -305,8 +305,8 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
             $this->_childrenCountByName[ $name ] = 0;
         }
         
-        $child          = new self( $name );
-        $child->_parent = $this;
+        $child             = new self( $name );
+        $child->_parents[] = $this;
         
         $this->_children[]                = $child;
         $this->_childrenByName[ $name ][] = $child;
@@ -417,7 +417,7 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
                 $this->_childrenCountByName[ $child->_tagName ] = 0;
             }
             
-            $child->_parent = $this;
+            $child->_parents[] = $this;
             
             $this->_children[]                           = $child;
             $this->_childrenByName[ $child->_tagName ][] = $child;
@@ -470,5 +470,18 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
         self::$_formattedOutput = ( boolean )$value;
         
         return $oldValue;
+    }
+    
+    /**
+     * 
+     */
+    public function getParent( $parentIndex = 0 )
+    {
+        if( isset( $this->_parents[ $parentIndex ] ) ) {
+            
+            return $this->_parents[ $parentIndex ];
+        }
+        
+        return $this->_parents[ 0 ];
     }
 }
