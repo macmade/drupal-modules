@@ -266,7 +266,7 @@ final class Oop_Drupal_Page_Processor
             
             foreach( $argFuncs as $index => $funcName ) {
                 
-                $this->_pathInfo[ $index ] = $funcName( $this->_pathInfo[ $index ], $this->_pathInfo, $index );
+                $this->_pathInfo[ $index ] = Oop_Callback_Helper::apply( $funcName, array( $this->_pathInfo[ $index ], $this->_pathInfo, $index ) );
             }
             
             $this->_processedPath = implode( '/', $this->_pathInfo );
@@ -284,7 +284,7 @@ final class Oop_Drupal_Page_Processor
             
             foreach( $loadFuncs as $index => $funcName ) {
                 
-                $this->_loadObjects[ $index ] = $funcName( $this->_pathInfo[ $index ] );
+                $this->_loadObjects[ $index ] = Oop_Callback_Helper::apply( $funcName, $this->_pathInfo[ $index ] );
             }
         }
     }
@@ -310,7 +310,7 @@ final class Oop_Drupal_Page_Processor
                 }
             }
             
-            $this->_access = ( boolean )call_user_func_array( $this->_router->access_callback, $args );
+            $this->_access = Oop_Callback_Helper::apply( $this->_router->access_callback, $args );
         }
     }
     
@@ -336,7 +336,7 @@ final class Oop_Drupal_Page_Processor
                 }
             }
             
-            $this->_processedTitle = call_user_func_array( $this->_router->title_callback, $args );
+            $this->_processedTitle = Oop_Callback_Helper::apply( $this->_router->title_callback, $args );
         }
     }
     
@@ -362,5 +362,21 @@ final class Oop_Drupal_Page_Processor
     public function getTitle()
     {
         return $this->_processedTitle;
+    }
+    
+    /**
+     * 
+     */
+    public function getPage()
+    {
+        return clone( $this->_page );
+    }
+    
+    /**
+     * 
+     */
+    public function getRouter()
+    {
+        return clone( $this->_router );
     }
 }
