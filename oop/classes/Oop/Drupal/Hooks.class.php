@@ -22,7 +22,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * An array with the Drupal permission for the module
      */
-    protected static $_perms = array();
+    protected $_perms = array();
     
     /**
      * Checks if a method is defined in a module
