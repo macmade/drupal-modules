@@ -284,7 +284,7 @@ final class Oop_Drupal_Page_Processor
             
             foreach( $loadFuncs as $index => $funcName ) {
                 
-                $this->_loadObjects[ $index ] = Oop_Callback_Helper::apply( $funcName, $this->_pathInfo[ $index ] );
+                $this->_loadObjects[ $index ] = Oop_Callback_Helper::apply( $funcName, array( $this->_pathInfo[ $index ] ) );
             }
         }
     }
