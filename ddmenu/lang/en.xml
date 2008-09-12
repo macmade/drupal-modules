@@ -3,12 +3,19 @@
     <system>
         <block_0_subject>Drop-Down Menu</block_0_subject>
         <block_0_help>Drop-Down Menu</block_0_help>
+        <menu_admin_title>Drop-Down Menu</menu_admin_title>
+        <menu_admin_description>Configures the general settings of the Drop-Down Menu module.</menu_admin_description>
     </system>
+    <module>
+        <notNumeric>Please enter a numeric value</notNumeric>
+    </module>
     <settings>
         <linktype_title>Link type</linktype_title>
         <linktype_description>Choose the kind of link to display</linktype_description>
         <linktype_option_primary>Primary links</linktype_option_primary>
         <linktype_option_secondary>Secondary links</linktype_option_secondary>
         <linktype_option_navigation>Navigation links</linktype_option_navigation>
+        <number_of_blocks_title>Number of blocks</number_of_blocks_title>
+        <number_of_blocks_description>The desired number of blocks. This will allow you to place this module more than once. You will probably have to clear the cache after having changed this value.</number_of_blocks_description>
     </settings>
 </labels>
