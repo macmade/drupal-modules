@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Page processor for Drupal
+ * Page getter for Drupal
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @package         Drupal
  * @version         0.1
  */
-final class Oop_Drupal_Page_Processor
+final class Oop_Drupal_Page_Getter
 {
     /**
      * Class version constants.

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Exception class for the Oop_Drupal_Page_Processor class
+ * Exception class for the Oop_Drupal_Page_Getter class
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @package         Oop/Drupal/Exception
  * @version         0.1
  */
-class Oop_Drupal_Page_Processor_Exception extends Oop_Core_Exception_Base
+class Oop_Drupal_Page_Getter_Exception extends Oop_Core_Exception_Base
 {
     /**
      * Class version constants.
