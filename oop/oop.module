@@ -60,4 +60,3 @@ function oop_adminForm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->getAdminForm();
 }
-
