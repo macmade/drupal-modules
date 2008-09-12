@@ -40,6 +40,11 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     private static $_hasOopJs         = false;
     
     /**
+     * Whether the CSS file for the current module has been included
+     */
+    private $_cssFiles                = array();
+    
+    /**
      * The substitution symbol for the @ character
      */
     private static $_emailCryptSymbol = '';
@@ -186,6 +191,25 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     /**
      * Includes the CSS file for the current module
      * 
+     * @param   string  The path to the CSS file (relative to the drupal site)
+     * @return  NULL
+     */
+    protected function _includeCss( $path )
+    {
+        // Only includes the script once
+        if( !isset( $this->_cssFiles[ $path ] ) ) {
+            
+            // Adds the CSS script
+            drupal_add_css( $path );
+            
+            // CSS file has been include
+            $this->_cssFiles[ $path ] = true;
+        }
+    }
+    
+    /**
+     * Includes a CSS file
+     * 
      * @return  NULL
      * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
@@ -194,7 +218,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
         // Only includes the script once
         if( !$this->_hasCssFile ) {
             
-            // Adds the JS script
+            // Adds the CSS file
             drupal_add_css(
                 self::$_classManager->getModuleRelativePath( $this->_modName )
               . $this->_modName . '.css',
