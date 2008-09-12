@@ -246,7 +246,7 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
      * 
      * @return  NULL
      */
-    protected static function _setStaticVars()
+    private static function _setStaticVars()
     {
         // Sets the new line character
         self::$_NL        = chr( 10 );
