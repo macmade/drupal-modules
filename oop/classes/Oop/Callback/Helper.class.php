@@ -36,6 +36,11 @@ class Oop_Callback_Helper
     {
         $argsCount = count( $args );
         
+        if( $argCount > 10 ) {
+            
+            trigger_error( 'More than ten arguments were passed to callback, so the call_user_func_array() function was used', E_USER_NOTICE );
+        }
+        
         if( is_array( $callback ) ) {
             
             if( !isset( $callback[ 0 ] ) || !isset( $callback[ 0 ] ) ) {
