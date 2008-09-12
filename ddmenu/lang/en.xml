@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <labels>
     <system>
-        <block_subject>Drop-Down Menu</block_subject>
-        <block_help>Drop-Down Menu</block_help>
+        <block_0_subject>Drop-Down Menu</block_0_subject>
+        <block_0_help>Drop-Down Menu</block_0_help>
     </system>
     <settings>
         <linktype_title>Link type</linktype_title>

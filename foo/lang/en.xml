@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <labels>
     <system>
-        <block_subject>Foo</block_subject>
-        <block_help>Foo</block_help>
+        <block_0_subject>Foo</block_0_subject>
+        <block_0_help>Foo</block_0_help>
     </system>
     <module>
         <hello>Hello, I'm the 'foo' module</hello>
