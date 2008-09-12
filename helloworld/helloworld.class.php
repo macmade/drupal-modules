@@ -90,14 +90,18 @@ class helloworld extends Oop_Drupal_ModuleBase
             ':status' => 1
         );
         
+        // SQL query
+        $sql = 'SELECT *
+                FROM {system}
+                WHERE type = :type
+                    AND status = :status
+                ORDER BY name';
+        
         // Prepares the PDO query
-        $sql       = self::$_db->prepare( 'SELECT * from {system} WHERE type = :type AND status = :status ORDER BY name' );
+        $query       = self::$_db->prepare( $sql );
         
         // Executes the PDO query
-        $sql->execute( $sqlParams );
-        
-        // Fetches all the Drupal modules
-        $modules = $sql->fetchAll();
+        $query->execute( $sqlParams );
         
         // Includes the module script file
         $this->_includeModuleScript();
@@ -106,11 +110,11 @@ class helloworld extends Oop_Drupal_ModuleBase
         $this->_includeModuleCSS();
         
         // Process each module
-        foreach( $modules as $module ) {
+        while( $module = $query->fetchObject() ) {
             
             // Path of the INI file
-            $iniFile              = self::$_classManager->getModulePath( $module[ 'name' ] )
-                                  . $module[ 'name' ]
+            $iniFile              = self::$_classManager->getModulePath( $module->name )
+                                  . $module->name
                                   . '.info';
             
             // Informations in the INI file
@@ -121,7 +125,7 @@ class helloworld extends Oop_Drupal_ModuleBase
             $infosDiv             = $modulesBlock->div;
             
             // Adds the attributes to the info div
-            $infosDiv[ 'id' ]     = $this->_modName . '-' . $module[ 'name' ];
+            $infosDiv[ 'id' ]     = $this->_modName . '-' . $module->name;
             $infosDiv[ 'style' ]  = 'display: none;';
             
             // Adds the CSS class
@@ -137,20 +141,20 @@ class helloworld extends Oop_Drupal_ModuleBase
                                    . '.display( \''
                                    . $this->_modName
                                    . '-'
-                                   . $module[ 'name' ]
+                                   . $module->name
                                    . '\' );';
             
             // Adds the info icon
             $moduleLink->addChildNode( $infoIcon );
             
             // Adds the module name
-            $moduleLink->addTextData( ' ' . $iniInfos[ 'name' ] . ' (' . $module[ 'name' ] . ')' );
+            $moduleLink->addTextData( ' ' . $iniInfos[ 'name' ] . ' (' . $module->name . ')' );
             
             // Adds the description
             $infosDiv->div = sprintf( $this->_lang->description, $iniInfos[ 'description' ] );
             
             // Adds the module file name
-            $infosDiv->div = sprintf( $this->_lang->fileName, $module[ 'filename' ] );
+            $infosDiv->div = sprintf( $this->_lang->fileName, $module->filename );
         }
         
         // Process the backtrace
