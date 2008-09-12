@@ -101,7 +101,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
         // Process each pages
         while( $page = $query->fetchObject() ) {
             
-            $pathInfo    = explode( '/', $page->path );
+            $pathInfo    = explode( '/', $page->link_path );
             $loadObjects = array();
             $access      = false;
             
@@ -134,6 +134,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
             } elseif( $page->access_callback ) {
                 
                 $args = unserialize( $page->access_arguments );
+                
                 
                 foreach( $args as $key => $value ) {
                     
