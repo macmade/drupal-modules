@@ -22,6 +22,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
     protected $_iconPage = NULL;
     protected $_path     = '';
     protected $_pathInfo = array();
+    protected $_delta    = 0;
     
     /**
      * Gets the 'view' section of the module
@@ -35,7 +36,9 @@ class ddmenu extends Oop_Drupal_ModuleBase
         // Includes the module CSS file
         $this->_includeModuleCSS();
         
-        $linkType = variable_get( $this->_modName . '_linktype', 'primary' );
+        $this->_delta = $delta;
+        
+        $linkType = variable_get( $this->_modName . '_linktype_' . $this->_delta, 'primary' );
         
         switch( $linkType ) {
             
@@ -85,11 +88,14 @@ class ddmenu extends Oop_Drupal_ModuleBase
         
         // SQL query
         $sql = 'SELECT *
-                FROM {menu_links} as page, {menu_router} as router
-                WHERE page.router_path = router.path
-                    AND page.menu_name = :menu_name
-                    AND page.plid = :plid
-                    AND page.hidden = 0
+                FROM {menu_links} as page
+                LEFT JOIN {menu_router}
+                    ON page.router_path = {menu_router}.path
+                LEFT JOIN {url_alias}
+                    ON page.link_path = {url_alias}.src
+                WHERE page.menu_name = :menu_name
+                    AND page.plid      = :plid
+                    AND page.hidden    = 0
                 ORDER BY page.weight, page.link_title';
         
         // Prepares the PDO query
@@ -173,27 +179,38 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 continue;
             }
             
+            $pagePath = ( $page->dst ) ? $page->dst : $page->link_path;
+            
             $li   = $list->li;
             $icon = $li->span;
             
             $li->addTextData( ' ' );
-            $li->addChildNode( $this->_link( $page->link_title, array(), false, $page->link_path ) );
+            $li->addChildNode( $this->_link( $page->link_title, array(), false, $pagePath ) );
             
             if( $page->has_children ) {
                 
                 $link           = $icon->a;
-                $link[ 'href' ] = 'javascript:ddmenu.display( \'ddmenu-page-' . $page->mlid . '\' );';
+                $link[ 'href' ] = 'javascript:ddmenu.display( \'ddmenu-' . $this->_delta . '-page-' . $page->mlid . '\' );';
                 
                 $link->addChildNode( $this->_iconDir );
                 
                 $subList            = $li->ul;
                 
-                $subList[ 'id' ]    = 'ddmenu-page-' . $page->mlid;
+                $subList[ 'id' ]    = 'ddmenu-' . $this->_delta . '-page-' . $page->mlid;
                 
                 
-                if( isset( $this->_pathInfo[ $page->link_path ] ) ) {
+                if( $page->link_path === $this->_path ) {
                     
                     $this->_cssClass( $li, 'open' );
+                    
+                    $parent = $li->getParent();
+                    
+                    unset( $parent[ 'style' ] );
+                        
+                    while( $parent = $parent->getParent()->getParent() ) {
+                        
+                        unset( $parent[ 'style' ] );
+                    }
                     
                 } else {
                     
@@ -209,8 +226,30 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 if( $page->link_path === $this->_path ) {
                     
                     $this->_cssClass( $li, 'active' );
+                    
+                    $parent = $li->getParent();
+                
+                    unset( $parent[ 'style' ] );
+                    
+                    while( $parent = $parent->getParent()->getParent() ) {
+                        
+                        unset( $parent[ 'style' ] );
+                    }
                 }
             }
+        }
+    }
+    
+    /**
+     * 
+     */
+    public function validateAdminForm( $form, &$formState )
+    {
+        $number = $form[ '#post' ][ 'ddmenu_number_of_blocks' ];
+        
+        if( !is_numeric( $number ) ) {
+            
+            form_set_error( 'ddmenu_number_of_blocks', $this->_lang->notNumeric );
         }
     }
 }
