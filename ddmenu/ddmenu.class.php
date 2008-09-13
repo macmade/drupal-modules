@@ -21,7 +21,6 @@ class ddmenu extends Oop_Drupal_ModuleBase
     protected $_iconDir  = NULL;
     protected $_iconPage = NULL;
     protected $_path     = '';
-    protected $_pathInfo = array();
     protected $_delta    = 0;
     
     /**
@@ -66,15 +65,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 break;
         }
         
-        $this->_path = self::$_request->q; 
-        $pathInfo    = explode( '/', $this->_path );
-        $lastPath    = '';
-        
-        foreach( $pathInfo as $path ) {
-            
-            $lastPath                     = ( $lastPath ) ? $lastPath . '/' . $path : $path;
-            $this->_pathInfo[ $lastPath ] = true;
-        }
+        $this->_path = self::$_request->q;
         
         $this->_iconDir  = $this->_getIcon( 'folder.png' );
         $this->_iconPage = $this->_getIcon( 'page_white.png' );
@@ -94,106 +85,29 @@ class ddmenu extends Oop_Drupal_ModuleBase
             ':plid'      => $parent
         );
         
-        // SQL query
-        $sql = 'SELECT *
-                FROM {menu_links} as page
-                LEFT JOIN {menu_router}
-                    ON page.router_path = {menu_router}.path
-                LEFT JOIN {url_alias}
-                    ON page.link_path = {url_alias}.src
-                WHERE page.menu_name = :menu_name
-                    AND page.plid      = :plid
-                    AND page.hidden    = 0
-                ORDER BY page.weight, page.link_title';
+        // WHERE clause to select the pages
+        $where = '{menu_links}.menu_name    = :menu_name
+                    AND {menu_links}.plid   = :plid
+                    AND {menu_links}.hidden = 0
+                  ORDER BY {menu_links}.weight, {menu_links}.link_title';
         
-        // Prepares the PDO query
-        $query       = self::$_db->prepare( $sql );
-        
-        // Executes the PDO query
-        $query->execute( $sqlParams );
+        // Gets the pages
+        $pages = Oop_Drupal_Page_Getter::getPages( $where, $sqlParams );
         
         // Process each pages
-        while( $page = $query->fetchObject() ) {
+        foreach( $pages as $id => $page ) {
             
-            $pathInfo    = explode( '/', $page->link_path );
-            $loadObjects = array();
-            $access      = false;
-            
-            if( $page->to_arg_functions ) {
-                
-                $argFuncs = unserialize( $page->to_arg_functions );
-                
-                foreach( $argFuncs as $index => $funcName ) {
-                    
-                    $pathInfo[ $index ] = $funcName( $pathInfo[ $index ], $pathInfo, $index );
-                }
-                
-                $page->link_path = implode( '/', $pathInfo );
-            }
-            
-            if( $page->load_functions ) {
-                
-                $loadFuncs = unserialize( $page->load_functions );
-                
-                foreach( $loadFuncs as $index => $funcName ) {
-                    
-                    $loadObjects[ $index ] = $funcName( $pathInfo[ $index ] );
-                }
-            }
-            
-            if( is_numeric( $page->access_callback ) ) {
-                
-                $access = ( boolean )$page->access_callback;
-                
-            } elseif( $page->access_callback ) {
-                
-                $args = unserialize( $page->access_arguments );
-                
-                
-                foreach( $args as $key => $value ) {
-                    
-                    if( isset( $loadObjects[ $value ] ) ) {
-                        
-                        $args[ $key ] = &$loadObjects[ $value ];
-                    }
-                }
-                
-                $access = ( boolean )call_user_func_array( $page->access_callback, $args );
-                
-            }
-            
-            if( $page->title_callback ) {
-                
-                $args      = array( $page->title );
-                
-                if( $page->title_arguments ) {
-                    
-                    $titleArgs = unserialize( $page->title_arguments );
-                    
-                    foreach( $titleArgs as $key => $value ) {
-                        
-                        if( isset( $loadObjects[ $value ] ) ) {
-                            
-                            $args[ $key ] = &$loadObjects[ $value ];
-                        }
-                    }
-                }
-                
-                $page->title = call_user_func_array( $page->title_callback, $args );
-            }
-            
-            if( $access === false ) {
+            if( !$page->isAccessible() ) {
                 
                 continue;
             }
-            
-            $pagePath = ( $page->dst ) ? $page->dst : $page->link_path;
             
             $li   = $list->li;
             $icon = $li->span;
             
             $li->addTextData( ' ' );
-            $li->addChildNode( $this->_link( $page->link_title, array(), false, $pagePath ) );
+            $title = $li->span;
+            $title->addChildNode( $this->_link( $page->getTitle(), array(), false, $page->getPath() ) );
             
             if( $page->has_children ) {
                 
@@ -206,15 +120,14 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 
                 $subList[ 'id' ]    = 'ddmenu-' . $this->_delta . '-page-' . $page->mlid;
                 
-                
-                if( $page->link_path === $this->_path ) {
+                if( $page->getPath( false ) === $this->_path ) {
                     
-                    $this->_cssClass( $li, 'open' );
+                    $this->_cssClass( $title, 'active' );
                     
                     $parent = $li->getParent();
                     
                     unset( $parent[ 'style' ] );
-                        
+                    
                     while( $parent = $parent->getParent()->getParent() ) {
                         
                         unset( $parent[ 'style' ] );
@@ -231,9 +144,9 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 
                 $icon->addChildNode( $this->_iconPage );
                 
-                if( $page->link_path === $this->_path ) {
+                if( $page->getPath( false ) === $this->_path ) {
                     
-                    $this->_cssClass( $li, 'active' );
+                    $this->_cssClass( $title, 'active' );
                     
                     $parent = $li->getParent();
                 
