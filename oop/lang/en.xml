@@ -2,7 +2,7 @@
 <labels>
     <system>
         <menu_admin_title>OOP Framework</menu_admin_title>
-        <menu_admin_description>Configures various aspect of the Drupal Object Oriented Programming Framework</menu_admin_description>
+        <menu_admin_description>Configures various aspects of the Drupal Object Oriented Programming Framework</menu_admin_description>
     </system>
     <settings>
         <email_crypt_symbol_title>Email crypt symbol</email_crypt_symbol_title>
