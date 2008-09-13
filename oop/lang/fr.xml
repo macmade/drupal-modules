@@ -1,24 +1,24 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <labels>
     <system>
         <menu_admin_title>OOP Framework</menu_admin_title>
-        <menu_admin_description>Configuration des divers aspects Framework de programmation orientée objet pour Drupal</menu_admin_description>
+        <menu_admin_description>Configuration des divers aspects Framework de programmation orient√©e objet pour Drupal</menu_admin_description>
     </system>
     <settings>
         <email_crypt_symbol_title>Symbole de cryptage email</email_crypt_symbol_title>
-        <email_crypt_symbol_description>Le symbole a utiliser comme substitut du symbole @ pour les méthodes de cryptage d'email. Vous devrez probablement vider le cacher après avoir changé cette valeur.</email_crypt_symbol_description>
+        <email_crypt_symbol_description>Le symbole a utiliser comme substitut du symbole @ pour les m√©thodes de cryptage d'email. Vous devrez probablement vider le cacher apr√®s avoir chang√© cette valeur.</email_crypt_symbol_description>
     </settings>
     <module>
-        <After>Après</After>
-        <after>après</after>
+        <After>Apr√®s</After>
+        <after>apr√®s</after>
         <Author>Auteur</Author>
         <author>auteur</author>
         <Browse>Parcourir</Browse>
         <browse>parcourir</browse>
         <Cancel>Annuler</Cancel>
         <cancel>annuler</cancel>
-        <Category>Catégorie</Category>
-        <category>catégorie</category>
+        <Category>Cat√©gorie</Category>
+        <category>cat√©gorie</category>
         <Change>Changer</Change>
         <change>changer</change>
         <Clear>Effacer</Clear>
@@ -29,12 +29,12 @@
         <close>fermer</close>
         <Content>Contenu</Content>
         <content>contenu</content>
-        <Control>Contrôle</Control>
-        <control>contrôle</control>
+        <Control>Contr√¥le</Control>
+        <control>contr√¥le</control>
         <Copy>Copier</Copy>
         <copy>copier</copy>
-        <Create>Créer</Create>
-        <create>créer</create>
+        <Create>Cr√©er</Create>
+        <create>cr√©er</create>
         <Cut>Couper</Cut>
         <cut>couper</cut>
         <Day>Jour</Day>
@@ -43,12 +43,12 @@
         <days>jours</days>
         <Delete>Effacer</Delete>
         <delete>effacer</delete>
-        <Deselect>Désélectionner</Deselect>
-        <deselect>désélectionner</deselect>
+        <Deselect>D√©s√©lectionner</Deselect>
+        <deselect>d√©s√©lectionner</deselect>
         <Dimensions>Dimensions</Dimensions>
         <dimensions>dimensions</dimensions>
-        <Directory>Répertoire</Directory>
-        <directory>répertoire</directory>
+        <Directory>R√©pertoire</Directory>
+        <directory>r√©pertoire</directory>
         <Document>Document</Document>
         <document>document</document>
         <Edit>Editer</Edit>
@@ -58,21 +58,21 @@
         <Exit>Quitter</Exit>
         <exit>uitter</exit>
         <Expand>Etendre</Expand>
-        <expand>étendre</expand>
+        <expand>√©tendre</expand>
         <Export>Exporter</Export>
         <export>exporter</export>
         <File>Fichier</File>
         <file>fichier</file>
         <Folder>Dossier</Folder>
         <folder>dossier</folder>
-        <General>Général</General>
-        <general>général</general>
+        <General>G√©n√©ral</General>
+        <general>g√©n√©ral</general>
         <Global>Global</Global>
         <global>global</global>
         <Go_back>Retour</Go_back>
         <go_back>retour</go_back>
-        <Hidden>Caché</Hidden>
-        <hidden>caché</hidden>
+        <Hidden>Cach√©</Hidden>
+        <hidden>cach√©</hidden>
         <Hide>Cacher</Hide>
         <hide>cacher</hide>
         <Hour>Heure</Hour>
@@ -83,12 +83,12 @@
         <important>important</important>
         <Info>Info</Info>
         <info>info</info>
-        <Insert>Insérer</Insert>
-        <insert>insérer</insert>
-        <Inside>A l'intérieur</Inside>
-        <inside>a l'intérieur</inside>
-        <Logout>Se déconnecter</Logout>
-        <logout>se déconnecter</logout>
+        <Insert>Ins√©rer</Insert>
+        <insert>ins√©rer</insert>
+        <Inside>A l'int√©rieur</Inside>
+        <inside>a l'int√©rieur</inside>
+        <Logout>Se d√©connecter</Logout>
+        <logout>se d√©connecter</logout>
         <Menu>Menu</Menu>
         <menu>menu</menu>
         <Minute>Minute</Minute>
@@ -103,8 +103,8 @@
         <monthes>mois</monthes>
         <More>Plus</More>
         <more>plus</more>
-        <Move>Déplacer</Move>
-        <move>déplacer</move>
+        <Move>D√©placer</Move>
+        <move>d√©placer</move>
         <New>Nouveau</New>
         <new>nouveau</new>
         <No>Non</No>
@@ -113,8 +113,8 @@
         <note>note</note>
         <Open>Ouvrir</Open>
         <open>ouvrir</open>
-        <Open_in_a_new_window>Ouvrir dans une nouvelle fenêtre</Open_in_a_new_window>
-        <open_in_a_new_window>ouvrir dans une nouvelle fenêtre</open_in_a_new_window>
+        <Open_in_a_new_window>Ouvrir dans une nouvelle fen√™tre</Open_in_a_new_window>
+        <open_in_a_new_window>ouvrir dans une nouvelle fen√™tre</open_in_a_new_window>
         <Options>Options</Options>
         <options>options</options>
         <Original>Original</Original>
@@ -141,20 +141,20 @@
         <second>seconde</second>
         <Seconds>Secondes</Seconds>
         <seconds>secondes</seconds>
-        <Select>Sélectionner</Select>
-        <select>sélectionner</select>
-        <Select_all>Tout sélectionner</Select_all>
-        <select_all>tout sélectionner</select_all>
-        <Selected>Sélectionné</Selected>
-        <selected>Sélectionné</selected>
-        <Selection>Sélection</Selection>
-        <selection>sélection</selection>
+        <Select>S√©lectionner</Select>
+        <select>s√©lectionner</select>
+        <Select_all>Tout s√©lectionner</Select_all>
+        <select_all>tout s√©lectionner</select_all>
+        <Selected>S√©lectionn√©</Selected>
+        <selected>S√©lectionn√©</selected>
+        <Selection>S√©lection</Selection>
+        <selection>s√©lection</selection>
         <Show>Voir</Show>
         <show>voir</show>
         <Size>Taille</Size>
         <size>taille</size>
-        <Start>Début</Start>
-        <start>début</start>
+        <Start>D√©but</Start>
+        <start>d√©but</start>
         <Stop>Stop</Stop>
         <stop>stop</stop>
         <Table>Table</Table>
@@ -167,16 +167,16 @@
         <title>titre</title>
         <Unhide>Rendre visible</Unhide>
         <unhide>rendre visible</unhide>
-        <Upload>Télécharger</Upload>
-        <upload>télécharger</upload>
+        <Upload>T√©l√©charger</Upload>
+        <upload>t√©l√©charger</upload>
         <Version>Version</Version>
         <version>version</version>
         <View>Voir</View>
         <view>voir</view>
-        <Year>Année</Year>
-        <year>année</year>
-        <Years>Années</Years>
-        <years>années</years>
+        <Year>Ann√©e</Year>
+        <year>ann√©e</year>
+        <Years>Ann√©es</Years>
+        <years>ann√©es</years>
         <Yes>Oui</Yes>
         <yes>oui</yes>
     </module>

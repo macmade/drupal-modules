@@ -75,7 +75,7 @@ final class Oop_String_Utils
      * 
      * This method shifts the input character code with the specified offset,
      * within a given character range. Based on TYPO3 method encryptCharCode
-     * of class tslib_fe, by Kasper Skårhøj.
+     * of class tslib_fe, by Kasper Sk√•rh√∏j.
      * 
      * @param   int     The input character code
      * @param   int     The starting character code for the range
@@ -110,7 +110,7 @@ final class Oop_String_Utils
      * This method is used to encrypt / decrypt and email address,
      * by shifting each character inside its range, in order to prevent
      * spammers to get the address.  Based on TYPO3 method encryptEmail
-     * of class tslib_fe, by Kasper Skårhøj.
+     * of class tslib_fe, by Kasper Sk√•rh√∏j.
      * 
      * @param   string  The email to encrypt / decrypt
      * @param   boolean Encryption process direction ( true = crypt / false = decrypt )
