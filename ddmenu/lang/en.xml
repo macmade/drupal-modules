@@ -8,6 +8,7 @@
     </system>
     <module>
         <notNumeric>Please enter a numeric value</notNumeric>
+        <openClose>Open / Close</openClose>
     </module>
     <settings>
         <linktype_title>Link type</linktype_title>
