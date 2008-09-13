@@ -91,7 +91,7 @@ final class Oop_Lang_Getter
         
         if( !file_exists( $langFile ) ) {
             
-            throw new Oop_Lang_Exception( 'The lang file for module ' . $this->_instanceName . ' does not exist (path: ' . $langFile . ')', Oop_Lang_Exception::EXCEPTION_NO_LANG_FILE );
+            throw new Oop_Lang_Getter_Exception( 'The lang file for module ' . $this->_instanceName . ' does not exist (path: ' . $langFile . ')', Oop_Lang_Getter_Exception::EXCEPTION_NO_LANG_FILE );
         }
         
         try {
@@ -100,7 +100,7 @@ final class Oop_Lang_Getter
             
         } catch( Exception $e ) {
             
-            throw new Oop_Lang_Exception( $e->getMessage(), Oop_Lang_Exception::EXCEPTION_BAD_XML );
+            throw new Oop_Lang_Getter_Exception( $e->getMessage(), Oop_Lang_Getter_Exception::EXCEPTION_BAD_XML );
         }
         
         // Registers the current instance

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Exception class for the Lang class
+ * Exception class for the Oop_Lang_Getter class
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @package         Oop/Lang
  * @version         0.1
  */
-class Oop_Lang_Exception extends Oop_Core_Exception_Base
+class Oop_Lang_Getter_Exception extends Oop_Core_Exception_Base
 {
     /**
      * Class version constants.
