@@ -8,7 +8,7 @@
  * @package         Drupal
  * @version         0.1
  */
-final class Oop_Drupal_Page_Getter
+final class Oop_Drupal_Page_Getter implements ArrayAccess
 {
     /**
      * Class version constants.
@@ -50,11 +50,6 @@ final class Oop_Drupal_Page_Getter
     private $_page               = NULL;
     
     /**
-     * The router object
-     */
-    private $_router             = NULL;
-    
-    /**
      * The load objects for the current page
      */
     private $_loadObjects        = array();
@@ -68,6 +63,11 @@ final class Oop_Drupal_Page_Getter
      * Wheter access is granted to the page or not
      */
     private $_access             = false;
+    
+    /**
+     * The path path
+     */
+    private $_path               = '';
     
     /**
      * The processed page path
@@ -87,7 +87,7 @@ final class Oop_Drupal_Page_Getter
      * 
      * @return NULL
      */
-    private function __construct( $path )
+    private function __construct( $path, stdClass $row = NULL )
     {
         // Sets the current instance name
         $this->_instanceName = $path;
@@ -106,25 +106,22 @@ final class Oop_Drupal_Page_Getter
         // Stores the path segments
         $this->_pathInfo = explode( '/', $path );
         
-        // Try to get the page object
-        if( $this->_getPageObject() ) {
+        // Stores the path
+        $this->_path     = $path;
+        
+        // Checks for a page row, meaning the page has already been fetched from the database
+        if( $row ) {
             
-            // Try to get the router object
-            if( $this->_getRouterObject() ) {
-                
-                // Process the page
-                $this->_processPage();
-                
-            } else {
-                
-                // No router for the page
-                throw new Oop_Drupal_Page_Processor_Exception( 'The router for the page '. $path .' does not exist', Oop_Drupal_Page_Processor_Exception::EXCEPTION_NO_ROUTER );
-            }
+            // Stores the page row
+            $this->_page = $row;
             
-        } else {
+            // Process the page
+            $this->_processPage();
             
-            // The page does not exist
-            throw new Oop_Drupal_Page_Processor_Exception( 'The requested page '. $path .' does not exist', Oop_Drupal_Page_Processor_Exception::EXCEPTION_NO_PAGE );
+        } elseif( $this->_getPageObject() ) {
+            
+            // Process the page
+            $this->_processPage();
         }
     }
     
@@ -145,16 +142,52 @@ final class Oop_Drupal_Page_Getter
     /**
      * 
      */
-    public static function getInstance( $path )
+    public function __isset( $name )
     {
-        // Creates the required instance if it does not exists
-        if( !isset( self::$_instances[ $path ] ) ) {
-            
-            new self( $path );
+        return isset( $this->_page->$name );
+    }
+    
+    /**
+     * 
+     */
+    public function __get( $name )
+    {
+        if( isset( $this->_page->$name ) ) {
+           
+           return $this->_page->$name;
         }
-        
-        // Returns the required instance
-        return self::$_instances[ $path ];
+    }
+    
+    /**
+     * 
+     */
+    public function offsetExists( $offset )
+    {
+        return isset( $this->_page->$offset );
+    }
+    
+    /**
+     * 
+     */
+    public function offsetGet( $offset )
+    {
+        return $this->_page->$offset;
+    }
+    
+    /**
+     * 
+     */
+    public function offsetSet( $offset, $value )
+    {
+        return false;
+    }
+    
+    /**
+     * 
+     */
+    public function offsetUnset( $offset )
+    {
+        return false;
     }
     
     /**
@@ -174,66 +207,110 @@ final class Oop_Drupal_Page_Getter
     /**
      * 
      */
-    private function _getPageObject()
+    public static function getInstance( $path )
     {
-        // Prepares the PDO query
-        $query     = self::$_db->prepare( 'SELECT * FROM {menu_links} WHERE link_path = :path' );
-        
-        // Parameters for the PDO query
-        $sqlParams = array(
-            ':path' => $this->_instanceName
-        );
-        
-        // Executes the PDO query
-        $query->execute( $sqlParams );
-        
-        // Gets the page object
-        $page = $query->fetchObject();
-        
-        // Checks the page object
-        if( $page ) {
+        // Creates the required instance if it does not exists
+        if( !isset( self::$_instances[ $path ] ) ) {
             
-            // Stores the page object
-            $this->_page = $page;
-            
-            // Page was found
-            return true;
+            new self( $path );
         }
         
-        // Page was not found
-        return false;
+        // Returns the required instance
+        return self::$_instances[ $path ];
     }
     
     /**
      * 
      */
-    private function _getRouterObject()
+    public static function getPages( $where, array $params = array() )
     {
-        // Prepares the PDO query
-        $query     = self::$_db->prepare( 'SELECT * FROM {menu_router} WHERE path = :path' );
+        // Checks if the static variables are set
+        if( !self::$_hasStatic ) {
+            
+            // Sets the static variables
+            self::_setStaticVars();
+        }
         
+        // Storages
+        $pages = array();
+        
+        // SQL query
+        $sql   = 'SELECT *
+                  FROM {menu_links}
+                  LEFT JOIN {menu_router}
+                    ON {menu_links}.router_path = {menu_router}.path
+                  LEFT JOIN {url_alias}
+                    ON {menu_links}.link_path = {url_alias}.src';
+        
+        // Adds the WHERE clause
+        $sql  .= ' WHERE ' . $where;
+        
+        // Prepares the PDO query
+        $query = self::$_db->prepare( $sql );
+        
+        // Executes the PDO query
+        $query->execute( $params );
+        
+        // Process each pages
+        while( $page = $query->fetchObject() ) {
+            
+            // Checks if an instance for that path already exist
+            if( isset( self::$_instances[ $page->link_path ] ) ) {
+                
+                // Stores the existing instance
+                $pages[ $page->mlid ] = self::$_instances[ $page->link_path ];
+                
+            } else {
+                
+                // Process and stores the current page
+                $pages[ $page->mlid ] = new self( $page->link_path, $page );
+            }
+        }
+        
+        // Returns the pages
+        return $pages;
+    }
+    
+    /**
+     * 
+     */
+    private function _getPageObject()
+    {
         // Parameters for the PDO query
         $sqlParams = array(
-            ':path' => $this->_page->router_path
+            ':path' => $this->_path,
         );
+        
+        // SQL query
+        $sql   = 'SELECT *
+                  FROM {menu_links}
+                  LEFT JOIN {menu_router}
+                    ON {menu_links}.router_path = {menu_router}.path
+                  LEFT JOIN {url_alias}
+                    ON {menu_links}.link_path = {url_alias}.src
+                  WHERE {menu_links}.link_path = :path';
+        
+        // Adds the WHERE clause
+        $sql  .= ' ' . $where;
+        
+        // Prepares the PDO query
+        $query = self::$_db->prepare( $sql );
         
         // Executes the PDO query
         $query->execute( $sqlParams );
         
-        // Gets the router object
-        $router = $query->fetchObject();
+        // Gets the page
+        $page = $query->fetchObject();
         
-        // Checks the router object
-        if( $router ) {
+        // Checks the page
+        if( $page ) {
             
-            // Stores the router object
-            $this->_router = $router;
-            
-            // Router was found
+            // Stores the page
+            $this->_page = $page;
             return true;
         }
         
-        // Router was not found
+        // Page was not found
         return false;
     }
     
@@ -260,9 +337,9 @@ final class Oop_Drupal_Page_Getter
      */
     private function _processToArgCallbacks()
     {
-        if( $this->_router->to_arg_functions ) {
+        if( $this->_page->to_arg_functions ) {
             
-            $argFuncs = unserialize( $this->_router->to_arg_functions );
+            $argFuncs = unserialize( $this->_page->to_arg_functions );
             
             foreach( $argFuncs as $index => $funcName ) {
                 
@@ -270,6 +347,10 @@ final class Oop_Drupal_Page_Getter
             }
             
             $this->_processedPath = implode( '/', $this->_pathInfo );
+            
+        } else {
+            
+            $this->_processedPath = $this->_page->link_path;
         }
     }
     
@@ -278,9 +359,9 @@ final class Oop_Drupal_Page_Getter
      */
     private function _processLoadCallbacks()
     {
-        if( $this->_router->load_functions ) {
+        if( $this->_page->load_functions ) {
             
-            $loadFuncs = unserialize( $this->_router->load_functions );
+            $loadFuncs = unserialize( $this->_page->load_functions );
             
             foreach( $loadFuncs as $index => $funcName ) {
                 
@@ -294,13 +375,13 @@ final class Oop_Drupal_Page_Getter
      */
     private function _processAccessCallback()
     {
-        if( is_numeric( $this->_router->access_callback ) ) {
+        if( is_numeric( $this->_page->access_callback ) ) {
             
-            $access = ( boolean )$this->_router->access_callback;
+            $access = ( boolean )$this->_page->access_callback;
             
-        } elseif( $this->_router->access_callback ) {
+        } elseif( $this->_page->access_callback ) {
             
-            $args = unserialize( $this->_router->access_arguments );
+            $args = unserialize( $this->_page->access_arguments );
             
             foreach( $args as $key => $value ) {
                 
@@ -310,7 +391,7 @@ final class Oop_Drupal_Page_Getter
                 }
             }
             
-            $this->_access = Oop_Callback_Helper::apply( $this->_router->access_callback, $args );
+            $this->_access = Oop_Callback_Helper::apply( $this->_page->access_callback, $args );
         }
     }
     
@@ -319,13 +400,13 @@ final class Oop_Drupal_Page_Getter
      */
     private function _processTitleCallback()
     {
-        if( $this->_router->title_callback ) {
+        if( $this->_page->title_callback ) {
             
             $args = array( $this->_page->title );
             
-            if( $this->_router->title_arguments ) {
+            if( $this->_page->title_arguments ) {
                 
-                $titleArgs = unserialize( $this->_router->title_arguments );
+                $titleArgs = unserialize( $this->_page->title_arguments );
                 
                 foreach( $titleArgs as $key => $value ) {
                     
@@ -336,7 +417,11 @@ final class Oop_Drupal_Page_Getter
                 }
             }
             
-            $this->_processedTitle = Oop_Callback_Helper::apply( $this->_router->title_callback, $args );
+            $this->_processedTitle = Oop_Callback_Helper::apply( $this->_page->title_callback, $args );
+            
+        } else {
+            
+            $this->_processedTitle = $this->_page->link_title;
         }
     }
     
@@ -351,9 +436,14 @@ final class Oop_Drupal_Page_Getter
     /**
      * 
      */
-    public function getPath()
+    public function getPath( $alias = true )
     {
-        return $this->_processedPath;
+        if( !$alias ) {
+            
+            return $this->_processedPath;
+        }
+        
+        return ( $this->_page->dst ) ? $this->_page->dst : $this->_processedPath;
     }
     
     /**
@@ -362,21 +452,5 @@ final class Oop_Drupal_Page_Getter
     public function getTitle()
     {
         return $this->_processedTitle;
-    }
-    
-    /**
-     * 
-     */
-    public function getPage()
-    {
-        return clone( $this->_page );
-    }
-    
-    /**
-     * 
-     */
-    public function getRouter()
-    {
-        return clone( $this->_router );
     }
 }
