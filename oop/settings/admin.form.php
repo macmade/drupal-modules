@@ -6,6 +6,6 @@ $formConf = array(
         '#default_value' => '(at)',
         '#size'          => 5,
         '#maxlength'     => 5,
-        '#required'      => true,
+        '#required'      => true
     )
 );

@@ -6,7 +6,7 @@ $formConf = array(
         '#default_value' => '1',
         '#size'          => 5,
         '#maxlength'     => 5,
-        '#required'      => true,
+        '#required'      => true
     ),
     'css_file' => array(
         '#type'          => 'textfield',
