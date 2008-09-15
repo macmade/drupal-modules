@@ -49,7 +49,7 @@ class emailcrypt extends Oop_Drupal_ModuleBase
      * @param   string  The content to filter
      * @return  string  The prepared text
      */
-    protected function _prepareFilter( $delta, $format, $text )
+    public function prepareFilter( $delta, $format, $text )
     {
         // Returns the text
         return $text;
@@ -64,7 +64,7 @@ class emailcrypt extends Oop_Drupal_ModuleBase
      * @return  string  The processed text
      * @see     _cryptEmail
      */
-    protected function _processFilter( $delta, $format, $text )
+    public function processFilter( $delta, $format, $text )
     {
         // Replaces the linked email addresses
         $text = preg_replace_callback(

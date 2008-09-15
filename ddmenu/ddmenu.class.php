@@ -24,57 +24,6 @@ class ddmenu extends Oop_Drupal_ModuleBase
     protected $_delta    = 0;
     
     /**
-     * Gets the block view
-     * 
-     * @param   Oop_Xhtml_Tag   The placeholder for the module content
-     * @param   int             The delta offset, used to generate different contents for different blocks
-     * @return  NULL
-     */
-    protected function _getBlock( Oop_Xhtml_Tag $content, $delta )
-    {
-        $css = variable_get( $this->_modName . '_css_file', false );
-        
-        if( $css ) {
-            
-            $this->_includeCss( $css );
-            
-        } else {
-            
-            $this->_includeModuleCSS();
-        }
-        
-        $this->_delta = $delta;
-        
-        $linkType = variable_get( $this->_modName . '_linktype_' . $this->_delta, 'primary' );
-        
-        switch( $linkType ) {
-            
-            case 'primary':
-                
-                $section = 'primary-links';
-                break;
-                
-            case 'secondary':
-                
-                $section = 'secondary-links';
-                break;
-            
-            default:
-                
-                $section = $linkType;
-                break;
-        }
-        
-        $this->_path = self::$_request->q;
-        
-        $this->_iconDir  = $this->_getIcon( 'folder.png' );
-        $this->_iconPage = $this->_getIcon( 'page_white.png' );
-        $this->_includeModuleScript();
-        $list = $content->ul;
-        $this->_getPages( $list, $section, 0 );
-    }
-    
-    /**
      * 
      */
     protected function _getPages( Oop_Xhtml_Tag $list, $type, $parent )
@@ -160,6 +109,57 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 }
             }
         }
+    }
+    
+    /**
+     * Gets the block view
+     * 
+     * @param   Oop_Xhtml_Tag   The placeholder for the module content
+     * @param   int             The delta offset, used to generate different contents for different blocks
+     * @return  NULL
+     */
+    public function getBlock( Oop_Xhtml_Tag $content, $delta )
+    {
+        $css = variable_get( $this->_modName . '_css_file', false );
+        
+        if( $css ) {
+            
+            $this->_includeCss( $css );
+            
+        } else {
+            
+            $this->_includeModuleCSS();
+        }
+        
+        $this->_delta = $delta;
+        
+        $linkType = variable_get( $this->_modName . '_linktype_' . $this->_delta, 'primary' );
+        
+        switch( $linkType ) {
+            
+            case 'primary':
+                
+                $section = 'primary-links';
+                break;
+                
+            case 'secondary':
+                
+                $section = 'secondary-links';
+                break;
+            
+            default:
+                
+                $section = $linkType;
+                break;
+        }
+        
+        $this->_path = self::$_request->q;
+        
+        $this->_iconDir  = $this->_getIcon( 'folder.png' );
+        $this->_iconPage = $this->_getIcon( 'page_white.png' );
+        $this->_includeModuleScript();
+        $list = $content->ul;
+        $this->_getPages( $list, $section, 0 );
     }
     
     /**

@@ -27,7 +27,7 @@ class helloworld extends Oop_Drupal_ModuleBase
      * @param   int             The delta offset, used to generate different contents for different blocks
      * @return  NULL
      */
-    protected function _getBlock( Oop_Xhtml_Tag $content, $delta )
+    public function getBlock( Oop_Xhtml_Tag $content, $delta )
     {
         // Adds the hello world message
         $content->div->strong = $this->_lang->hello;

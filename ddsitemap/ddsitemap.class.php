@@ -24,59 +24,6 @@ class ddsitemap extends Oop_Drupal_ModuleBase
     protected $_delta    = 0;
     
     /**
-     * Gets the node view
-     * 
-     * @param   stdClass        The node object
-     * @param   Oop_Xhtml_Tag   The placeholder for the module content
-     * @param   
-     * @param   
-     * @return  NULL
-     */
-    protected function _getNode( stdClass $node, Oop_Xhtml_Tag $content, $teaser, $page )
-    {
-        $css = variable_get( $this->_modName . '_css_file', false );
-        
-        if( $css ) {
-            
-            $this->_includeCss( $css );
-            
-        } else {
-            
-            $this->_includeModuleCSS();
-        }
-        
-        $this->_delta = $delta;
-        
-        $linkType = variable_get( $this->_modName . '_linktype', 'primary' );
-        
-        switch( $linkType ) {
-            
-            case 'primary':
-                
-                $section = 'primary-links';
-                break;
-                
-            case 'secondary':
-                
-                $section = 'secondary-links';
-                break;
-            
-            default:
-                
-                $section = $linkType;
-                break;
-        }
-        
-        $this->_path = self::$_request->q;
-        
-        $this->_iconDir  = $this->_getIcon( 'folder.png' );
-        $this->_iconPage = $this->_getIcon( 'page_white.png' );
-        $this->_includeModuleScript();
-        $list = $content->ul;
-        $this->_getPages( $list, $section, 0 );
-    }
-    
-    /**
      * 
      */
     protected function _getPages( Oop_Xhtml_Tag $list, $type, $parent )
@@ -162,5 +109,58 @@ class ddsitemap extends Oop_Drupal_ModuleBase
                 }
             }
         }
+    }
+    
+    /**
+     * Gets the node view
+     * 
+     * @param   stdClass        The node object
+     * @param   Oop_Xhtml_Tag   The placeholder for the module content
+     * @param   
+     * @param   
+     * @return  NULL
+     */
+    public function getNode( Oop_Xhtml_Tag $content, stdClass $node, $teaser, $page )
+    {
+        $css = variable_get( $this->_modName . '_css_file', false );
+        
+        if( $css ) {
+            
+            $this->_includeCss( $css );
+            
+        } else {
+            
+            $this->_includeModuleCSS();
+        }
+        
+        $this->_delta = $delta;
+        
+        $linkType = variable_get( $this->_modName . '_linktype', 'primary' );
+        
+        switch( $linkType ) {
+            
+            case 'primary':
+                
+                $section = 'primary-links';
+                break;
+                
+            case 'secondary':
+                
+                $section = 'secondary-links';
+                break;
+            
+            default:
+                
+                $section = $linkType;
+                break;
+        }
+        
+        $this->_path = self::$_request->q;
+        
+        $this->_iconDir  = $this->_getIcon( 'folder.png' );
+        $this->_iconPage = $this->_getIcon( 'page_white.png' );
+        $this->_includeModuleScript();
+        $list = $content->ul;
+        $this->_getPages( $list, $section, 0 );
     }
 }
