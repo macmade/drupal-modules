@@ -141,6 +141,26 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
+     * Drupal 'form' hook
+     * 
+     * @return array    An array with the form configuration
+     */
+    public function form()
+    {
+        // Gets the path of the configuration file
+        $confPath = self::$_classManager->getModulePath( $this->_modName )
+                  . 'settings'
+                  . DIRECTORY_SEPARATOR
+                  . 'node.form.php';
+        
+        // Creates the form
+        $form = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+        
+        // Returns the form
+        return $form->getConf();
+    }
+    
+    /**
      * Drupal 'block' hook
      * 
      * @param   string                      The kind of block to display
