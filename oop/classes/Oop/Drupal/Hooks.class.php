@@ -168,7 +168,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   
      * @return  stdClass    The node object
      */
-    public function view( stdClass $node, $teaser = false, $page = false )
+    public function view( stdClass $node, $teaser, $page)
     {
         // Prepares the node
         $node = node_prepare( $node, $teaser );
@@ -176,8 +176,27 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         // Checks the view method
         $this->_checkMethod( '_getNode' );
         
+        // Creates the storage tag for the module
+        $content            = new Oop_Xhtml_Tag( 'div' );
+        
+        // Adds the base CSS class
+        $content[ 'class' ] = 'module-' . $this->_modName;
+        
         // Calls the node view method
-        $this->_getNode( $node, $teaser, $page );
+        $this->_getNode( $content, $teaser, $page );
+        
+        // Adds the title and the content, wrapped in HTML comments
+        $node->content[ 'body' ][ '#value' ] = self::$_NL
+                                             . self::$_NL
+                                             . '<!-- Start of module \'' . $this->_modName . '\' -->'
+                                             . self::$_NL
+                                             . self::$_NL
+                                             . $content
+                                             . self::$_NL
+                                             . self::$_NL
+                                             . '<!-- End of module \'' . $this->_modName . '\' -->'
+                                             . self::$_NL
+                                             . self::$_NL;
         
         // Returns the node
         return $node;
