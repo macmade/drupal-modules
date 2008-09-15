@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<labels>
+    <system>
+        <menu_admin_title>Terminal</menu_admin_title>
+        <menu_admin_description>Allows you to run shell commands on the server. This may be useful for changing files permissions, creating symbolic links, uncompressing archives, etc.
+</menu_admin_description>
+    </system>
+    <module>
+        <menuTitle>Terminal</menuTitle>
+        <notNumeric>Please enter a numeric value</notNumeric>
+    </module>
+    <settings>
+        <font_size_title>Font size</font_size_title>
+        <font_size_description>The font size of the terminal.</font_size_description>
+        <background_title>Background</background_title>
+        <background_description>The background color of the terminal.</background_description>
+        <foreground_title>Foreground</foreground_title>
+        <foreground_description>The foreground color of the terminal.</foreground_description>
+        <prompt_title>Prompt</prompt_title>
+        <prompt_description>The foreground color of the prompt.</prompt_description>
+        <history_title>History</history_title>
+        <history_description>Memorize shell commands.</history_description>
+        <exec_command_title>Execution</exec_command_title>
+        <exec_command_description>The PHP function that will call the shell command.</exec_command_description>
+        <exec_command_option_proc_open>proc_open()</exec_command_option_proc_open>
+        <exec_command_option_exec>exec()</exec_command_option_exec>
+        <exec_command_option_shell_exec>shell_exec()</exec_command_option_shell_exec>
+        <exec_command_option_system>system()</exec_command_option_system>
+        <exec_command_option_passthru>passthru()</exec_command_option_passthru>
+        <exec_command_option_popen>popen()</exec_command_option_popen>
+    </settings>
+</labels>

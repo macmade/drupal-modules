@@ -1,0 +1,27 @@
+<?php
+
+function terminal_perm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'terminal' )->perm();
+}
+
+function terminal_menu()
+{
+    $module = Oop_Core_ClassManager::getInstance()->getModule( 'terminal' );
+    return $module->addMenuItems( $module->addAdminSettingsMenu() );
+}
+
+function terminal_adminForm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'terminal' )->getAdminForm();
+}
+
+function terminal_adminForm_validate( $form, &$formState )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'terminal' )->validateAdminForm( $form, $formState );
+}
+
+function terminal_show()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'terminal' )->createModuleContent( 'show' );
+}
