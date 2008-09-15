@@ -409,7 +409,10 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
             // Prepares the filter
             return Oop_Callback_Helper::apply(
-                'prepareFilter',
+                array(
+                    $this,
+                    'prepareFilter'
+                ),
                 array(
                     $delta,
                     $format,
@@ -424,7 +427,10 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
             // Prepares the filter
             return Oop_Callback_Helper::apply(
-                'processFilter',
+                array(
+                    $this,
+                    'processFilter'
+                ),
                 array(
                     $delta,
                     $format,
