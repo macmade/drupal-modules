@@ -204,7 +204,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         $content[ 'class' ] = 'module-' . $this->_modName;
         
         // Calls the node view method
-        $this->_getNode( $content, $teaser, $page );
+        $this->_getNode( $node, $content, $teaser, $page );
         
         // Adds the title and the content, wrapped in HTML comments
         $node->content[ 'body' ][ '#value' ] = self::$_NL
