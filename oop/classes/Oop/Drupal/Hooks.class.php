@@ -269,6 +269,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   
      * @param   
      * @return  stdClass    The node object
+     * @throws  Oop_Drupal_Hooks_Exception  If the method getNode() is not defined in the module class
      */
     public function view( stdClass $node, $teaser, $page)
     {
@@ -299,7 +300,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   int                         The delta offset, used to generate different contents for different blocks
      * @param   array                       The edited items (only if $op is 'save')
      * @return  array                       The Drupal block
-     * @throws  Oop_Drupal_Hooks_Exception  If the method _getView() is not defined in the module class
+     * @throws  Oop_Drupal_Hooks_Exception  If the method getBlock() is not defined in the module class
      * @see     _checkMethod
      */
     public function block( $op, $delta, $edit )
@@ -382,8 +383,8 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   int                         Which input format the filter is being used
      * @param   string                      The content to filter
      * @return  mixed                       Depends on $op
-     * @throws  Oop_Drupal_Hooks_Exception  If the method _prepareFilter() is not defined in the module class
-     * @throws  Oop_Drupal_Hooks_Exception  If the method _processFilter() is not defined in the module class
+     * @throws  Oop_Drupal_Hooks_Exception  If the method prepareFilter() is not defined in the module class
+     * @throws  Oop_Drupal_Hooks_Exception  If the method processFilter() is not defined in the module class
      * @see     _checkMethod
      */
     public function filter( $op, $delta, $format, $text )
@@ -404,7 +405,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         } elseif( $op === 'prepare' ) {
             
             // Checks the prepare method
-            $this->_checkMethod( '_prepareFilter' );
+            $this->_checkMethod( 'prepareFilter' );
             
             // Prepares the filter
             return Oop_Callback_Helper::apply(
@@ -419,7 +420,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         } elseif( $op === 'process' ) {
             
             // Process the filter
-            $this->_checkMethod( '_processFilter' );
+            $this->_checkMethod( 'processFilter' );
             
             // Prepares the filter
             return Oop_Callback_Helper::apply(
