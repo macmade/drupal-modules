@@ -52,6 +52,46 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
+     * 
+     */
+    public function createModuleContent( $callbackMethod, array $args = array() )
+    {
+        // Checks the callback method
+        $this->_checkMethod( $callbackMethod );
+        
+        // Creates the storage tag for the module
+        $content            = new Oop_Xhtml_Tag( 'div' );
+        
+        // Adds the base CSS class
+        $content[ 'class' ] = 'module-' . $this->_modName;
+        
+        // Adds the content object to the arguments
+        array_unshift( $args, $content );
+        
+        // Calls the callback method
+        Oop_Callback_Helper::apply(
+            array(
+                $this,
+                $callbackMethod
+            ),
+            $args
+        );
+        
+        // Returns the full content
+        return self::$_NL
+             . self::$_NL
+             . '<!-- Start of module \'' . $this->_modName . '\' -->'
+             . self::$_NL
+             . self::$_NL
+             . $content
+             . self::$_NL
+             . self::$_NL
+             . '<!-- End of module \'' . $this->_modName . '\' -->'
+             . self::$_NL
+             . self::$_NL;
+    }
+    
+    /**
      * Sets the number of available blocks
      * 
      * @param   int     The desired number of blocks
@@ -235,30 +275,18 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         // Prepares the node
         $node = node_prepare( $node, $teaser );
         
-        // Checks the view method
-        $this->_checkMethod( '_getNode' );
-        
-        // Creates the storage tag for the module
-        $content            = new Oop_Xhtml_Tag( 'div' );
-        
-        // Adds the base CSS class
-        $content[ 'class' ] = 'module-' . $this->_modName;
-        
-        // Calls the node view method
-        $this->_getNode( $node, $content, $teaser, $page );
+        // Creates the module content
+        $content            = $this->createModuleContent(
+            'getNode',
+            array(
+                $node,
+                $teaser,
+                $page
+            )
+        );
         
         // Adds the title and the content, wrapped in HTML comments
-        $node->content[ 'body' ][ '#value' ] = self::$_NL
-                                             . self::$_NL
-                                             . '<!-- Start of module \'' . $this->_modName . '\' -->'
-                                             . self::$_NL
-                                             . self::$_NL
-                                             . $content
-                                             . self::$_NL
-                                             . self::$_NL
-                                             . '<!-- End of module \'' . $this->_modName . '\' -->'
-                                             . self::$_NL
-                                             . self::$_NL;
+        $node->content[ 'body' ][ '#value' ] = $content;
         
         // Returns the node
         return $node;
@@ -329,31 +357,17 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             // Index for the label
             $langIndex = ( $this->_sameBlocks ) ? 0 : $delta;
             
-            // Checks the view method
-            $this->_checkMethod( '_getBlock' );
-            
-            // Creates the storage tag for the module
-            $content            = new Oop_Xhtml_Tag( 'div' );
-            
-            // Adds the base CSS class
-            $content[ 'class' ] = 'module-' . $this->_modName;
-            
-            // Gets the 'view' section from the child class
-            $this->_getBlock( $content, $delta );
+            // Creates the module content
+            $content   = $this->createModuleContent(
+                'getBlock',
+                array(
+                    $delta
+                )
+            );
             
             // Adds the title and the content, wrapped in HTML comments
             $block['subject'] = $this->_lang->getLabel( 'block_' . $langIndex . '_subject', 'system' ); 
-            $block['content'] = self::$_NL
-                              . self::$_NL
-                              . '<!-- Start of module \'' . $this->_modName . '\' -->'
-                              . self::$_NL
-                              . self::$_NL
-                              . $content
-                              . self::$_NL
-                              . self::$_NL
-                              . '<!-- End of module \'' . $this->_modName . '\' -->'
-                              . self::$_NL
-                              . self::$_NL;
+            $block['content'] = $content;
         }
         
         // Returns the block
@@ -393,7 +407,14 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $this->_checkMethod( '_prepareFilter' );
             
             // Prepares the filter
-            return $this->_prepareFilter( $delta, $format, $text );
+            return Oop_Callback_Helper::apply(
+                'prepareFilter',
+                array(
+                    $delta,
+                    $format,
+                    $text
+                )
+            );
             
         } elseif( $op === 'process' ) {
             
@@ -401,7 +422,14 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $this->_checkMethod( '_processFilter' );
             
             // Prepares the filter
-            return $this->_processFilter( $delta, $format, $text );
+            return Oop_Callback_Helper::apply(
+                'processFilter',
+                array(
+                    $delta,
+                    $format,
+                    $text
+                 )
+             );
         }
         
         // Returns the text
