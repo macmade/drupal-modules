@@ -182,6 +182,47 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
+     * Drupal 'insert' hook
+     * 
+     * @param   stdClass    The node object
+     * @return  NULL
+     */
+    public function insert( stdClass $node )
+    {
+        // Process the node properties
+        foreach( $node as $key => $value ) {
+            
+            // Checks the property name
+            if( substr( $key, 0, strlen( $this->_modName ) + 1 ) === $this->_modName . '_' ) {
+                
+                // Sets the variable
+                variable_set( $key, $value );
+            }
+        }
+    }
+    
+    /**
+     * Drupal 'update' hook
+     * 
+     * @param   stdClass    The node object
+     * @return  NULL
+     */
+    public function update( stdClass $node )
+    {
+        // Process the node properties
+        foreach( $node as $key => $value ) {
+            
+            // Checks the property name
+            if( substr( $key, 0, strlen( $this->_modName ) + 1 ) === $this->_modName . '_' ) {
+                
+                // Sets the variable
+                variable_set( $key, $value );
+            }
+        }
+    }
+    
+    
+    /**
      * Drupal 'view' hook
      * 
      * @param   stdClass    The node object
