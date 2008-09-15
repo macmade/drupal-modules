@@ -13,8 +13,7 @@ function shell() {
     var _form                = null;
     var _result              = null;
     var _command             = null;
-    var _history             = null;
-    var _lastCommand         = null;
+    var _history             = new Array();
     var _cwd                 = null;
     
     // Terminal prompt
@@ -99,7 +98,7 @@ function shell() {
         _result.appendChild( commandLine );
         
         // Adds the command to the history
-        //_addHistory( command );
+        _addHistory( command );
         
         // Creates a new Ajax request
         $.ajax(
@@ -166,42 +165,18 @@ function shell() {
      */
     function _addHistory( command )
     {
-        // Creates the option element
-        var option   = document.createElement( 'option' );
-        var label    = document.createTextNode( command );
-        option.value = command;
-        option.appendChild( label );
-        
-        // Checks if the select contains items
-        if( _history.childNodes.length > 0 ) {
-            
-            // Inserts the new command at the top
-            _history.insertBefore( option, _history.firstChild );
-            
-        } else {
-            
-            // Insert the first command
-            _history.appendChild( option );
-        }
-        
-        // Unselects the last selected option
-        if( _lastCommand !== null ) {
-            
-            _lastCommand.selected = false;
-        }
-        
-        // Memorizes the current command
-        _lastCommand          = option;
-        
-        // Selects the current comand
-        option.selected       = true;
+        // Inserts the new command in the history
+        _history.push( command );
         
         // Checks the length of the history menu
-        if( _history.childNodes.length > _historyLength ) {
+        if( _history.length > _historyLength ) {
             
-            // Removes the last item from the history
-            _history.removeChild( _history.lastChild );
+            // Removes the first item from the history
+            _history.shift();
         }
+        
+        // Increase the directory index
+        _currentHistoryIndex++;
         
         return true;
     }
@@ -244,28 +219,28 @@ function shell() {
         var event = ( !event ) ? window.event : event;
         
         // History direction
-        var direction = ( event.keyCode == 38 ) ? 1 : ( ( event.keyCode == 40 ) ? -1 : false );
+        var direction = ( event.keyCode == 38 ) ? -1 : ( ( event.keyCode == 40 ) ? 1 : false );
         
         if( direction ) {
             
             // New history index
-            var newIndex = _currentHistoryIndex + direction;
+            var newIndex = _currentHistoryIndex + 1 + direction;
             
-            // Checks the new index
-            if( newIndex == history.length ) {
+            // Checks for the boundaries
+            if( newIndex == -1 ) {
                 
-                // Restart from beginning of history
+                // Stays at the beginning of the history
                 newIndex = 0;
                 
-            } else if( newIndex <= -1 ) {
+            } else if( newIndex == _history.length + 1 ) {
                 
-                // Restart from end of history
-                newIndex = history.length - 1;
+                // Stays at the end of the history
+                newIndex = _history.length;
             }
             
             // Writes the command and stores the new index
-            _command.value       = _history.options[ newIndex ].value;
-            _currentHistoryIndex = newIndex;
+            _command.value       = ( _history[ newIndex ] !== undefined ) ? _history[ newIndex ] : '';
+            _currentHistoryIndex = newIndex - 1;
             
             return true;
         }
