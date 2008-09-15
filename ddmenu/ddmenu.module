@@ -19,7 +19,7 @@ function ddmenu_block( $op = 'list', $delta = 0, array $edit = array() )
 
 function ddmenu_menu()
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->menuAdmin();
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->addAdminSettingsMenu();
 }
 
 function ddmenu_adminForm()

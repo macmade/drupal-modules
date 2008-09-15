@@ -48,7 +48,7 @@ Oop_Drupal_ModuleBase::setEmailCryptSymbol( variable_get( 'oop_email_crypt_symbo
  */
 function oop_menu()
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->menuAdmin();
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->addAdminSettingsMenu();
 }
 
 /**

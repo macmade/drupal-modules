@@ -285,11 +285,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
-     * Drupal 'menu' hook for the settings page
+     * Adds a section in admin/settings pages for the current module
      * 
-     * @return  array                       The menu items array
+     * @return  array   The menu items array
      */
-    public function menuAdmin()
+    public function addAdminSettingsMenu()
     {
         // Storage
         $items = array();
@@ -301,7 +301,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             'page callback'    => 'drupal_get_form',
             'page arguments'   => array( $this->_modName . '_adminForm' ),
             'access arguments' => array( 'access administration pages' ),
-            'type'             => MENU_NORMAL_ITEM,
+            'type'             => MENU_NORMAL_ITEM
         );
         
         // Returns the items array
