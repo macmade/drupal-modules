@@ -80,7 +80,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             case 'admin/help#' . $this->_modName:
                 
                 // Returns the localized help text
-                return '<p>' . $this->_lang->getLabel( 'block_help', 'system' ) . '</p>';
+                return '<p>' . $this->_lang->getLabel( 'help', 'system' ) . '</p>';
                 break;
         }
         
@@ -123,7 +123,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
                 
                 // Returns the help text
                 $block[ $i ] = array(
-                    'info' => $this->_lang->getLabel( 'block_' . $langIndex . '_help', 'system' )
+                    'info' => $this->_lang->getLabel( 'block_' . $langIndex . '_info', 'system' )
                 );
             }
         

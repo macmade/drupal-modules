@@ -2,7 +2,7 @@
 <labels>
     <system>
         <block_0_subject>Hello World</block_0_subject>
-        <block_0_help>Hello World</block_0_help>
+        <block_0_info>Hello World</block_0_info>
     </system>
     <module>
         <hello>I'm a Drupal module, but on a PHP5 class with full OOP support!</hello>

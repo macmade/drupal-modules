@@ -2,7 +2,7 @@
 <labels>
     <system>
         <block_0_subject>Drop-Down Menu</block_0_subject>
-        <block_0_help>Drop-Down Menu</block_0_help>
+        <block_0_info>Drop-Down Menu</block_0_info>
         <menu_admin_title>Drop-Down Menu</menu_admin_title>
         <menu_admin_description>Configures the general settings of the Drop-Down Menu module.</menu_admin_description>
     </system>

@@ -2,7 +2,7 @@
 <labels>
     <system>
         <block_0_subject>Foo</block_0_subject>
-        <block_0_help>Foo</block_0_help>
+        <block_0_info>Foo</block_0_info>
     </system>
     <module>
         <hello>Hello, I'm the 'foo' module</hello>
