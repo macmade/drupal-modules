@@ -88,6 +88,22 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
+     * Drupal 'node_info' hook
+     * 
+     * @return array    The information array for the Drupal node
+     */
+    public function node_info()
+    {
+        return array(
+            $this->_modName => array(
+                'name'        => $this->_lang->getLabel( 'node_info_name', 'system' ),
+                'module'      => $this->_modName,
+                'description' => $this->_lang->getLabel( 'node_info_description', 'system' )
+            )
+        );
+    } 
+    
+    /**
      * Drupal 'perm' hook
      * 
      * @return array    The permissions array for the Drupal module
