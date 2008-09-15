@@ -150,22 +150,25 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     public function form( stdClass $node, $addTitle = true )
     {
         // Gets the path of the configuration file
-        $confPath = self::$_classManager->getModulePath( $this->_modName )
-                  . 'settings'
-                  . DIRECTORY_SEPARATOR
-                  . 'node.form.php';
+        $confPath  = self::$_classManager->getModulePath( $this->_modName )
+                   . 'settings'
+                   . DIRECTORY_SEPARATOR
+                   . 'node.form.php';
         
         // Creates the form
-        $form     = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+        $form      = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
         
         // Gets the node type
-        $type     = node_get_types( 'type', $node );
+        $type      = node_get_types( 'type', $node );
+        
+        // Gets the form configuration array
+        $finalForm = $form->getConf();
         
         // Checks if the title field mus be added
         if( $addTitle ) {
             
             // Adds the title field
-            $form[ 'title' ] = array(
+            $finalForm[ 'title' ] = array(
                 '#type'          => 'textfield',
                 '#title'         => check_plain( $type->title_label ),
                 '#required'      => true,
@@ -175,7 +178,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         }
         
         // Returns the form
-        return $form->getConf();
+        return $finalForm;
     }
     
     /**
