@@ -23,6 +23,8 @@ class terminal extends Oop_Drupal_ModuleBase
      */
     public function show( Oop_Xhtml_Tag $content )
     {
+        $this->_includeModuleScript();
+        $this->_includeModuleCss();
         $content->strong = __METHOD__;
     }
     
