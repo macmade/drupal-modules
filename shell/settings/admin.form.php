@@ -3,7 +3,7 @@
 $formConf = array(
     'font_size' => array(
         '#type'          => 'textfield',
-        '#default_value' => '12',
+        '#default_value' => '10',
         '#size'          => 5,
         '#maxlength'     => 5,
         '#required'      => true

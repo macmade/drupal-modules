@@ -61,18 +61,281 @@ class shell extends Oop_Drupal_ModuleBase
     /**
      * 
      */
+    public function __construct( $modPath )
+    {
+        parent::__construct( $modPath );
+        
+        if( isset( $this->_modVars[ 'ajaxCall' ] ) ) {
+            
+            $this->_processCommand();
+            exit();
+        }
+    }
+    
+    /**
+     * 
+     */
+    protected function _processCommand()
+    {
+        // Gets the execution function
+        $execCommand = variable_get( $this->_modName . '_exec_command', 'proc_open' );
+        
+        // Sets the current working directory
+        $this->_cwd = ( isset( $this->_modVars[ 'cwd' ] ) ) ? $this->_modVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
+        
+        // Sets the new line character
+        self::$_NL = chr( 13 ) . chr( 10 );
+        
+        // Gets the command
+        $cmd         = $this->_modVars[ 'command' ];
+        
+        // Checks for an empty command
+        if( $cmd == '' ) {
+            
+            // Prints the current workind directory and exit
+            print $this->NL . $this->_cwd;
+        }
+        
+        // Gets multiple commands
+        $commands = explode( ' && ', $cmd );
+        
+        // Checks the execution function
+        switch( $execCommand ) {
+            
+            case 'exec':
+                $this->_exec( $commands );
+                break;
+            
+            case 'proc_open':
+                
+                $this->_procOpen( $commands );
+                break;
+            
+            case 'system':
+                $this->_system( $commands );
+                break;
+            
+            case 'passthru':
+                $this->_passthru( $commands );
+                break;
+            
+            case 'popen':
+                $this->_pOpen( $commands );
+                break;
+            
+            case 'shell_exec':
+                $this->_shellExec( $commands );
+                break;
+        }
+        
+        // Prints the current working directory and exit
+        print $this->NL . $this->_cwd;
+    }
+    
+    /**
+     * 
+     */
+    protected function _handleCwd( $command )
+    {
+        // Command is 'cd'
+        if( preg_match( '/^\s*cd\s*$/', $command ) ) {
+            
+            // Home is Drupal site
+            $this->_cwd = self::$_classManager->getDrupalPath();
+        }
+        
+        // Change directory command
+        if( preg_match( '/\s*cd ([^\s]+)\s*/', $command, $matches ) ) {
+            
+            // DIrectory to change
+            $dir = $matches[ 1 ];
+            
+            // Checks for an absolute path
+            if( substr( $dir, 0, 1 ) == '/' ) {
+                
+                // Sets the current directory
+                $this->_cwd = $matches[ 1 ];
+                
+            } else {
+                
+                // Sets the current directory
+                $this->_cwd = $this->_cwd . $matches[ 1 ];
+            }
+        }
+        
+        // Adds a trailing slash if necessary
+        if( substr( $this->_cwd, strlen( $this->_cwd ) - 1, 1 ) != '/' ) {
+            
+            $this->_cwd .= '/';
+        }
+        
+        // Normalize the path
+        $this->_cwd = preg_replace( '/\/\/+/', '/', $this->_cwd );
+        $this->_cwd = str_replace( '/./', '/', $this->_cwd );
+        
+        // Get path parts
+        $cwdParts = explode( '/', $this->_cwd );
+        $cwd      = array();
+        
+        // Process each part of the path
+        foreach( $cwdParts as $key => $value  ) {
+            
+            // Previous directory
+            if( $value == '..' ) {
+                
+                // Removes last directory
+                array_pop( $cwd );
+                
+            } else {
+                
+                // Stores current directory
+                $cwd[] = $value;
+            }
+        }
+        
+        // Rebuilds the path
+        $this->_cwd = implode( '/', $cwd );
+        
+        // Stores the CWD in the session
+        $this->_storeSessionVar( 'cwd', $this->_cwd );
+    }
+    
+    /**
+     * 
+     */
+    protected function _exec( array $commands )
+    {
+        
+    }
+    
+    /**
+     * 
+     */
+    protected function _procOpen( array $commands )
+    {
+        // Storage
+        $return = '';
+        $error  = '';
+        
+        // Process pipes
+        $descriptorSpec = array(
+            0 => array( 'pipe', 'r' ),
+            1 => array( 'pipe', 'w' ),
+            2 => array( 'pipe', 'w' )
+        );
+        
+        // Process each command
+        foreach( $commands as $command ) {
+            
+            // Support for cd commands
+            $this->_handleCwd( $command );
+            
+            // Do not process cd commands
+            if( substr( $command, 0, 3 ) != 'cd ' && $command != 'cd' ) {
+                
+                // Open process
+                $process = proc_open(
+                    $command,
+                    $descriptorSpec,
+                    $pipes,
+                    $this->_cwd,
+                    $_ENV
+                );
+                
+                // Checks the process
+                if( is_resource( $process ) ) {
+                    
+                    // Process pipes
+                    $stdin  = $pipes[0];
+                    $stdout = $pipes[1];
+                    $stderr = $pipes[2];
+                    
+                    // Process and stores the result
+                    while( !feof( $stdout ) ) {
+                        
+                        $return .= fgets( $stdout );
+                    }
+    
+                    // Process and stores errors
+                    while( !feof( $stderr ) ) {
+                        
+                        $error .= fgets( $stderr );
+                    }
+                    
+                    // Close process pipes
+                    fclose( $stdin );
+                    fclose( $stdout );
+                    fclose( $stderr );
+                    
+                    // Close the process
+                    proc_close( $process );
+                    
+                    // Checks for errors
+                    if( empty( $error ) ) {
+                        
+                        // Display results
+                        print preg_replace( '/(\r\n|\r|\n)/', self::$_NL, $return );
+                        
+                    } else {
+                        
+                        // Display errors, current working directory and exit
+                        print $error;
+                        print self::$_NL . $this->_cwd;
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * 
+     */
+    protected function _system( array $commands )
+    {
+        
+    }
+    
+    /**
+     * 
+     */
+    protected function _passthru( array $commands )
+    {
+        
+    }
+    
+    /**
+     * 
+     */
+    protected function _pOpen( array $commands )
+    {
+        
+    }
+    
+    /**
+     * 
+     */
+    protected function _shellExec( array $commands )
+    {
+        
+    }
+    
+    /**
+     * 
+     */
     public function show( Oop_Xhtml_Tag $content )
     {
         $this->_includeModuleCss();
         
         $this->_history         = variable_get( $this->_modName . '_history',      true );
-        $this->_fontSize        = variable_get( $this->_modName . '_font_size',    12 );
+        $this->_fontSize        = variable_get( $this->_modName . '_font_size',    10 );
         $this->_execCommand     = variable_get( $this->_modName . '_exec_command', 'proc_open' );
         $this->_backgroundColor = variable_get( $this->_modName . '_background',   '#000000' );
         $this->_foregroundColor = variable_get( $this->_modName . '_foreground',   '#FFFFFF' );
         $this->_promptColor     = variable_get( $this->_modName . '_prompt',       '#00FF00' );
         
-        $this->_cwd             = getcwd();
+        // Sets the current working directory
+        $this->_cwd = ( isset( $this->_modVars[ 'cwd' ] ) ) ? $this->_modVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
+                
         $this->_prompt          = $_SERVER[ 'HTTP_HOST' ]
                                 . ': '
                                 . $GLOBALS[ 'user' ]->name
@@ -96,12 +359,21 @@ class shell extends Oop_Drupal_ModuleBase
         $promptInput[ 'name' ]  = $this->_modName . '_command';
         $promptInput[ 'type' ]  = 'text';
         $promptInput[ 'size' ]  = 50;
-        $script                 = $content->script;
-        $script[ 'type' ]       = 'text/javascript';
-        $script[ 'charset' ]    = 'utf-8';
-        $script[ 'src' ]        = self::$_classManager->getModuleWebPath( 'shell' )
+        $script1                = $content->script;
+        $script1[ 'type' ]      = 'text/javascript';
+        $script1[ 'charset' ]   = 'utf-8';
+        $script1[ 'src' ]       = self::$_classManager->getModuleWebPath( 'shell' )
                                 . $this->_modName
                                 . '.js';
+                                
+        $script2                = $content->script;
+        $script2[ 'type' ]      = 'text/javascript';
+        $script2[ 'charset' ]   = 'utf-8';
+        
+        $script2->addTextData(
+            'shell.setPrompt( \'' . $this->_prompt . '\' );'
+          . 'shell.setAjaxUrl( \'/' . self::$_request->q . '\' );'
+        );
         
         $this->_id( $cwd, 'cwd' );
         $this->_id( $cwdPath, 'cwdPath' );
@@ -118,7 +390,7 @@ class shell extends Oop_Drupal_ModuleBase
                      . $this->_foregroundColor
                      . '; font-size: '
                      . $this->_fontSize
-                     . ';';
+                     . 'px;';
                     
         $promptStyle = 'background-color: '
                      . $this->_backgroundColor
@@ -126,7 +398,7 @@ class shell extends Oop_Drupal_ModuleBase
                      . $this->_promptColor
                      . '; font-size: '
                      . $this->_fontSize
-                    . ';';
+                    . 'px;';
         
         $shell[ 'style' ]       = $shellStyle;
         $promptInput[ 'style' ] = $shellStyle;

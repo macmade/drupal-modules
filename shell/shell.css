@@ -37,6 +37,7 @@ div.module-shell {
 
 .module-shell-result {
     white-space: pre;
+    line-height: 1em;
 }
 
 #module-shell-form {

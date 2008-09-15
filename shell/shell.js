@@ -60,6 +60,7 @@ function shell() {
      */
     function _exec()
     {
+        
         // Command to run (from arguments or text input)
         if( typeof arguments[ 0 ] == 'string' ) {
             
@@ -98,40 +99,39 @@ function shell() {
         _result.appendChild( commandLine );
         
         // Adds the command to the history
-        _addHistory( command );
+        //_addHistory( command );
         
         // Creates a new Ajax request
-        new Ajax.Request(
-            _ajaxUrl,
+        $.ajax(
             {
+                // URL to use
+                url        : _ajaxUrl,
+                
                 // Method to use
-                method     : 'get',
+                tyoe       : 'GET',
                 
                 // Ajax parameters
-                parameters : {
-                    ajaxCall : 1,
-                    command  : command
+                data       : {
+                    'shell[ajaxCall]' : 1,
+                    'shell[command]'  : command
                 },
                 
                 // Function to call in case of success
-                onSuccess  : function( transport )
+                success    : function( data, textStatus )
                 {
-                    // Gets the response from the server
-                    var commandReturn = transport.responseText;
-                    
                     // Gets each line of the response
-                    var cwdParts      = commandReturn.split( '\r\n' );
+                    var cwdParts     = data.split( '\r\n' );
                     
                     // Current directory is the last line
-                    var cwd           = cwdParts[ cwdParts.length - 1 ];
+                    var cwd          = cwdParts[ cwdParts.length - 1 ];
                     
                     // Removes the last line from the response
-                    commandReturn     = commandReturn.replace( /\r\n.+$/i, '' );
+                    data             = data.replace( /\r\n.+$/i, '' );
                     
                     // Creates the result element
-                    var result        = document.createElement( 'div' );
-                    result.className  = 'result';
-                    result.appendChild( document.createTextNode( commandReturn ) );
+                    var result       = document.createElement( 'div' );
+                    result.className = 'module-shell-result';
+                    result.appendChild( document.createTextNode( data ) );
                     
                     // Appends the result to the console
                     _result.appendChild( result );
@@ -144,7 +144,7 @@ function shell() {
                     
                     // Creates the element for the new working directory
                     _cwdPath    = document.createElement( 'path' );
-                    _cwdPath.id = 'cwdPath';
+                    _cwdPath.id = 'module-shell-cwdPath';
                     _cwdPath.appendChild( document.createTextNode( cwd ) );
                     
                     // Appends the working directory
