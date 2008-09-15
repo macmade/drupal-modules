@@ -143,9 +143,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * Drupal 'form' hook
      * 
-     * @return array    An array with the form configuration
+     * @param   stdClass    The node object
+     * @param   boolean     Wheter to add the title field or not
+     * @return  array       An array with the form configuration
      */
-    public function form()
+    public function form( stdClass $node, $addTitle = true )
     {
         // Gets the path of the configuration file
         $confPath = self::$_classManager->getModulePath( $this->_modName )
@@ -154,7 +156,23 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
                   . 'node.form.php';
         
         // Creates the form
-        $form = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+        $form     = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+        
+        // Gets the node type
+        $type     = node_get_types( 'type', $node );
+        
+        // Checks if the title field mus be added
+        if( $addTitle ) {
+            
+            // Adds the title field
+            $form[ 'title' ] = array(
+                '#type'          => 'textfield',
+                '#title'         => check_plain( $type->title_label ),
+                '#required'      => true,
+                '#default_value' => $node->title,
+                '#weight'        => -5
+            );
+        }
         
         // Returns the form
         return $form->getConf();
