@@ -114,6 +114,33 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
+     * Drupal 'access' hook
+     * 
+     * @return boolean
+     */
+    public function access( $op, $node )
+    {
+        // Checks the operation
+        if( $op === 'create' ) {
+            
+            // Only users with permission to do so may create this node type
+            return user_access( 'create ' . $this->_modName );
+            
+        } elseif( $op === 'update' || $op === 'delete' ) {
+            
+            // Users who create a node may edit or delete it later, assuming they have the necessary permissions
+            if( user_access( 'edit own ' . $this->_modName ) && ( $GLOBALS[ 'user' ]->uid === $node->uid ) ) {
+                
+                // Access granted
+                return true;
+            }
+        }
+        
+        // No access
+        return false;
+    }
+    
+    /**
      * Drupal 'block' hook
      * 
      * @param   string                      The kind of block to display
