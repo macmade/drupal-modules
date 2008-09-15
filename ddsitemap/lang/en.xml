@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<labels>
+    <system>
+        <menu_admin_title>Drop-Down Site Map</menu_admin_title>
+        <menu_admin_description>Configures the general settings of the Drop-Down Site Map module.</menu_admin_description>
+        <node_info_name>Drop-Down Site Map</node_info_name>
+        <node_info_description>Displays a drop-down site map for the primary, secondary or navigation links.</node_info_description>
+    </system>
+    <module>
+        <openClose>Open / Close</openClose>
+    </module>
+    <settings>
+        <linktype_title>Link type</linktype_title>
+        <linktype_description>Choose the kind of link to display</linktype_description>
+        <linktype_option_primary>Primary links</linktype_option_primary>
+        <linktype_option_secondary>Secondary links</linktype_option_secondary>
+        <linktype_option_navigation>Navigation links</linktype_option_navigation>
+        <css_file_title>CSS file</css_file_title>
+        <css_file_description>The optional CSS stylesheet to use instead of the default one. Please enter a path relative to the Drupal site.</css_file_description>
+    </settings>
+</labels>

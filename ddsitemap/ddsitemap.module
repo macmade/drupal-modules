@@ -1,0 +1,51 @@
+<?php
+
+function ddsitemap_help( $path, $arg )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->help( $path, $arg );
+}
+
+function ddsitemap_perm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->perm();
+}
+
+function ddsitemap_menu()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->addAdminSettingsMenu();
+}
+
+function ddsitemap_adminForm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->getAdminForm();
+}
+
+function ddsitemap_access( $op, $node )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->access( $op, $node );
+}
+
+function ddsitemap_form( stdClass $node )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->form( $node );
+}
+
+function ddsitemap_node_info()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->node_info();
+}
+
+function ddsitemap_view( stdClass $node, $teaser = false, $page = false )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->view( $node, $teaser, $page );
+}
+
+function ddsitemap_insert( stdClass $node )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->insert( $node );
+}
+
+function ddsitemap_update( stdClass $node )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->update( $node );
+}

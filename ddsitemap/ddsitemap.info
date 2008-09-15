@@ -1,0 +1,6 @@
+name = Drop-Down Sitemap
+description = Displays a drop-down site map for the primary, secondary or navigation links
+core = 6.x
+dependencies[] = oop
+package = Content elements
+php = 5.2
