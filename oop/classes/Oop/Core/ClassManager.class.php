@@ -58,6 +58,11 @@ final class Oop_Core_ClassManager
     private $_classDir        = '';
     
     /**
+     * The directory of the Drupal installation
+     */
+    private $_drupalRootDir   = '';
+    
+    /**
      * Class constructor
      * 
      * The class constructor is private to avoid multiple instances of the
@@ -67,6 +72,9 @@ final class Oop_Core_ClassManager
      */
     private function __construct()
     {
+        // Sets the Drupal installation directory
+        $this->_drupalRootDir = substr( $_SERVER[ 'SCRIPT_FILENAME' ], 0, -strlen( $_SERVER[ 'PHP_SELF' ] ) + 1 );
+        
         // Gets the list of the Drupal modules
         $this->_moduleList = module_list();
         
@@ -382,6 +390,16 @@ final class Oop_Core_ClassManager
     public function overrideModule( $module, $override )
     {
         $this->_overrides[ $module ] = $override;
+    }
+    
+    /**
+     * Gets the full (absolute) path of the Drupal website
+     * 
+     * @return  string  The path of the Drupal website
+     */
+    public function getDrupalPath()
+    {
+        return $this->_drupalRootDir;
     }
     
     /**
