@@ -161,6 +161,29 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
+     * Drupal 'view' hook
+     * 
+     * @param   stdClass    The node object
+     * @param   
+     * @param   
+     * @return  stdClass    The node object
+     */
+    public function view( stdClass $node, $teaser = false, $page = false )
+    {
+        // Prepares the node
+        $node = node_prepare( $node, $teaser );
+        
+        // Checks the view method
+        $this->_checkMethod( '_getBlock' );
+        
+        // Calls the node view method
+        $this->_getNode( $node, $teaser, $page );
+        
+        // Returns the node
+        return $node;
+    }
+    
+    /**
      * Drupal 'block' hook
      * 
      * @param   string                      The kind of block to display
