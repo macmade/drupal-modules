@@ -38,12 +38,11 @@ function shell() {
     function __construct()
     {
         // Get HTML elements
-        _form    = document.getElementById( 'shell_shellForm' );
-        _result  = document.getElementById( 'shell_result' );
-        _command = document.getElementById( 'shell_command' );
-        _history = document.getElementById( 'shell_history' );
-        _cwd     = document.getElementById( 'shell_cwd' );
-        _cwdPath = document.getElementById( 'shell_cwdPath' );
+        _form    = document.getElementById( 'module-shell-form' );
+        _result  = document.getElementById( 'module-shell-result' );
+        _command = document.getElementById( 'module-shell-command' );
+        _cwd     = document.getElementById( 'module-shell-cwd' );
+        _cwdPath = document.getElementById( 'module-shell-cwdPath' );
         
         // Form submission method
         _form.onsubmit   = _exec;

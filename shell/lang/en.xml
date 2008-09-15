@@ -7,6 +7,7 @@
     </system>
     <module>
         <menuTitle>Shell</menuTitle>
+        <cwd>Working directory:</cwd>
         <notNumeric>Please enter a numeric value</notNumeric>
     </module>
     <settings>

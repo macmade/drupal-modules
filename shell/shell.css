@@ -5,4 +5,42 @@ div.module-shell {
     margin-bottom: 10px;
 }
 
+#module-shell-cwd {
+    font-weight: bold;
+}
+
+#module-shell-cwdPath {
+    font-weight: normal;
+}
+
+.module-shell-shell {
+    margin-top: 10px;
+    padding:    10px;
+}
+.module-shell-shell, .module-shell-shell * {
+    font-family: monospace;
+}
+
+#module-shell-result {
+    height:   400px;
+    overflow: auto;
+}
+
+#module-shell-command {
+    border:      none;
+    font-weight: bold;
+}
+
+.module-shell-command {
+    font-weight: bold;
+}
+
+.module-shell-result {
+    white-space: pre;
+}
+
+#module-shell-form {
+    margin: 0px !important;
+}
+
 /* // ]]> */
