@@ -24,13 +24,13 @@ class ddmenu extends Oop_Drupal_ModuleBase
     protected $_delta    = 0;
     
     /**
-     * Gets the 'view' section of the module
+     * Gets the block view
      * 
      * @param   Oop_Xhtml_Tag   The placeholder for the module content
      * @param   int             The delta offset, used to generate different contents for different blocks
      * @return  NULL
      */
-    protected function _getView( Oop_Xhtml_Tag $content, $delta )
+    protected function _getBlock( Oop_Xhtml_Tag $content, $delta )
     {
         $css = variable_get( $this->_modName . '_css_file', false );
         

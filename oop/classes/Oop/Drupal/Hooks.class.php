@@ -206,7 +206,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $langIndex = ( $this->_sameBlocks ) ? 0 : $delta;
             
             // Checks the view method
-            $this->_checkMethod( '_getView' );
+            $this->_checkMethod( '_getBlock' );
             
             // Creates the storage tag for the module
             $content            = new Oop_Xhtml_Tag( 'div' );
@@ -215,7 +215,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             $content[ 'class' ] = 'module-' . $this->_modName;
             
             // Gets the 'view' section from the child class
-            $this->_getView( $content, $delta );
+            $this->_getBlock( $content, $delta );
             
             // Adds the title and the content, wrapped in HTML comments
             $block['subject'] = $this->_lang->getLabel( 'block_' . $langIndex . '_subject', 'system' ); 
