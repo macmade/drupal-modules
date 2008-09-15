@@ -174,4 +174,17 @@ abstract class Oop_Drupal_Module
             }
         }
     }
+    
+    /**
+     * 
+     */
+    protected function _storeSessionVar( $name, $value )
+    {
+        if( !isset( $_SESSION[ $this->_modName ] ) ) {
+            
+            $_SESSION[ $this->_modName ] = array();
+        }
+        
+        $_SESSION[ $this->_modName ][ $name ] = $value;
+    }
 }
