@@ -76,10 +76,11 @@ final class Oop_Core_ClassManager
             // Gets the relative path
             $relPath = drupal_get_path( 'module', $modName );
             
-            // Sets the module paths (absolute and relative)
+            // Sets the module paths (absolute, relative and web)
             $modPath = array(
                 realpath( $relPath ) . DIRECTORY_SEPARATOR,
-                $relPath . '/'
+                $relPath . DIRECTORY_SEPARATOR,
+                '/' . str_replace( DIRECTORY_SEPARATOR, '/', $relPath ) . '/'
             );
         }
         
@@ -403,6 +404,17 @@ final class Oop_Core_ClassManager
     public function getModuleRelativePath( $name )
     {
         return ( isset( $this->_moduleList[ $name ] ) ) ? $this->_moduleList[ $name ][ 1 ] : false;
+    }
+    
+    /**
+     * Gets the web path of a Drupal module
+     * 
+     * @param   string  The name of the module
+     * @return  mixed   The path of the module, or false is the module is not available
+     */
+    public function getModuleWebPath( $name )
+    {
+        return ( isset( $this->_moduleList[ $name ] ) ) ? $this->_moduleList[ $name ][ 2 ] : false;
     }
     
     /**

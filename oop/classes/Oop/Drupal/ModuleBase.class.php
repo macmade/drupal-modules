@@ -303,6 +303,19 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     }
     
     /**
+     * Adds an ID for the module on an XHTML tag object
+     * 
+     * @param   Oop_Xhtml_Tag   The XHTML tag object on which to set the CSS class
+     * @param   string          The ID (will be prepended with the module name)
+     * @return  NULL
+     */
+    protected function _id( Oop_Xhtml_Tag $tag, $id )
+    {
+        // Adds the CSS class name
+        $tag[ 'id' ] = 'module-' . $this->_modName . '-' . $id;
+    }
+    
+    /**
      * Creates a link
      * 
      * @param   string          The text of the link
