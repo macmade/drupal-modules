@@ -174,7 +174,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         $node = node_prepare( $node, $teaser );
         
         // Checks the view method
-        $this->_checkMethod( '_getBlock' );
+        $this->_checkMethod( '_getNode' );
         
         // Calls the node view method
         $this->_getNode( $node, $teaser, $page );
