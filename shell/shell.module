@@ -1,27 +1,27 @@
 <?php
 
-function terminal_perm()
+function shell_perm()
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'terminal' )->perm();
+    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->perm();
 }
 
-function terminal_menu()
+function shell_menu()
 {
-    $module = Oop_Core_ClassManager::getInstance()->getModule( 'terminal' );
+    $module = Oop_Core_ClassManager::getInstance()->getModule( 'shell' );
     return $module->addMenuItems( $module->addAdminSettingsMenu() );
 }
 
-function terminal_adminForm()
+function shell_adminForm()
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'terminal' )->getAdminForm();
+    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->getAdminForm();
 }
 
-function terminal_adminForm_validate( $form, &$formState )
+function shell_adminForm_validate( $form, &$formState )
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'terminal' )->validateAdminForm( $form, $formState );
+    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->validateAdminForm( $form, $formState );
 }
 
-function terminal_show()
+function shell_show()
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'terminal' )->createModuleContent( 'show' );
+    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->createModuleContent( 'show' );
 }

@@ -1,13 +1,13 @@
 // <![CDATA[
 
 /**
- * JavaScript class for the Drupal 'terminal' module
+ * JavaScript class for the Drupal 'shell' module
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @version         0.1
  */
-function terminal() {
+function shell() {
     
     // Form HTML elements
     var _form                = null;
@@ -38,12 +38,12 @@ function terminal() {
     function __construct()
     {
         // Get HTML elements
-        _form    = document.getElementById( 'terminal_shellForm' );
-        _result  = document.getElementById( 'terminal_result' );
-        _command = document.getElementById( 'terminal_command' );
-        _history = document.getElementById( 'terminal_history' );
-        _cwd     = document.getElementById( 'terminal_cwd' );
-        _cwdPath = document.getElementById( 'terminal_cwdPath' );
+        _form    = document.getElementById( 'shell_shellForm' );
+        _result  = document.getElementById( 'shell_result' );
+        _command = document.getElementById( 'shell_command' );
+        _history = document.getElementById( 'shell_history' );
+        _cwd     = document.getElementById( 'shell_cwd' );
+        _cwdPath = document.getElementById( 'shell_cwdPath' );
         
         // Form submission method
         _form.onsubmit   = _exec;
@@ -282,6 +282,6 @@ function terminal() {
 }
 
 // Creates a new instance of the module class
-terminal = new terminal();
+shell = new shell();
 
 // ]]>

@@ -7,7 +7,7 @@
  * @copyright       Copyright &copy; 2008
  * @version         0.1
  */
-class terminal extends Oop_Drupal_ModuleBase
+class shell extends Oop_Drupal_ModuleBase
 {
     /**
      * Class version constants.
@@ -33,9 +33,9 @@ class terminal extends Oop_Drupal_ModuleBase
      */
     public function addMenuItems( array $items )
     {
-        $items[ 'admin/terminal' ] = array(
+        $items[ 'admin/shell' ] = array(
             'title'            => $this->_lang->menuTitle,
-            'page callback'    => 'terminal_show',
+            'page callback'    => 'shell_show',
             'access arguments' => array('access administration pages'),
         );
         
@@ -47,11 +47,11 @@ class terminal extends Oop_Drupal_ModuleBase
      */
     public function validateAdminForm( $form, &$formState )
     {
-        $fontSize = $form[ '#post' ][ 'terminal_font_size' ];
+        $fontSize = $form[ '#post' ][ 'shell_font_size' ];
         
         if( !is_numeric( $fontSize ) ) {
             
-            form_set_error( 'terminal_font_size', $this->_lang->notNumeric );
+            form_set_error( 'shell_font_size', $this->_lang->notNumeric );
         }
     }
 }

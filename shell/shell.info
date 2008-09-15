@@ -1,4 +1,4 @@
-name = Terminal
+name = Shell
 description = This module allows you to run shell commands on the server. This may be useful for changing files permissions, creating symbolic links, uncompressing archives, etc.
 core = 6.x
 dependencies[] = oop
