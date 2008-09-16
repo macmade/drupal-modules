@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ * Getter class for the language labels
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
@@ -32,7 +32,7 @@ final class Oop_Lang_Getter
     /**
      * The name of the default instance
      */
-    private static $_defaultInstanceName = 'oop';
+    private static $_defaultInstanceName = __CLASS__;
     
     /**
      * The instance of the class manager
@@ -80,13 +80,45 @@ final class Oop_Lang_Getter
             self::$_language     = $GLOBALS[ 'language' ]->language;
         }
         
-        $modPath  = self::$_classManager->getModulePath( $this->_instanceName );
-        
-        $langFile = $modPath . 'lang' . DIRECTORY_SEPARATOR . self::$_language . '.xml';
-        
-        if( !file_exists( $langFile ) ) {
+        if( $name === self::$_defaultInstanceName ) {
             
-            $langFile = $modPath . 'lang' . DIRECTORY_SEPARATOR . self::$_defaultLanguage . '.xml';
+            $modPath  = self::$_classManager->getModulePath( 'oop' );
+            
+            $langFile = $modPath
+                      . 'lang'
+                      . DIRECTORY_SEPARATOR
+                      . 'default.'
+                      . self::$_language
+                      . '.xml';
+            
+            if( !file_exists( $langFile ) ) {
+                
+                $langFile = $modPath
+                          . 'lang'
+                          . DIRECTORY_SEPARATOR
+                          . 'default.'
+                          . self::$_defaultLanguage
+                          . '.xml';
+            }
+            
+        } else {
+            
+            $modPath  = self::$_classManager->getModulePath( $this->_instanceName );
+            
+            $langFile = $modPath
+                      . 'lang'
+                      . DIRECTORY_SEPARATOR
+                      . self::$_language
+                      . '.xml';
+            
+            if( !file_exists( $langFile ) ) {
+                
+                $langFile = $modPath
+                          . 'lang'
+                          . DIRECTORY_SEPARATOR
+                          . self::$_defaultLanguage
+                          . '.xml';
+            }
         }
         
         if( !file_exists( $langFile ) ) {
