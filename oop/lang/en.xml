@@ -3,6 +3,8 @@
     <system>
         <menu_admin_title>OOP Framework</menu_admin_title>
         <menu_admin_description>Configures various aspects of the Drupal Object Oriented Programming Framework</menu_admin_description>
+        <admin_build_oopmodule_title>Creates an OOP module</admin_build_oopmodule_title>
+        <admin_build_oopmodule_description>Creation wizard for the OOP modules that will create all the necessary development files.</admin_build_oopmodule_description>
     </system>
     <settings>
         <email_crypt_symbol_title>Email crypt symbol</email_crypt_symbol_title>

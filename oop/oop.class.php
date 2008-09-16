@@ -17,4 +17,28 @@ class oop extends Oop_Drupal_ModuleBase
     const CLASS_VERSION  = '0.1';
     const DEVEL_STATE    = 'alpha';
     const PHP_COMPATIBLE = '5.2.0';
+    
+    /**
+     * 
+     */
+    public function show( Oop_Xhtml_Tag $content )
+    {
+        $this->_includeModuleCss();
+        $content->span = __METHOD__;
+    }
+    
+    /**
+     * 
+     */
+    public function addMenuItems( array $items )
+    {
+        $items[ 'admin/build/oopmodule' ] = array(
+            'title'            => $this->_lang->getLabel( 'admin_build_oopmodule_title', 'system' ),
+            'description'      => $this->_lang->getLabel( 'admin_build_oopmodule_description', 'system' ),
+            'page callback'    => 'oop_show',
+            'access arguments' => array('access administration pages'),
+        );
+        
+        return $items;
+    }
 }
