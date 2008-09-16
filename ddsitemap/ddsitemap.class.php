@@ -21,7 +21,6 @@ class ddsitemap extends Oop_Drupal_ModuleBase
     protected $_iconDir  = NULL;
     protected $_iconPage = NULL;
     protected $_path     = '';
-    protected $_delta    = 0;
     
     /**
      * 
@@ -61,14 +60,14 @@ class ddsitemap extends Oop_Drupal_ModuleBase
             if( $page->has_children ) {
                 
                 $link            = $icon->a;
-                $link[ 'href' ]  = 'javascript:ddsitemap.display( \'ddsitemap-' . $this->_delta . '-page-' . $page->mlid . '\' );';
+                $link[ 'href' ]  = 'javascript:ddsitemap.display( \'ddsitemap-page-' . $page->mlid . '\' );';
                 $link[ 'title' ] = $this->_lang->openClose;
                 
                 $link->addChildNode( $this->_iconDir );
                 
                 $subList            = $li->ul;
                 
-                $subList[ 'id' ]    = 'ddsitemap-' . $this->_delta . '-page-' . $page->mlid;
+                $subList[ 'id' ]    = 'ddsitemap-page-' . $page->mlid;
                 
                 if( $page->getPath( false ) === $this->_path ) {
                     
@@ -132,8 +131,6 @@ class ddsitemap extends Oop_Drupal_ModuleBase
             
             $this->_includeModuleCSS();
         }
-        
-        $this->_delta = $delta;
         
         $linkType = variable_get( $this->_modName . '_linktype', 'primary' );
         
