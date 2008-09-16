@@ -107,7 +107,7 @@ function shell() {
                 url        : _ajaxUrl,
                 
                 // Method to use
-                tyoe       : 'GET',
+                type       : 'GET',
                 
                 // Ajax parameters
                 data       : {

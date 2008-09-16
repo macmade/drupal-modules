@@ -9,6 +9,9 @@
         <menuTitle>Shell</menuTitle>
         <cwd>Working directory:</cwd>
         <notNumeric>Please enter a numeric value</notNumeric>
+        <noChdir>Error: cwd could not be changed.
+It has been reset to %s.
+Commands have been aborted.</noChdir>
     </module>
     <settings>
         <font_size_title>Font size</font_size_title>

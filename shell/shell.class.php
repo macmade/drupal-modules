@@ -93,7 +93,7 @@ class shell extends Oop_Drupal_ModuleBase
         if( $cmd == '' ) {
             
             // Prints the current workind directory and exit
-            print $this->NL . $this->_cwd;
+            print self::$_NL . $this->_cwd;
         }
         
         // Gets multiple commands
@@ -129,7 +129,7 @@ class shell extends Oop_Drupal_ModuleBase
         }
         
         // Prints the current working directory and exit
-        print $this->NL . $this->_cwd;
+        print self::$_NL . $this->_cwd;
     }
     
     /**
@@ -205,7 +205,58 @@ class shell extends Oop_Drupal_ModuleBase
      */
     protected function _exec( array $commands )
     {
+        // Storage
+        $return = array();
         
+        // Process each command
+        foreach( $commands as $command ) {
+            
+            // Support for cd commands
+            $this->_handleCwd( $command );
+            
+            // Change current working directory
+            if( !@file_exists( $this->_cwd ) || !@is_readable( $this->_cwd ) ) {
+                
+                // Directory cannot be changed. Reset to home (Drupal site root)
+                $this->_cwd = self::$_classManager->getDrupalPath();
+                print sprintf( $this->_lang->noChdir, $this->_cwd );
+                print self::$_NL . $this->_cwd;
+                
+                // Stores the working directory in session data
+                $this->_storeSessionVar( 'cwd', $this->_cwd );
+                
+                // Aborts the script
+                exit();
+            }
+            
+            // Changes the working directory
+            chdir( $this->_cwd );
+            
+            // Tries to execute command
+            if( substr( $command, 0, 3 ) == 'cd ' || $command == 'cd' ) {
+                
+                // Change current working directory
+                if( @chdir( $this->_cwd ) ) {
+                    
+                    continue;
+                }
+                
+                // Directory cannot be changed
+                print self::$_NL . $this->_cwd;
+                exit();
+                
+            } elseif( @exec( $command, $return ) ) {
+                
+                // Display the command result
+                print implode( self::$_NL, $return );
+                
+            } else {
+                
+                // Command cannot be executed
+                print self::$_NL . $this->_cwd;
+                exit();
+            }
+        }
     }
     
     /**
@@ -292,7 +343,57 @@ class shell extends Oop_Drupal_ModuleBase
      */
     protected function _system( array $commands )
     {
+        // Storage
+        $return = '';
         
+        // Process each command
+        foreach( $commands as $command ) {
+            
+            // Support for cd commands
+            $this->_handleCwd( $command );
+            
+            // Change current working directory
+            if( !@file_exists( $this->_cwd ) || !@is_readable( $this->_cwd ) ) {
+                
+                // Directory cannot be changed. Reset to home (Drupal site root)
+                $this->_cwd = self::$_classManager->getDrupalPath();
+                print sprintf( $this->_lang->noChdir, $this->_cwd );
+                print self::$_NL . $this->_cwd;
+                
+                // Stores the working directory in session data
+                $this->_storeSessionVar( 'cwd', $this->_cwd );
+                
+                // Aborts the script
+                exit();
+            }
+            
+            // Changes the working directory
+            chdir( $this->_cwd );
+            
+            // Tries to execute command
+            if( substr( $command, 0, 3 ) == 'cd ' || $command == 'cd' ) {
+                
+                // Change current working directory
+                if( @chdir( $this->_cwd ) ) {
+                    
+                    continue;
+                }
+                
+                // Directory cannot be changed
+                print self::$_NL . $this->_cwd;
+                exit();
+                
+            } elseif( @system( $command, $return ) ) {
+                
+                continue;
+                
+            } else {
+                
+                // Command cannot be executed
+                print self::$_NL . $this->_cwd;
+                exit();
+            }
+        }
     }
     
     /**
@@ -300,7 +401,7 @@ class shell extends Oop_Drupal_ModuleBase
      */
     protected function _passthru( array $commands )
     {
-        
+        $this->_system( $commands );
     }
     
     /**
@@ -308,7 +409,77 @@ class shell extends Oop_Drupal_ModuleBase
      */
     protected function _pOpen( array $commands )
     {
+        // Storage
+        $return = '';
         
+        // Process each command
+        foreach( $commands as $command ) {
+            
+            // Support for cd commands
+            $this->_handleCwd( $command );
+            
+            // Change current working directory
+            if( !@file_exists( $this->_cwd ) || !@is_readable( $this->_cwd ) ) {
+                
+                // Directory cannot be changed. Reset to home (Drupal site root)
+                $this->_cwd = self::$_classManager->getDrupalPath();
+                print sprintf( $this->_lang->noChdir, $this->_cwd );
+                print self::$_NL . $this->_cwd;
+                
+                // Stores the working directory in session data
+                $this->_storeSessionVar( 'cwd', $this->_cwd );
+                
+                // Aborts the script
+                exit();
+            }
+            
+            // Changes the working directory
+            chdir( $this->_cwd );
+            
+            // Tries to execute command
+            if( substr( $command, 0, 3 ) == 'cd ' || $command == 'cd' ) {
+                
+                // Change current working directory
+                if( @chdir( $this->_cwd ) ) {
+                    
+                    continue;
+                }
+                
+                // Directory cannot be changed
+                print self::$_NL . $this->_cwd;
+                exit();
+                
+            } else {
+                
+                // Open process
+                $process = popen(
+                    $command,
+                    'r'
+                );
+                
+                // Checks the process
+                if( is_resource( $process ) ) {
+                    
+                    // Process and stores the result
+                    while( !feof( $process ) ) {
+                        
+                        $return .= fgets( $process );
+                    }
+                    
+                    // Close the process
+                    pclose( $process );
+                    
+                    // Display results
+                    print preg_replace( '/(\r\n|\r|\n)/', self::$_NL, $return );
+                    
+                } else {
+                    
+                    // Command cannot be executed
+                    print self::$_NL . $this->_cwd;
+                    exit();
+                }
+            }
+        }
     }
     
     /**
@@ -316,7 +487,7 @@ class shell extends Oop_Drupal_ModuleBase
      */
     protected function _shellExec( array $commands )
     {
-        
+        $this->_system( $commands );
     }
     
     /**
