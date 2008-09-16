@@ -6,3 +6,8 @@ function bar_install()
     db_query( "UPDATE {system} SET weight = %d WHERE name = 'bar'", $oopWeight + 1 );
     db_query( "UPDATE {system} SET weight = %d WHERE name = 'foo'", $oopWeight + 2 );
 }
+
+function bar_uninstall()
+{
+    Oop_Drupal_Utils::getInstance()->deleteModuleVariables( 'bar' );
+}

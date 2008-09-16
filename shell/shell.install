@@ -5,3 +5,8 @@ function shell_install()
     $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = 'oop'" ) );
     db_query( "UPDATE {system} SET weight = %d WHERE name = 'shell'", $oopWeight + 1 );
 }
+
+function shell_uninstall()
+{
+    Oop_Drupal_Utils::getInstance()->deleteModuleVariables( 'shell' );
+}

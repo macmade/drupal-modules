@@ -5,3 +5,8 @@ function helloworld_install()
     $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = 'oop'" ) );
     db_query( "UPDATE {system} SET weight = %d WHERE name = 'helloworld'", $oopWeight + 1 );
 }
+
+function helloworld_uninstall()
+{
+    Oop_Drupal_Utils::getInstance()->deleteModuleVariables( 'helloworld' );
+}
