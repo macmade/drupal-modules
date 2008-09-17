@@ -20,7 +20,6 @@ class Oop_Drupal_Form_Builder
     const PHP_COMPATIBLE = '5.2.0';
     
     protected $_lang     = NULL;
-    protected $_formConf = array();
     protected $_form     = array();
     protected $_modName  = '';
     protected $_delta    = 0;
@@ -44,9 +43,6 @@ class Oop_Drupal_Form_Builder
             throw new Oop_Drupal_Form_Builder_Exception( 'The form configuration array does not exist in file ' . $confPath, Oop_Drupal_Form_Builder_Exception::EXCEPTION_NO_CONF );
         }
         
-        // Stores the configuration
-        $this->_formConf = $formConf;
-        
         // Stores the module name
         $this->_lang     = $lang;
         
@@ -57,41 +53,59 @@ class Oop_Drupal_Form_Builder
         $this->_delta    = $delta;
         
         // Creates the final configuration
-        $this->_createFormConf();
+        $this->_createFormConf( $formConf, $this->_form );
     }
     
-    protected function _createFormConf()
+    protected function _createFormConf( array &$conf, array &$storage )
     {
-        foreach( $this->_formConf as $key => &$value ) {
+        foreach( $conf as $field => &$fieldConf ) {
+            
+            if( substr( $field, 0, 1 ) === '#' ) {
+                
+                continue;
+            }
             
             if( is_numeric( $this->_delta ) ) {
                 
-                $fieldName = $this->_modName . '_' . $key . '_' . $this->_delta;
+                $fieldName = $this->_modName . '_' . $field . '_' . $this->_delta;
                 
             } else {
                 
-                $fieldName = $this->_modName . '_' . $key;
+                $fieldName = $this->_modName . '_' . $field;
             }
             
-            $this->_form[ $fieldName ] = $value;
+            $storage[ $fieldName ] = array();
             
-            $this->_form[ $fieldName ][ '#title' ]         = $this->_lang->getLabel( $key . '_title', 'settings' );
-            $this->_form[ $fieldName ][ '#description' ]   = $this->_lang->getLabel( $key . '_description', 'settings' );
-            
-            if( isset( $value[ '#default_value' ] ) ) {
+            foreach( $fieldConf as $confKey => $confValue ) {
                 
-                $this->_form[ $fieldName ][ '#default_value' ] = variable_get( $fieldName, $value[ '#default_value' ] );
+                if( substr( $confKey, 0, 1 ) === '#' ) {
+                    
+                    $storage[ $fieldName ][ $confKey ] = $confValue;
+                }
             }
             
-            if( $value[ '#type' ] === 'select' && isset( $value[ '#options' ] ) && !is_array( $value[ '#options' ] ) ) {
+            if( isset( $fieldConf[ '#type' ] ) && $fieldConf[ '#type' ] === 'fieldset' ) {
                 
-                $this->_form[ $fieldName ][ '#options' ] = array();
+                $this->_createFormConf( $fieldConf, $storage[ $fieldName ] );
+            }
+            
+            $storage[ $fieldName ][ '#title' ]         = $this->_lang->getLabel( $field . '_title', 'settings' );
+            $storage[ $fieldName ][ '#description' ]   = $this->_lang->getLabel( $field . '_description', 'settings' );
+            
+            if( isset( $fieldConf[ '#default_value' ] ) ) {
                 
-                $optionsValues = explode( ',', $value[ '#options' ] );
+                $storage[ $fieldName ][ '#default_value' ] = variable_get( $fieldName, $fieldConf[ '#default_value' ] );
+            }
+            
+            if( $fieldConf[ '#type' ] === 'select' && isset( $fieldConf[ '#options' ] ) && !is_array( $fieldConf[ '#options' ] ) ) {
+                
+                $storage[ $fieldName ][ '#options' ] = array();
+                
+                $optionsValues = explode( ',', $fieldConf[ '#options' ] );
                 
                 foreach( $optionsValues as $optionValue ) {
                     
-                    $this->_form[ $fieldName ][ '#options' ][ $optionValue ] = $this->_lang->getLabel( $key . '_option_' . $optionValue, 'settings' );
+                    $storage[ $fieldName ][ '#options' ][ $optionValue ] = $this->_lang->getLabel( $field . '_option_' . $optionValue, 'settings' );
                 }
             }
         }
