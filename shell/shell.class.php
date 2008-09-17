@@ -584,7 +584,7 @@ class shell extends Oop_Drupal_ModuleBase
         $items[ 'admin/shell' ] = array(
             'title'            => $this->_lang->menuTitle,
             'page callback'    => 'shell_show',
-            'access arguments' => array('access administration pages'),
+            'access arguments' => array( 'access administration pages' ),
         );
         
         return $items;
