@@ -89,8 +89,15 @@ class Oop_Drupal_Form_Builder
                 $this->_createFormConf( $fieldConf, $storage[ $fieldName ] );
             }
             
-            $storage[ $fieldName ][ '#title' ]         = $this->_lang->getLabel( $field . '_title', 'settings' );
-            $storage[ $fieldName ][ '#description' ]   = $this->_lang->getLabel( $field . '_description', 'settings' );
+            if( isset( $fieldConf[ '#type' ] ) && $fieldConf[ '#type' ] === 'submit' ) {
+                
+                $storage[ $fieldName ][ '#value' ] = $this->_lang->getLabel( $field . '_value', 'settings' );
+                
+            } else {
+                
+                $storage[ $fieldName ][ '#title' ]       = $this->_lang->getLabel( $field . '_title', 'settings' );
+                $storage[ $fieldName ][ '#description' ] = $this->_lang->getLabel( $field . '_description', 'settings' );
+            }
             
             if( isset( $fieldConf[ '#default_value' ] ) ) {
                 
