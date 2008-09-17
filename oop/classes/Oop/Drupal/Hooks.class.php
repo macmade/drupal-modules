@@ -22,17 +22,17 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * An array with the Drupal permission for the module
      */
-    protected $_perms      = array();
+    protected $_perms          = array();
     
     /**
      * The number of blocks available
      */
-    protected $_blockNum   = 1;
+    protected $_numberOfBlocks = 1;
     
     /**
      * Wheter the blocks have identical properties (for the labels, configuration, etc)
      */
-    protected $_sameBlocks = false;
+    protected $_sameBlocks     = false;
     
     /**
      * Checks if a method is defined in a module
@@ -98,10 +98,10 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   boolean Wheter the new blocks must be the same as the first one (for the labels, configuration, etc)
      * @return  NULL
      */
-    public function setBlocksNumber( $number, $sameAsFirst = false )
+    public function setNumberOfBlocks( $number, $sameAsFirst = false )
     {
-        $this->_blockNum   = ( int )$number;
-        $this->_sameBlocks = ( boolean )$sameAsFirst;
+        $this->_numberOfBlocks   = ( int )$number;
+        $this->_sameBlocks       = ( boolean )$sameAsFirst;
     }
     
     /**

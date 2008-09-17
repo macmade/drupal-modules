@@ -1,6 +1,6 @@
 <?php
 
-Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->setBlocksNumber( variable_get( 'ddmenu_number_of_blocks', 1 ), true );
+Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->setNumberOfBlocks( variable_get( 'ddmenu_number_of_blocks', 1 ), true );
 
 function ddmenu_help( $path, $arg )
 {
