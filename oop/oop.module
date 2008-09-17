@@ -81,3 +81,11 @@ function oop_show()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->createModuleContent( 'show' );
 }
+
+/**
+ * 
+ */
+function oop_getModuleFormConf()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->getModuleFormConf();
+}

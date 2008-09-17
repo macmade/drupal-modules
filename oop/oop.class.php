@@ -24,7 +24,45 @@ class oop extends Oop_Drupal_ModuleBase
     public function show( Oop_Xhtml_Tag $content )
     {
         $this->_includeModuleCss();
-        $content->span = __METHOD__;
+        
+        $modulesDir = self::$_classManager->getDrupalPath()
+                    . 'sites'
+                    . DIRECTORY_SEPARATOR
+                    . 'all'
+                    . DIRECTORY_SEPARATOR
+                    . 'modules';
+        
+        if( !file_exists( $modulesDir ) && !is_dir( $modulesDir ) ) {
+            
+            $error = $content->strong;
+            $error->addTextData( sprintf( $this->_lang->errorNoDir, $modulesDir ) );
+            $this->_cssClass( $error, 'error' );
+            
+        } elseif( !is_writeable( $modulesDir ) ) {
+            
+            $error = $content->strong;
+            $error->addTextData( sprintf( $this->_lang->errorDirNotWriteable, $modulesDir ) );
+            $this->_cssClass( $error, 'error' );
+            
+        } else {
+            
+            $content->div = drupal_get_form( 'oop_getModuleFormConf' );
+        }
+    }
+    
+    /**
+     * 
+     */
+    public function getModuleFormConf()
+    {
+        $confPath = self::$_classManager->getModulePath( $this->_modName )
+                  . 'settings'
+                  . DIRECTORY_SEPARATOR
+                  . 'kickstarter.form.php';
+                      
+        $form = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+        
+        return $form->getConf();
     }
     
     /**

@@ -3,13 +3,76 @@
     <system>
         <menu_admin_title>OOP Framework</menu_admin_title>
         <menu_admin_description>Configures various aspects of the Drupal Object Oriented Programming Framework</menu_admin_description>
-        <admin_build_oopmodule_title>Creates an OOP module</admin_build_oopmodule_title>
+        <admin_build_oopmodule_title>OOP kickstarter</admin_build_oopmodule_title>
         <admin_build_oopmodule_description>Creation wizard for the OOP modules that will create all the necessary development files.</admin_build_oopmodule_description>
     </system>
     <settings>
         <email_crypt_symbol_title>Email crypt symbol</email_crypt_symbol_title>
         <email_crypt_symbol_description>The symbol to use as a substitute of the @ symbol in the email crypt methods. You will probably have to clear the cache after having changed this value.</email_crypt_symbol_description>
+        <infos_title>General informations</infos_title>
+        <infos_description>The general informations about the module (typically found in the .info file).</infos_description>
+        <infos_name_title>Name</infos_name_title>
+        <infos_name_description>The technical (short) name of the module (directory name).</infos_name_description>
+        <infos_title_title>Title</infos_title_title>
+        <infos_title_description>The module title, as displayed in the module list.</infos_title_description>
+        <infos_description_title>Description</infos_description_title>
+        <infos_description_description>The module description, as displayed in the module list.</infos_description_description>
+        <infos_package_title>Package</infos_package_title>
+        <infos_package_description>The module's package, used to group the modules in the modules list.</infos_package_description>
+        <dependancies_title>Dependancies</dependancies_title>
+        <dependancies_description>The general requirements for the module.</dependancies_description>
+        <dependancies_version_core_title>Drupal version</dependancies_version_core_title>
+        <dependancies_version_core_description>The minimum version of Drupal required to use this module.</dependancies_version_core_description>
+        <dependancies_version_php_title>PHP version</dependancies_version_php_title>
+        <dependancies_version_php_description>The minimum version of PHP required to use this module.</dependancies_version_php_description>
+        <dependancies_dependancies_title>Dependancies</dependancies_dependancies_title>
+        <dependancies_dependancies_description>Dependancies on other Drupal modules, as comma separated list (do not include oop).</dependancies_dependancies_description>
+        <block_title>Block</block_title>
+        <block_description>Controls the block options for the module.</block_description>
+        <block_add_title>Add block content</block_add_title>
+        <block_add_description>Wheter the module has block content or not. The options below are only relevant is this checkbox is set.</block_add_description>
+        <block_title_title>Title</block_title_title>
+        <block_title_description>The title of the block content.</block_title_description>
+        <block_description_title>Description</block_description_title>
+        <block_description_description>The description of the block content.</block_description_description>
+        <block_add_config_title>Configuration</block_add_config_title>
+        <block_add_config_description>Adds configuration options for the block content.</block_add_config_description>
+        <block_access_title>Access</block_access_title>
+        <block_access_description>The access arguments for the block content, as a comma separated list (eg. 'access example content, administer example').</block_access_description>
+        <node_title>Node</node_title>
+        <node_description>Controls the node options for the module.</node_description>
+        <node_add_title>Add node content</node_add_title>
+        <node_add_description>Wheter the module has node content or not. The options below are only relevant is this checkbox is set.</node_add_description>
+        <node_title_title>Title</node_title_title>
+        <node_title_description>The title of the node content.</node_title_description>
+        <node_description_title>Description</node_description_title>
+        <node_description_description>The description of the node content.</node_description_description>
+        <node_access_title>Access</node_access_title>
+        <node_access_description>The access arguments for the node content, as a comma separated list (eg. 'create example node, edit own example node').</node_access_description>
+        <admin_title>Admin settings</admin_title>
+        <admin_description>Controls the administration settings options for the module.</admin_description>
+        <admin_add_title>Add administration settings</admin_add_title>
+        <admin_add_description>Wheter the module has an administration settings page or not. The options below are only relevant is this checkbox is set.</admin_add_description>
+        <admin_title_title>Title</admin_title_title>
+        <admin_title_description>The title of the administration page.</admin_title_description>
+        <admin_description_title>Description</admin_description_title>
+        <admin_description_description>The description of the administration page.</admin_description_description>
+        <menu_title>Menu item</menu_title>
+        <menu_description>Controls the menu items options for the module.</menu_description>
+        <menu_add_title>Add a menu item</menu_add_title>
+        <menu_add_description>Wheter the module has a custom menu item or not. The options below are only relevant is this checkbox is set.</menu_add_description>
+        <menu_path_title>Path</menu_path_title>>
+        <menu_path_description>The path of the menu item (eg. 'admin/mynode').</menu_path_description>
+        <menu_title_title>Title</menu_title_title>
+        <menu_title_description>The title of the menu item.</menu_title_description>
+        <menu_description_title>Description</menu_description_title>
+        <menu_description_description>The description of the menu item.</menu_description_description>
+        <menu_access_title>Access</menu_access_title>
+        <menu_access_description>The access arguments for the menu item, as a comma separated list (eg. 'access administration pages, ...').</menu_access_description>
+        <submit_value>Writes the module</submit_value>
     </settings>
     <module>
+        <errorNoDir>Error: the modules directory does not exist (path: %s)</errorNoDir>
+        <errorDirNotWriteable>Error: the modules directory is not writeable (path: %s)</errorDirNotWriteable>
     </module>
 </labels>

@@ -5,4 +5,8 @@ div.module-oop {
     margin-bottom: 10px;
 }
 
+strong.module-oop-error {
+    color: #FF0000;
+}
+
 /* // ]]> */
