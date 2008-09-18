@@ -573,7 +573,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             } else {
                 
                 // Ends the method
-                $this->_files[ $path ][] = '{}';
+                $this->_files[ $path ][] = '    {}';
             }
         }
         
