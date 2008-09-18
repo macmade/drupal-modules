@@ -16,9 +16,15 @@
         <infos_title_title>Title</infos_title_title>
         <infos_title_description>The module title, as displayed in the module list.</infos_title_description>
         <infos_description_title>Description</infos_description_title>
-        <infos_description_description>The module description, as displayed in the module list.</infos_description_description>
+        <infos_description_description>The module description, as displayed in the module list. This will also be used to generate the 'help' hook.</infos_description_description>
         <infos_package_title>Package</infos_package_title>
         <infos_package_description>The module's package, used to group the modules in the modules list.</infos_package_description>
+        <author_title>Author</author_title>
+        <author_description>Informations about the author of the module.</author_description>
+        <author_name_title>Name</author_name_title>
+        <author_name_description>The name of the author (will be written in the JavaDoc comments).</author_name_description>
+        <author_email_title>Email</author_email_title>
+        <author_email_description>The email of the author (will be written in the JavaDoc comments).</author_email_description>
         <dependencies_title>Dependancies</dependencies_title>
         <dependencies_description>The general requirements for the module.</dependencies_description>
         <dependencies_version_core_title>Drupal version</dependencies_version_core_title>

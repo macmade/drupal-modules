@@ -31,6 +31,21 @@ $formConf = array(
             '#required' => false
         )
     ),
+    'author' => array(
+        '#type'        => 'fieldset',
+        '#collapsible' => true,
+        '#collapsed'   => false,
+        'author_name' => array(
+            '#type'     => 'textfield',
+            '#size'     => 30,
+            '#required' => true
+        ),
+        'author_email' => array(
+            '#type'     => 'textfield',
+            '#size'     => 30,
+            '#required' => true
+        )
+    ),
     'dependencies' => array(
         '#type'        => 'fieldset',
         '#collapsible' => true,
