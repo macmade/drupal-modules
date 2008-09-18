@@ -168,7 +168,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * 
      * @return boolean
      */
-    public function access( $op, $node )
+    public function access( $op, stdClass $node, stdClass $account )
     {
         // Checks the operation
         if( $op === 'create' ) {
