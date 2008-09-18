@@ -11,15 +11,6 @@
 abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
 {
     /**
-     * Class version constants.
-     * Holds the version, the developpment state
-     * and the PHP lower compatible version.
-     */
-    const CLASS_VERSION  = '0.1';
-    const DEVEL_STATE    = 'alpha';
-    const PHP_COMPATIBLE = '5.2.0';
-    
-    /**
      * Whether the Mootools JS framework has been included
      */
     private static $_hasMootools      = false;

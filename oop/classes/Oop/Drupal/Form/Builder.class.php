@@ -11,19 +11,28 @@
 class Oop_Drupal_Form_Builder
 {
     /**
-     * Class version constants.
-     * Holds the version, the developpment state
-     * and the PHP lower compatible version.
+     * 
      */
-    const CLASS_VERSION  = '0.1';
-    const DEVEL_STATE    = 'alpha';
-    const PHP_COMPATIBLE = '5.2.0';
-    
     protected $_lang     = NULL;
+    
+    /**
+     * 
+     */
     protected $_form     = array();
+    
+    /**
+     * 
+     */
     protected $_modName  = '';
+    
+    /**
+     * 
+     */
     protected $_delta    = 0;
     
+    /**
+     * 
+     */
     public function __construct( $confPath, $modName, Oop_Lang_Getter $lang, $delta = false )
     {
         // Checks if the file exists
@@ -56,6 +65,9 @@ class Oop_Drupal_Form_Builder
         $this->_createFormConf( $formConf, $this->_form );
     }
     
+    /**
+     * 
+     */
     protected function _createFormConf( array &$conf, array &$storage )
     {
         foreach( $conf as $field => &$fieldConf ) {
@@ -118,6 +130,9 @@ class Oop_Drupal_Form_Builder
         }
     }
     
+    /**
+     * 
+     */
     public function getConf()
     {
         return $this->_form;

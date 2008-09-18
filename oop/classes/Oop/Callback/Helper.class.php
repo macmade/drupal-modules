@@ -11,15 +11,6 @@
 class Oop_Callback_Helper
 {
     /**
-     * Class version constants.
-     * Holds the version, the developpment state
-     * and the PHP lower compatible version.
-     */
-    const CLASS_VERSION  = '0.1';
-    const DEVEL_STATE    = 'alpha';
-    const PHP_COMPATIBLE = '5.2.0';
-    
-    /**
      * Class constructor
      * 
      * The class constructor is private as this class should not been instanciated.

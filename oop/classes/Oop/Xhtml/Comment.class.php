@@ -11,15 +11,6 @@
 class Oop_Xhtml_Comment extends Oop_Xhtml_Tag implements ArrayAccess
 {
     /**
-     * Class version constants.
-     * Holds the version, the developpment state
-     * and the PHP lower compatible version.
-     */
-    const CLASS_VERSION  = '0.1';
-    const DEVEL_STATE    = 'alpha';
-    const PHP_COMPATIBLE = '5.2.0';
-    
-    /**
      * The text of the comment
      */
     protected $_comment = '';

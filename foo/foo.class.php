@@ -10,15 +10,6 @@
 class foo extends Oop_Drupal_ModuleBase
 {
     /**
-     * Class version constants.
-     * Holds the version, the developpment state
-     * and the PHP lower compatible version.
-     */
-    const CLASS_VERSION  = '0.1';
-    const DEVEL_STATE    = 'alpha';
-    const PHP_COMPATIBLE = '5.2.0';
-    
-    /**
      * Gets the block view
      * 
      * @param   Oop_Xhtml_Tag   The placeholder for the module content

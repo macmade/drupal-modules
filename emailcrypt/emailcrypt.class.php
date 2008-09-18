@@ -10,15 +10,6 @@
 class emailcrypt extends Oop_Drupal_ModuleBase
 {
     /**
-     * Class version constants.
-     * Holds the version, the developpment state
-     * and the PHP lower compatible version.
-     */
-    const CLASS_VERSION  = '0.1';
-    const DEVEL_STATE    = 'alpha';
-    const PHP_COMPATIBLE = '5.2.0';
-    
-    /**
      * The pattern to detect a valid email address
      */
     const EMAIL_PATTERN = '[A-Za-z0-9._-]+@[A-Za-z0-9._+-]+\.[A-Za-z]{2,4}';

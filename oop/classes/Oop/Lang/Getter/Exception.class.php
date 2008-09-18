@@ -11,15 +11,6 @@
 class Oop_Lang_Getter_Exception extends Oop_Core_Exception_Base
 {
     /**
-     * Class version constants.
-     * Holds the version, the developpment state
-     * and the PHP lower compatible version.
-     */
-    const CLASS_VERSION  = '0.1';
-    const DEVEL_STATE    = 'alpha';
-    const PHP_COMPATIBLE = '5.2.0';
-    
-    /**
      * Error codes for the exceptions
      */
     const EXCEPTION_NO_LANG_FILE = 0x01;

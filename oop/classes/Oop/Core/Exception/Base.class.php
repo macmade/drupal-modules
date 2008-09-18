@@ -11,15 +11,6 @@
 abstract class Oop_Core_Exception_Base extends Exception
 {
     /**
-     * Class version constants.
-     * Holds the version, the developpment state
-     * and the PHP lower compatible version.
-     */
-    const CLASS_VERSION  = '0.1';
-    const DEVEL_STATE    = 'alpha';
-    const PHP_COMPATIBLE = '5.2.0';
-    
-    /**
      * Wheter to print the backtrace or not, when an exception is not caught
      */
     protected static $_debug        = true;
