@@ -19,14 +19,14 @@
         <infos_description_description>The module description, as displayed in the module list.</infos_description_description>
         <infos_package_title>Package</infos_package_title>
         <infos_package_description>The module's package, used to group the modules in the modules list.</infos_package_description>
-        <dependancies_title>Dependancies</dependancies_title>
-        <dependancies_description>The general requirements for the module.</dependancies_description>
-        <dependancies_version_core_title>Drupal version</dependancies_version_core_title>
-        <dependancies_version_core_description>The minimum version of Drupal required to use this module.</dependancies_version_core_description>
-        <dependancies_version_php_title>PHP version</dependancies_version_php_title>
-        <dependancies_version_php_description>The minimum version of PHP required to use this module.</dependancies_version_php_description>
-        <dependancies_dependancies_title>Dependancies</dependancies_dependancies_title>
-        <dependancies_dependancies_description>Dependancies on other Drupal modules, as comma separated list (do not include oop).</dependancies_dependancies_description>
+        <dependencies_title>Dependancies</dependencies_title>
+        <dependencies_description>The general requirements for the module.</dependencies_description>
+        <dependencies_version_core_title>Drupal version</dependencies_version_core_title>
+        <dependencies_version_core_description>The minimum version of Drupal required to use this module.</dependencies_version_core_description>
+        <dependencies_version_php_title>PHP version</dependencies_version_php_title>
+        <dependencies_version_php_description>The minimum version of PHP required to use this module.</dependencies_version_php_description>
+        <dependencies_dependencies_title>Dependancies</dependencies_dependencies_title>
+        <dependencies_dependencies_description>Dependancies on other Drupal modules, as comma separated list (do not include oop).</dependencies_dependencies_description>
         <block_title>Block</block_title>
         <block_description>Controls the block options for the module.</block_description>
         <block_add_title>Add block content</block_add_title>
@@ -57,6 +57,8 @@
         <admin_title_description>The title of the administration page.</admin_title_description>
         <admin_description_title>Description</admin_description_title>
         <admin_description_description>The description of the administration page.</admin_description_description>
+        <admin_blocks_number_title>Settable number of blocks</admin_blocks_number_title>
+        <admin_blocks_number_description>Wether the number of blocks can be set through the administration settings page (only relevant if the module has block content).</admin_blocks_number_description>
         <menu_title>Menu item</menu_title>
         <menu_description>Controls the menu items options for the module.</menu_description>
         <menu_add_title>Add a menu item</menu_add_title>
@@ -74,5 +76,8 @@
     <module>
         <errorNoDir>Error: the modules directory does not exist (path: %s)</errorNoDir>
         <errorDirNotWriteable>Error: the modules directory is not writeable (path: %s)</errorDirNotWriteable>
+        <invalidModuleName>Invalid module name. Only lowercase letters, without special characters or spaces</invalidModuleName>
+        <phpVersionTooOld>PHP version needs to be at least 5.0</phpVersionTooOld>
+        <invalidPath>Invalid menu path</invalidPath>
     </module>
 </labels>

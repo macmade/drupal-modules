@@ -31,23 +31,23 @@ $formConf = array(
             '#required' => false
         )
     ),
-    'dependancies' => array(
+    'dependencies' => array(
         '#type'        => 'fieldset',
         '#collapsible' => true,
         '#collapsed'   => true,
-        'dependancies_version_core' => array(
+        'dependencies_version_core' => array(
             '#type'          => 'textfield',
             '#size'          => 10,
             '#default_value' => ( int )VERSION . '.x',
             '#required'      => true
         ),
-        'dependancies_version_php' => array(
+        'dependencies_version_php' => array(
             '#type'          => 'textfield',
             '#size'          => 10,
             '#default_value' => ( double )PHP_VERSION,
             '#required'      => true
         ),
-        'dependancies_dependancies' => array(
+        'dependencies_dependencies' => array(
             '#type'          => 'textfield',
             '#size'          => 100,
             '#required'      => false
@@ -110,6 +110,9 @@ $formConf = array(
         'admin_description' => array(
             '#type' => 'textfield',
             '#size' => 100
+        ),
+        'admin_blocks_number' => array(
+            '#type' => 'checkbox'
         )
     ),
     'menu' => array(

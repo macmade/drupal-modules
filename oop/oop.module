@@ -85,7 +85,23 @@ function oop_show()
 /**
  * 
  */
-function oop_getModuleFormConf()
+function oop_kickstarterForm()
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->getModuleFormConf();
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->getKickstarterForm();
+}
+
+/**
+ * 
+ */
+function oop_kickstarterForm_validate( $form, &$formState )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->validateKickstarterForm( $form, $formState );
+}
+
+/**
+ * 
+ */
+function oop_kickstarterForm_submit( $formId, $formValues )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->submitKickstarterForm( $formId, $formValues );
 }
