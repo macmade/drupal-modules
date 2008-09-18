@@ -214,7 +214,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Creates the block hook
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_block( $op = \'list\', $delta = 0, array $edit = array() ) )';
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_block( $op = \'list\', $delta = 0, array $edit = array() )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->block( $op, $delta, $edit );';
             $this->_files[ $path ][] = '}';
@@ -565,7 +565,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '            \'access arguments\' => array(' . $access . '),';
             $this->_files[ $path ][] = '        );';
             $this->_files[ $path ][] = '        ';
-            $this->_files[ $path ][] = '        return $items';
+            $this->_files[ $path ][] = '        return $items;';
             $this->_files[ $path ][] = '    }';
             
             // Adds a blank line
