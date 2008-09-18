@@ -78,6 +78,14 @@
         <menu_description_description>The description of the menu item.</menu_description_description>
         <menu_access_title>Access</menu_access_title>
         <menu_access_description>The access arguments for the menu item, as a comma separated list (eg. 'access administration pages, ...').</menu_access_description>
+        <filter_title>Filter</filter_title>
+        <filter_description>Controls the block filter for the module.</filter_description>
+        <filter_add_title>Add filter</filter_add_title>
+        <filter_add_description>Wheter the module has a filter or not. The options below are only relevant is this checkbox is set.</filter_add_description>
+        <filter_title_title>Title</filter_title_title>
+        <filter_title_description>The title of the filter.</filter_title_description>
+        <filter_description_title>Description</filter_description_title>
+        <filter_description_description>The description of the filter.</filter_description_description>
         <misc_title>Miscellaneous</misc_title>
         <misc_description>Miscellaneous options for the module.</misc_description>
         <misc_css_title>CSS</misc_css_title>

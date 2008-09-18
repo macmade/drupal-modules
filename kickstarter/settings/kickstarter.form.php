@@ -161,6 +161,22 @@ $formConf = array(
             '#default_value' => 'access administration pages'
         )
     ),
+    'filter' => array(
+        '#type'        => 'fieldset',
+        '#collapsible' => true,
+        '#collapsed'   => true,
+        'filter_add' => array(
+            '#type' => 'checkbox'
+        ),
+        'filter_title' => array(
+            '#type' => 'textfield',
+            '#size' => 30
+        ),
+        'filter_description' => array(
+            '#type' => 'textfield',
+            '#size' => 100
+        )
+    ),
     'misc' => array(
         '#type'        => 'fieldset',
         '#collapsible' => true,

@@ -377,6 +377,17 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '}';
             $this->_files[ $path ][] = '';
         }
+        
+        // Checks if a filter must be added
+        if( $this->_formValues[ 'kickstarter_filter_add' ] ) {
+            
+            // Adds the filter hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_filter( $op, $delta = 0, $format = -1, $text = \'\' )';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->filter( $op, $delta, $format, $text );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+        }
     }
     
     /**
@@ -639,6 +650,53 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '        $content->span = \'Menu item content for the module \' . __CLASS__;';
             $this->_files[ $path ][] = '    }';
         }
+        
+        // Checks if a filter has been added
+        if( $this->_formValues[ 'kickstarter_filter_add' ] ) {
+            
+            // Checks if a method has already been added
+            if( $this->_formValues[ 'kickstarter_block_add' ]
+                || $this->_formValues[ 'kickstarter_node_add' ]
+                || $this->_formValues[ 'kickstarter_admin_add' ]
+                || $this->_formValues[ 'kickstarter_menu_add' ]
+            ) {
+                
+                // Adds a blank line
+                $this->_files[ $path ][] = '    ';
+            }
+            
+            // Adds the prepareFilter() method
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * Prepares the filter';
+            $this->_files[ $path ][] = '     * ';
+            $this->_files[ $path ][] = '     * @param   int     Which of the module\'s filters to use';
+            $this->_files[ $path ][] = '     * @param   int     Which input format the filter is being used';
+            $this->_files[ $path ][] = '     * @param   string  The content to filter';
+            $this->_files[ $path ][] = '     * @return  string  The prepared text';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    public function prepareFilter( $delta, $format, $text )';
+            $this->_files[ $path ][] = '    {';
+            $this->_files[ $path ][] = '        return $text;';
+            $this->_files[ $path ][] = '    }';
+            
+            // Adds a blank line
+            $this->_files[ $path ][] = '    ';
+            
+            // Adds the prepareFilter() method
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * Process the filter';
+            $this->_files[ $path ][] = '     * ';
+            $this->_files[ $path ][] = '     * @param   int     Which of the module\'s filters to use';
+            $this->_files[ $path ][] = '     * @param   int     Which input format the filter is being used';
+            $this->_files[ $path ][] = '     * @param   string  The content to filter';
+            $this->_files[ $path ][] = '     * @return  string  The processed text';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    public function processFilter( $delta, $format, $text )';
+            $this->_files[ $path ][] = '    {';
+            $this->_files[ $path ][] = '        return $text;';
+            $this->_files[ $path ][] = '    }';
+        }
+        
         // Ends the class
         $this->_files[ $path ][] = '}';
         $this->_files[ $path ][] = '';
@@ -709,6 +767,14 @@ class kickstarter extends Oop_Drupal_ModuleBase
             // Adds the menu labels
             $this->_files[ $path ][] = '        <menu_item_title>' .  $this->_formValues[ 'kickstarter_menu_title' ]  . '</menu_item_title>';
             $this->_files[ $path ][] = '        <menu_item_description>' .  $this->_formValues[ 'kickstarter_menu_description' ]  . '</menu_item_description>';
+        }
+        
+        // Checks if a filter item has been added
+        if( $this->_formValues[ 'kickstarter_filter_add' ] ) {
+            
+            // Adds the menu labels
+            $this->_files[ $path ][] = '        <filter_title>' .  $this->_formValues[ 'kickstarter_filter_title' ]  . '</filter_title>';
+            $this->_files[ $path ][] = '        <filter_description>' .  $this->_formValues[ 'kickstarter_filter_description' ]  . '</filter_description>';
         }
         
         // Ends the system section
