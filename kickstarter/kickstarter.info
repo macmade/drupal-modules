@@ -1,0 +1,6 @@
+name = OOP kickstarter
+description = Creation wizard for the OOP modules that will create all the necessary development files to build an OOP module
+core = 6.x
+dependencies[] = oop
+package = Framework
+php = 5.2

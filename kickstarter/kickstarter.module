@@ -1,0 +1,26 @@
+<?php
+
+function kickstarter_menu()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->addMenuItems();
+}
+
+function kickstarter_show()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->createModuleContent( 'show' );
+}
+
+function kickstarter_form()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->getForm();
+}
+
+function kickstarter_form_validate( $form, &$formState )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->validateForm( $form, $formState );
+}
+
+function kickstarter_form_submit( $formId, $formValues )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->submitForm( $formId, $formValues );
+}

@@ -1,0 +1,12 @@
+<?php
+
+function kickstarter_install()
+{
+    $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = 'oop'" ) );
+    db_query( "UPDATE {system} SET weight = %d WHERE name = 'kickstarter'", $oopWeight + 1 );
+}
+
+function kickstarter_uninstall()
+{
+    Oop_Drupal_Utils::getInstance()->deleteModuleVariables( 'kickstarter' );
+}
