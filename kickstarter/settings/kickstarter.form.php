@@ -29,6 +29,10 @@ $formConf = array(
             '#type'     => 'textfield',
             '#size'     => 30,
             '#required' => false
+        ),
+        'infos_cvs'     => array(
+            '#type'          => 'checkbox',
+            '#default_value' => true
         )
     ),
     'author' => array(

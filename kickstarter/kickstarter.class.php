@@ -116,6 +116,14 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Adds a dependency to the OOP module
         array_unshift( $deps, 'oop' );
         
+        // Checks if we want CVS support
+        if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+            
+            // Adds the CVS ID variable
+            $this->_files[ $path ][] = '; $Id$';
+            $this->_files[ $path ][] = '';
+        }
+        
         // Creates the required lines
         $this->_files[ $path ][] = 'name = ' . $this->_formValues[ 'kickstarter_infos_title' ];
         $this->_files[ $path ][] = 'description = ' . $this->_formValues[ 'kickstarter_infos_description' ];
@@ -157,6 +165,15 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Creates the required lines
         $this->_files[ $path ][] = '<?php';
         $this->_files[ $path ][] = '';
+        
+        // Checks if we want CVS support
+        if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+            
+            // Adds the CVS ID variable
+            $this->_files[ $path ][] = '// $Id$';
+            $this->_files[ $path ][] = '';
+        }
+        
         $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_install()';
         $this->_files[ $path ][] = '{';
         $this->_files[ $path ][] = '    $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = \'oop\'" ) );';
@@ -187,6 +204,14 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Starts the file
         $this->_files[ $path ][] = '<?php';
         $this->_files[ $path ][] = '';
+        
+        // Checks if we want CVS support
+        if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+            
+            // Adds the CVS ID variable
+            $this->_files[ $path ][] = '// $Id$';
+            $this->_files[ $path ][] = '';
+        }
         
         // Creates the help hook
         $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_help( $path, $arg )';
@@ -369,6 +394,14 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Starts the file
         $this->_files[ $path ][] = '<?php';
         $this->_files[ $path ][] = '';
+        
+        // Checks if we want CVS support
+        if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+            
+            // Adds the CVS ID variable
+            $this->_files[ $path ][] = '// $Id$';
+            $this->_files[ $path ][] = '';
+        }
         
         // Starts the class comments
         $this->_files[ $path ][] = '/**';
@@ -625,6 +658,17 @@ class kickstarter extends Oop_Drupal_ModuleBase
         
         // Starts the file
         $this->_files[ $path ][] = '<?xml version="1.0" encoding="utf-8"?' . '>';
+        
+        // Checks if we want CVS support
+        if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+            
+            // Adds the CVS ID variable
+            $this->_files[ $path ][] = '';
+            $this->_files[ $path ][] = '<!-- $Id$ -->';
+            $this->_files[ $path ][] = '';
+        }
+        
+        // Starts the label container
         $this->_files[ $path ][] = '<labels>';
         
         // Starts the system section
@@ -739,6 +783,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
             // Starts the file
             $this->_files[ $path ][] = '<?php';
             $this->_files[ $path ][] = '';
+            
+            // Checks if we want CVS support
+            if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+                
+                // Adds the CVS ID variable
+                $this->_files[ $path ][] = '// $Id$';
+                $this->_files[ $path ][] = '';
+            }
+            
+            // Adds the configuration array
             $this->_files[ $path ][] = '$formConf = array();';
             $this->_files[ $path ][] = '';
         }
@@ -756,9 +810,19 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 && $this->_formValues[ 'kickstarter_admin_blocks_number' ]
             ) {
                 
-                // Adds the number of blocks field
+                // Starts the file
                 $this->_files[ $adminConfigPath ][] = '<?php';
                 $this->_files[ $adminConfigPath ][] = '';
+                
+                // Checks if we want CVS support
+                if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+                    
+                    // Adds the CVS ID variable
+                    $this->_files[ $adminConfigPath ][] = '// $Id$';
+                    $this->_files[ $adminConfigPath ][] = '';
+                }
+                
+                // Adds the number of blocks field
                 $this->_files[ $adminConfigPath ][] = '$formConf = array(';
                 $this->_files[ $adminConfigPath ][] = '        \'number_of_blocks\' => array(';
                 $this->_files[ $adminConfigPath ][] = '        \'#type\'          => \'textfield\',';
@@ -775,6 +839,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 // Starts the file
                 $this->_files[ $adminConfigPath ][] = '<?php';
                 $this->_files[ $adminConfigPath ][] = '';
+                
+                // Checks if we want CVS support
+                if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+                    
+                    // Adds the CVS ID variable
+                    $this->_files[ $adminConfigPath ][] = '// $Id$';
+                    $this->_files[ $adminConfigPath ][] = '';
+                }
+                
+                // Adds the configuration array
                 $this->_files[ $adminConfigPath ][] = '$formConf = array();';
                 $this->_files[ $adminConfigPath ][] = '';
             }
@@ -801,6 +875,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
             // Starts the file
             $this->_files[ $path ][] = '/* <![CDATA[ */';
             $this->_files[ $path ][] = '';
+            
+            // Checks if we want CVS support
+            if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+                
+                // Adds the CVS ID variable
+                $this->_files[ $path ][] = '/* $Id$ */';
+                $this->_files[ $path ][] = '';
+            }
+            
+            // Ends the file
             $this->_files[ $path ][] = '';
             $this->_files[ $path ][] = '';
             $this->_files[ $path ][] = '/* // ]]> */';
@@ -828,6 +912,14 @@ class kickstarter extends Oop_Drupal_ModuleBase
             // Starts the file
             $this->_files[ $path ][] = '// <![CDATA[';
             $this->_files[ $path ][] = '';
+            
+            // Checks if we want CVS support
+            if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
+                
+                // Adds the CVS ID variable
+                $this->_files[ $path ][] = '// $Id$';
+                $this->_files[ $path ][] = '';
+            }
             
             // Starts the class comments
             $this->_files[ $path ][] = '/**';
