@@ -154,6 +154,17 @@ $formConf = array(
             '#size' => 100
         )
     ),
+    'misc' => array(
+        '#type'        => 'fieldset',
+        '#collapsible' => true,
+        '#collapsed'   => true,
+        'misc_css' => array(
+            '#type' => 'checkbox'
+        ),
+        'misc_js' => array(
+            '#type' => 'checkbox',
+        )
+    ),
     'submit' => array(
         '#type' => 'submit'
     )
