@@ -507,7 +507,28 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '     * @return  NULL';
             $this->_files[ $path ][] = '     */';
             $this->_files[ $path ][] = '    public function validateAdminForm( $form, &$formState )';
-            $this->_files[ $path ][] = '    {}';
+            
+            // Checks if the number of blocks can be settable
+            if( $this->_formValues[ 'kickstarter_admin_blocks_number' ] ) {
+                
+                // Adds the check for the number of blocks
+                $this->_files[ $path ][] = '    {';
+                $this->_files[ $path ][] = '        // Gets the number of blocks';
+                $this->_files[ $path ][] = '        $number = $formState[ \'values\' ][ \'' . $this->_moduleName . '_number_of_blocks\' ];';
+                $this->_files[ $path ][] = '        ';
+                $this->_files[ $path ][] = '        // Checks for a numeric value';
+                $this->_files[ $path ][] = '        if( !is_numeric( $number ) ) {';
+                $this->_files[ $path ][] = '            ';
+                $this->_files[ $path ][] = '            // Error - Value is not numeric';
+                $this->_files[ $path ][] = '            form_set_error( \'' . $this->_moduleName . '_number_of_blocks\', $this->_lang->notNumeric );';
+                $this->_files[ $path ][] = '        }';
+                $this->_files[ $path ][] = '    }';
+                
+            } else {
+                
+                // Ends the method
+                $this->_files[ $path ][] = '{}';
+            }
         }
         
         // Checks if a menu item has been added
