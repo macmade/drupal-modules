@@ -1,6 +1,6 @@
 /* <![CDATA[ */
 
-div.module-helloworld-infos {
+div.module-helloworld-block div.module-helloworld-infos {
     padding:          5px;
     margin:           5px;
     font-size:        10px;
@@ -8,7 +8,7 @@ div.module-helloworld-infos {
     border:           solid 1px #D3E7F4;
 }
 
-div.module-helloworld-modules {
+div.module-helloworld-block div.module-helloworld-modules {
     float:            left;
     width:            45%;
     padding:          5px;
@@ -18,7 +18,7 @@ div.module-helloworld-modules {
     border:           solid 1px #D3E7F4;
 }
 
-div.module-helloworld-backtrace {
+div.module-helloworld-block div.module-helloworld-backtrace {
     float:            right;
     width:            45%;
     padding:          5px;

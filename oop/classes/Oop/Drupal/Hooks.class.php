@@ -50,11 +50,28 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         // Checks the callback method
         $this->_checkMethod( $callbackMethod );
         
+        // Checks the callback method to set the CSS class name
+        if( $callbackMethod === 'getBlock' ) {
+            
+            // CSS class - Block content
+            $cssClass = 'module-' . $this->_modName . '-block';
+            
+        } elseif( $callbackMethod === 'getNode' ) {
+            
+            // CSS class - Node content
+            $cssClass = 'module-' . $this->_modName . '-node';
+            
+        } else {
+            
+            // CSS class - Custom content
+            $cssClass = 'module-' . $this->_modName;
+        }
+        
         // Creates the storage tag for the module
         $content            = new Oop_Xhtml_Tag( 'div' );
         
         // Adds the base CSS class
-        $content[ 'class' ] = 'module-' . $this->_modName;
+        $content[ 'class' ] = $cssClass;
         
         // Adds the content object to the arguments
         array_unshift( $args, $content );
@@ -251,7 +268,6 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             }
         }
     }
-    
     
     /**
      * Drupal 'view' hook

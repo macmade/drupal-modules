@@ -1,6 +1,6 @@
 /* <![CDATA[ */
 
-span.module-ddmenu-active A {
+div.module-ddmenu-block span.module-ddmenu-active A {
     font-weight: bold;
 }
 

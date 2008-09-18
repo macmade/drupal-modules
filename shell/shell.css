@@ -13,11 +13,11 @@ div.module-shell {
     font-weight: normal;
 }
 
-.module-shell-shell {
+div.module-shell .module-shell-shell {
     margin-top: 10px;
     padding:    10px;
 }
-.module-shell-shell, .module-shell-shell * {
+div.module-shell .module-shell-shell, .module-shell-shell * {
     font-family: monospace;
 }
 
@@ -31,11 +31,11 @@ div.module-shell {
     font-weight: bold;
 }
 
-.module-shell-command {
+div.module-shell .module-shell-command {
     font-weight: bold;
 }
 
-.module-shell-result {
+div.module-shell .module-shell-result {
     white-space: pre;
     line-height: 1em;
 }
