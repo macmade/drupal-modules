@@ -570,7 +570,7 @@ class shell extends Oop_Drupal_ModuleBase
     /**
      * 
      */
-    public function addMenuItems( array $items )
+    public function addMenuItems( array $items = array() )
     {
         $items[ 'admin/shell' ] = array(
             'title'            => $this->_lang->menuTitle,
