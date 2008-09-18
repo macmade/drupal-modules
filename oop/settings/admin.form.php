@@ -7,5 +7,12 @@ $formConf = array(
         '#size'          => 5,
         '#maxlength'     => 5,
         '#required'      => true
+    ),
+    'default_language' => array(
+        '#type'          => 'textfield',
+        '#default_value' => 'en',
+        '#size'          => 5,
+        '#maxlength'     => 5,
+        '#required'      => true
     )
 );

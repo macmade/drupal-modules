@@ -34,6 +34,9 @@ spl_autoload_register( array( 'Oop_Core_ClassManager', 'autoLoad' ) );
 // Sets the substitution character for the @ sign
 Oop_Drupal_ModuleBase::setEmailCryptSymbol( variable_get( 'oop_email_crypt_symbol', '(at)' ) );
 
+// Sets the default language
+Oop_Lang_Getter::setDefaultLanguage( variable_get( 'oop_default_language', 'en' ) );
+
 /**
  * Drupal 'perm' hook
  * 

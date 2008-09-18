@@ -9,6 +9,8 @@
     <settings>
         <email_crypt_symbol_title>Email crypt symbol</email_crypt_symbol_title>
         <email_crypt_symbol_description>The symbol to use as a substitute of the @ symbol in the email crypt methods. You will probably have to clear the cache after having changed this value.</email_crypt_symbol_description>
+        <default_language_title>Default language</default_language_title>
+        <default_language_description>The default language for the Oop_Lang_Getter class, used in every OOP modules to get the language labels. You should probably leave the default value as most of the OOP modules should be written in english.</default_language_description>
         <infos_title>General informations</infos_title>
         <infos_description>The general informations about the module (typically found in the .info file).</infos_description>
         <infos_name_title>Name</infos_name_title>
