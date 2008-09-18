@@ -74,7 +74,7 @@
         <menu_access_title>Access</menu_access_title>
         <menu_access_description>The access arguments for the menu item, as a comma separated list (eg. 'access administration pages, ...').</menu_access_description>
         <misc_title>Miscellaneous</misc_title>
-        <misc_description>Miscellaneous options for the module</misc_description>
+        <misc_description>Miscellaneous options for the module.</misc_description>
         <misc_css_title>CSS</misc_css_title>
         <misc_css_description>Creates the CSS file for the module.</misc_css_description>
         <misc_js_title>JS</misc_js_title>
