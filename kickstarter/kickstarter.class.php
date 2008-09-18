@@ -708,7 +708,78 @@ class kickstarter extends Oop_Drupal_ModuleBase
      * 
      */
     protected function _createSettingsFiles()
-    {}
+    {
+        // Files to create
+        $files = array();
+        
+        // Checks if a block has been added
+        if( $this->_formValues[ 'kickstarter_block_add' ] ) {
+            
+            // Config file path
+            $files[] = $this->_moduleSettingsDir
+                     . DIRECTORY_SEPARATOR
+                     . 'block.0.form.php';
+        }
+        
+        // Checks if a node has been added
+        if( $this->_formValues[ 'kickstarter_node_add' ] ) {
+            
+            // Config file path
+            $files[] = $this->_moduleSettingsDir
+                     . DIRECTORY_SEPARATOR
+                     . 'node.form.php';
+        }
+        
+        // Process each file
+        foreach( $files as $path ) {
+            
+            // Storage array
+            $this->_files[ $path ] = array();
+            
+            // Starts the file
+            $this->_files[ $path ][] = '<?php';
+            $this->_files[ $path ][] = '';
+            $this->_files[ $path ][] = '$formConf = array();';
+            $this->_files[ $path ][] = '';
+        }
+        
+        // Checks if an administration settings page has been added
+        if( $this->_formValues[ 'kickstarter_admin_add' ] ) {
+            
+            // Config file path
+            $adminConfigPath = $this->_moduleSettingsDir
+                            . DIRECTORY_SEPARATOR
+                            . 'admin.form.php';
+            
+            // Checks if the blocks number is settable
+            if( $this->_formValues[ 'kickstarter_admin_add' ]
+                && $this->_formValues[ 'kickstarter_admin_blocks_number' ]
+            ) {
+                
+                // Adds the number of blocks field
+                $this->_files[ $adminConfigPath ][] = '<?php';
+                $this->_files[ $adminConfigPath ][] = '';
+                $this->_files[ $adminConfigPath ][] = '$formConf = array(';
+                $this->_files[ $adminConfigPath ][] = '        \'number_of_blocks\' => array(';
+                $this->_files[ $adminConfigPath ][] = '        \'#type\'          => \'textfield\',';
+                $this->_files[ $adminConfigPath ][] = '        \'#default_value\' => \'1\',';
+                $this->_files[ $adminConfigPath ][] = '        \'#size\'          => 5,';
+                $this->_files[ $adminConfigPath ][] = '        \'#maxlength\'     => 5,';
+                $this->_files[ $adminConfigPath ][] = '        \'#required\'      => true';
+                $this->_files[ $adminConfigPath ][] = '    )';
+                $this->_files[ $adminConfigPath ][] = ');';
+                $this->_files[ $adminConfigPath ][] = '';
+                
+            } else {
+                
+                // Starts the file
+                $this->_files[ $adminConfigPath ][] = '<?php';
+                $this->_files[ $adminConfigPath ][] = '';
+                $this->_files[ $adminConfigPath ][] = '$formConf = array();';
+                $this->_files[ $adminConfigPath ][] = '';
+            }
+        }
+    }
     
     /**
      * 
