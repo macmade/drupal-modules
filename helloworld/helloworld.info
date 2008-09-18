@@ -1,6 +1,6 @@
 ; $Id$
 
-name = Hello World
+name = Hello world
 description = A Drupal test module to test the Drupal OOP framework
 core = 6.x
 dependencies[] = oop
