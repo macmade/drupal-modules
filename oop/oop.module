@@ -38,24 +38,13 @@ Oop_Drupal_ModuleBase::setEmailCryptSymbol( variable_get( 'oop_email_crypt_symbo
 Oop_Lang_Getter::setDefaultLanguage( variable_get( 'oop_default_language', 'en' ) );
 
 /**
- * Drupal 'perm' hook
- * 
- * @return  array   The permissions array for the module
- */
-function oop_perm()
-{
-    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->perm();
-}
-
-/**
  * Drupal 'menu' hook
  * 
  * @return  array   The menu items
  */
 function oop_menu()
 {
-    $module = Oop_Core_ClassManager::getInstance()->getModule( 'oop' );
-    return $module->addMenuItems( $module->addAdminSettingsMenu() );
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->addAdminSettingsMenu();
 }
 
 /**
@@ -66,38 +55,4 @@ function oop_menu()
 function oop_adminForm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->getAdminForm();
-}
-
-/**
- * Drupal 'show' hook
- * 
- * @return  string  The content of the module's view
- */
-function oop_show()
-{
-    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->createModuleContent( 'show' );
-}
-
-/**
- * 
- */
-function oop_kickstarterForm()
-{
-    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->getKickstarterForm();
-}
-
-/**
- * 
- */
-function oop_kickstarterForm_validate( $form, &$formState )
-{
-    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->validateKickstarterForm( $form, $formState );
-}
-
-/**
- * 
- */
-function oop_kickstarterForm_submit( $formId, $formValues )
-{
-    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->submitKickstarterForm( $formId, $formValues );
 }
