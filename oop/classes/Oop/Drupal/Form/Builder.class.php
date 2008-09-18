@@ -111,10 +111,7 @@ class Oop_Drupal_Form_Builder
                 $storage[ $fieldName ][ '#description' ] = $this->_lang->getLabel( $field . '_description', 'settings' );
             }
             
-            if( isset( $fieldConf[ '#default_value' ] ) ) {
-                
-                $storage[ $fieldName ][ '#default_value' ] = variable_get( $fieldName, $fieldConf[ '#default_value' ] );
-            }
+            $storage[ $fieldName ][ '#default_value' ] = variable_get( $fieldName, $fieldConf[ '#default_value' ] );
             
             if( $fieldConf[ '#type' ] === 'select' && isset( $fieldConf[ '#options' ] ) && !is_array( $fieldConf[ '#options' ] ) ) {
                 
