@@ -5,6 +5,8 @@
         <menu_admin_description>Configures various aspects of the Drupal Object Oriented Programming Framework</menu_admin_description>
     </system>
     <settings>
+        <html_format_title>HTML formatting</html_format_title>
+        <html_format_description>Format all HTML output from the OOP modules, to get a cleaner source.</html_format_description>
         <email_crypt_symbol_title>Email crypt symbol</email_crypt_symbol_title>
         <email_crypt_symbol_description>The symbol to use as a substitute of the @ symbol in the email crypt methods. You will probably have to clear the cache after having changed this value.</email_crypt_symbol_description>
         <default_language_title>Default language</default_language_title>

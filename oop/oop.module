@@ -31,6 +31,9 @@ require_once(
 // Registers an SPL autoload method to use to load the classes form this package
 spl_autoload_register( array( 'Oop_Core_ClassManager', 'autoLoad' ) );
 
+// Sets the HTML formatting option
+Oop_Xhtml_Tag::useFormattedOutput( variable_get( 'oop_html_format', 1 ) );
+
 // Sets the substitution character for the @ sign
 Oop_Drupal_ModuleBase::setEmailCryptSymbol( variable_get( 'oop_email_crypt_symbol', '(at)' ) );
 

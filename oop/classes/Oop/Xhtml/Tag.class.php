@@ -252,6 +252,17 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
     /**
      * 
      */
+    public static function useFormattedOutput( $value )
+    {
+        $oldValue               = self::$_formattedOutput;
+        self::$_formattedOutput = ( boolean )$value;
+        
+        return $oldValue;
+    }
+    
+    /**
+     * 
+     */
     protected function _addSpacer( $pixels )
     {
         $spacer            = $this->_addChild( 'div' );
@@ -450,17 +461,6 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
     public function asXml()
     {
         return $this->_output( true );
-    }
-    
-    /**
-     * 
-     */
-    public function useFormattedOutput( $value )
-    {
-        $oldValue               = self::$_formattedOutput;
-        self::$_formattedOutput = ( boolean )$value;
-        
-        return $oldValue;
     }
     
     /**
