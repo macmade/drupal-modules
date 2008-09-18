@@ -90,7 +90,7 @@
         <introTitle>Introduction</introTitle>
         <introText>This wizard will let you configure a Drupal module , taking advantage of the OOP Framework.
 It will generate all the necessary files, depending on the type of module you want.
-Thus the generated module will be fully functionnal, please remember that this is only a kickstarter, not an editor nor a generator for the module's content.
+Even if the generated module will be fully functionnal, please remember that this is only a kickstarter, not an editor nor a generator for the module's content.
 It will only generate the required placholders for your code. So once you have generated your module, please take a look at all the generated files.
 Happy coding...</introText>
     </module>

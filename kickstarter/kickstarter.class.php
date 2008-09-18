@@ -923,21 +923,25 @@ class kickstarter extends Oop_Drupal_ModuleBase
      */
     public function validateForm( array $form, array &$formState )
     {
-        // Path to the module directory
-        $this->_moduleDir         = self::$_classManager->getDrupalPath()
-                                  . 'sites'
-                                  . DIRECTORY_SEPARATOR
-                                  . 'all'
-                                  . DIRECTORY_SEPARATOR
-                                  . 'modules'
-                                  . DIRECTORY_SEPARATOR
-                                  . $formState[ 'values' ][ 'kickstarter_infos_name' ];
-        
-        // Checks if the module directory already exists
-        if( file_exists( $this->_moduleDir ) ) {
+        // Checks for a module name
+        if( $formState[ 'values' ][ 'kickstarter_infos_name' ] ) {
             
-            // Error - The directory already exists
-            drupal_set_message( sprintf( $this->_lang->dirExists, $path ) );
+            // Path to the module directory
+            $this->_moduleDir         = self::$_classManager->getDrupalPath()
+                                      . 'sites'
+                                      . DIRECTORY_SEPARATOR
+                                      . 'all'
+                                      . DIRECTORY_SEPARATOR
+                                      . 'modules'
+                                      . DIRECTORY_SEPARATOR
+                                      . $formState[ 'values' ][ 'kickstarter_infos_name' ];
+            
+            // Checks if the module directory already exists
+            if( file_exists( $this->_moduleDir ) ) {
+                
+                // Error - The directory already exists
+                form_set_error( 'kickstarter_infos_name', sprintf( $this->_lang->dirExists, $path ) );
+            }
         }
         
         // Checks if the author email is valid
@@ -1025,6 +1029,9 @@ class kickstarter extends Oop_Drupal_ModuleBase
             // Creates the JS file
             $this->_createJsFile();
             
+            // Error state
+            $error = false;
+            
             // Process each file
             foreach( $this->_files as $path => &$lines ) {
                 
@@ -1033,8 +1040,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
                     
                     // Error - impossible to write the current file
                     drupal_set_message( sprintf( $this->_lang->cannotCreateFile, $path ) );
+                    $error = true;
                     break;
                 }
+            }
+            
+            // Checks for an error
+            if( !$error ) {
+                
+                // Displays the success message
+                drupal_set_message( sprintf( $this->_lang->moduleCreated, $path ) );
             }
         }
     }
