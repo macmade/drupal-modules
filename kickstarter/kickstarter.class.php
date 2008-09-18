@@ -410,7 +410,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             }
             
             // Checks if the JS file has to be included
-            if( $this->_formValues[ 'kickstarter_misc_css' ] ) {
+            if( $this->_formValues[ 'kickstarter_misc_js' ] ) {
                 
                 // Adds the JS inclusion
                 $this->_files[ $path ][] = '        // Includes the JS file';
@@ -427,7 +427,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Checks if the node hook is implemented
         if( $this->_formValues[ 'kickstarter_node_add' ] ) {
             
-            // Checks if the block hook has been implemented
+            // Checks if a method has already been added
             if( $this->_formValues[ 'kickstarter_block_add' ] ) {
                 
                 // Adds a blank line
@@ -457,7 +457,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             }
             
             // Checks if the JS file has to be included
-            if( $this->_formValues[ 'kickstarter_misc_css' ] ) {
+            if( $this->_formValues[ 'kickstarter_misc_js' ] ) {
                 
                 // Adds the JS inclusion
                 $this->_files[ $path ][] = '        // Includes the JS file';
@@ -471,11 +471,102 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '    }';
         }
         
+        // Checks if the admin form has been added
+        if( $this->_formValues[ 'kickstarter_admin_add' ] ) {
+            
+            // Checks if a method has already been added
+            if( $this->_formValues[ 'kickstarter_block_add' ]
+                || $this->_formValues[ 'kickstarter_node_add' ]
+            ) {
+                
+                // Adds a blank line
+                $this->_files[ $path ][] = '    ';
+            }
+            
+            // Adds the validateAdminForm() method
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * Validates the administration settings form';
+            $this->_files[ $path ][] = '     * ';
+            $this->_files[ $path ][] = '     * @param   array   The form configuration';
+            $this->_files[ $path ][] = '     * @param   array   The form values (passed by reference)';
+            $this->_files[ $path ][] = '     * @return  NULL';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    public function validateAdminForm( $form, &$formState )';
+            $this->_files[ $path ][] = '    {}';
+        }
+        
+        // Checks if a menu item has been added
+        if( $this->_formValues[ 'kickstarter_menu_add' ] ) {
+            
+            // Checks if a method has already been added
+            if( $this->_formValues[ 'kickstarter_block_add' ]
+                || $this->_formValues[ 'kickstarter_node_add' ]
+                || $this->_formValues[ 'kickstarter_admin_add' ]
+            ) {
+                
+                // Adds a blank line
+                $this->_files[ $path ][] = '    ';
+            }
+            
+            // Adds the addMenuItems() method
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * Adds items to the Drupal menu';
+            $this->_files[ $path ][] = '     * ';
+            $this->_files[ $path ][] = '     * @param   array   An array in which to place the menu items (may have existing items, depending on the call context)';
+            $this->_files[ $path ][] = '     * @return  array   The modified items array';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    public function addMenuItems( array $items = array() )';
+            $this->_files[ $path ][] = '    {';
+            $this->_files[ $path ][] = '        $items[ \'' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ] = array(';
+            $this->_files[ $path ][] = '            \'title\'            => $this->_lang->menuTitle,';
+            $this->_files[ $path ][] = '            \'page callback\'    => \'' . $this->_moduleName . '_show\',';
+            $this->_files[ $path ][] = '            \'access arguments\' => array( \'access administration pages\' ),';
+            $this->_files[ $path ][] = '        );';
+            $this->_files[ $path ][] = '        ';
+            $this->_files[ $path ][] = '        return $items';
+            $this->_files[ $path ][] = '    }';
+            
+            // Adds a blank line
+            $this->_files[ $path ][] = '    ';
+            
+            // Adds the show() method
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * Shows a menu item';
+            $this->_files[ $path ][] = '     * ';
+            $this->_files[ $path ][] = '     * @param   Oop_Xhtml_Tag   The placeholder for the module content';
+            $this->_files[ $path ][] = '     * @return  NULL';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    public function show( Oop_Xhtml_Tag $content )';
+            $this->_files[ $path ][] = '    {';
+            
+            // Checks if the CSS file has to be included
+            if( $this->_formValues[ 'kickstarter_misc_css' ] ) {
+                
+                // Adds the CSS inclusion
+                $this->_files[ $path ][] = '        // Includes the CSS file';
+                $this->_files[ $path ][] = '        $this->_includeModuleCss();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
+            // Checks if the JS file has to be included
+            if( $this->_formValues[ 'kickstarter_misc_js' ] ) {
+                
+                // Adds the JS inclusion
+                $this->_files[ $path ][] = '        // Includes the JS file';
+                $this->_files[ $path ][] = '        $this->_includeModuleScript();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
+            // Ends the getNode() method
+            $this->_files[ $path ][] = '        // Adds some content';
+            $this->_files[ $path ][] = '        $content->span = \'Menu item content for the module \' . __CLASS__;';
+            $this->_files[ $path ][] = '    }';
+        }
         // Ends the class
         $this->_files[ $path ][] = '}';
         $this->_files[ $path ][] = '';
     }
-    
+
     /**
      * 
      */
@@ -669,7 +760,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
                                   . DIRECTORY_SEPARATOR
                                   . 'modules'
                                   . DIRECTORY_SEPARATOR
-                                  . $form[ '#post' ][ 'kickstarter_infos_name' ];
+                                  . $formState[ 'values' ][ 'kickstarter_infos_name' ];
         
         // Checks if the module directory already exists
         if( file_exists( $this->_moduleDir ) ) {
@@ -679,21 +770,21 @@ class kickstarter extends Oop_Drupal_ModuleBase
         }
         
         // Checks if the author email is valid
-        if( !valid_email_address( $form[ '#post' ][ 'kickstarter_author_email' ] ) ) {
+        if( !valid_email_address( $formState[ 'values' ][ 'kickstarter_author_email' ] ) ) {
             
             // Error - Invalid email address
             form_set_error( 'kickstarter_author_email', $this->_lang->invalidEmail );
         }
         
         // Checks the module name
-        if( !preg_match( '/^[a-z_]+$/', $form[ '#post' ][ 'kickstarter_infos_name' ] ) ) {
+        if( !preg_match( '/^[a-z_]+$/', $formState[ 'values' ][ 'kickstarter_infos_name' ] ) ) {
             
             // Error - Invalid module name
             form_set_error( 'kickstarter_infos_name', $this->_lang->invalidModuleName );
         }
         
         // Checks the PHP version
-        if( ( int )$form[ '#post' ][ 'kickstarter_dependencies_version_php' ] < 5 ) {
+        if( ( int )$formState[ 'values' ][ 'kickstarter_dependencies_version_php' ] < 5 ) {
             
             // Error - PHP version cannot be under 5
             form_set_error( 'kickstarter_dependencies_version_php', $this->_lang->phpVersionTooOld );
