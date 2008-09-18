@@ -170,7 +170,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
         if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
             
             // Adds the CVS ID variable
-            $this->_files[ $path ][] = '// $Id$';
+            $this->_files[ $path ][] = '# $Id$';
             $this->_files[ $path ][] = '';
         }
         
@@ -209,7 +209,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
         if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
             
             // Adds the CVS ID variable
-            $this->_files[ $path ][] = '// $Id$';
+            $this->_files[ $path ][] = '# $Id$';
             $this->_files[ $path ][] = '';
         }
         
@@ -399,7 +399,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
         if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
             
             // Adds the CVS ID variable
-            $this->_files[ $path ][] = '// $Id$';
+            $this->_files[ $path ][] = '# $Id$';
             $this->_files[ $path ][] = '';
         }
         
@@ -788,7 +788,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
                 
                 // Adds the CVS ID variable
-                $this->_files[ $path ][] = '// $Id$';
+                $this->_files[ $path ][] = '# $Id$';
                 $this->_files[ $path ][] = '';
             }
             
@@ -818,7 +818,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
                     
                     // Adds the CVS ID variable
-                    $this->_files[ $adminConfigPath ][] = '// $Id$';
+                    $this->_files[ $adminConfigPath ][] = '# $Id$';
                     $this->_files[ $adminConfigPath ][] = '';
                 }
                 
@@ -844,7 +844,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 if( $this->_formValues[ 'kickstarter_infos_cvs' ] ) {
                     
                     // Adds the CVS ID variable
-                    $this->_files[ $adminConfigPath ][] = '// $Id$';
+                    $this->_files[ $adminConfigPath ][] = '# $Id$';
                     $this->_files[ $adminConfigPath ][] = '';
                 }
                 
