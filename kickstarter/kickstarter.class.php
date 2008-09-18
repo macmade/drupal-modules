@@ -559,7 +559,8 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '    public function addMenuItems( array $items = array() )';
             $this->_files[ $path ][] = '    {';
             $this->_files[ $path ][] = '        $items[ \'' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ] = array(';
-            $this->_files[ $path ][] = '            \'title\'            => $this->_lang->menuTitle,';
+            $this->_files[ $path ][] = '            \'title\'            => $this->_lang->getLabel( \'menu_item_title\', \'system\' ),';
+            $this->_files[ $path ][] = '            \'description\'      => $this->_lang->getLabel( \'menu_item_description\', \'system\' ),';
             $this->_files[ $path ][] = '            \'page callback\'    => \'' . $this->_moduleName . '_show\',';
             $this->_files[ $path ][] = '            \'access arguments\' => array(' . $access . '),';
             $this->_files[ $path ][] = '        );';
@@ -654,6 +655,14 @@ class kickstarter extends Oop_Drupal_ModuleBase
             // Adds the admin labels
             $this->_files[ $path ][] = '        <menu_admin_title>' .  $this->_formValues[ 'kickstarter_admin_title' ]  . '</menu_admin_title>';
             $this->_files[ $path ][] = '        <menu_admin_description>' .  $this->_formValues[ 'kickstarter_admin_description' ]  . '</menu_admin_description>';
+        }
+        
+        // Checks if a menu item has been added
+        if( $this->_formValues[ 'kickstarter_menu_add' ] ) {
+            
+            // Adds the menu labels
+            $this->_files[ $path ][] = '        <menu_item_title>' .  $this->_formValues[ 'kickstarter_menu_title' ]  . '</menu_item_title>';
+            $this->_files[ $path ][] = '        <menu_item_description>' .  $this->_formValues[ 'kickstarter_menu_description' ]  . '</menu_item_description>';
         }
         
         // Ends the system section
