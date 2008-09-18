@@ -520,7 +520,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 $this->_files[ $path ][] = '        if( !is_numeric( $number ) ) {';
                 $this->_files[ $path ][] = '            ';
                 $this->_files[ $path ][] = '            // Error - Value is not numeric';
-                $this->_files[ $path ][] = '            form_set_error( \'' . $this->_moduleName . '_number_of_blocks\', $this->_lang->notNumeric );';
+                $this->_files[ $path ][] = '            form_set_error( \'' . $this->_moduleName . '_number_of_blocks\', $this->_lang->blocksNumberNotNumeric );';
                 $this->_files[ $path ][] = '        }';
                 $this->_files[ $path ][] = '    }';
                 
@@ -632,17 +632,60 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Adds the help label
         $this->_files[ $path ][] = '        <help>' . $this->_formValues[ 'kickstarter_infos_description' ] . '</help>';
         
+        // Checks if a block has been added
+        if( $this->_formValues[ 'kickstarter_block_add' ] ) {
+            
+            // Adds the block labels
+            $this->_files[ $path ][] = '        <block_0_subject>' .  $this->_formValues[ 'kickstarter_block_title' ]  . '</block_0_subject>';
+            $this->_files[ $path ][] = '        <block_0_info>' .  $this->_formValues[ 'kickstarter_block_description' ]  . '</block_0_info>';
+        }
+        
+        // Checks if a node has been added
+        if( $this->_formValues[ 'kickstarter_node_add' ] ) {
+            
+            // Adds the node labels
+            $this->_files[ $path ][] = '        <node_info_name>' .  $this->_formValues[ 'kickstarter_node_title' ]  . '</node_info_name>';
+            $this->_files[ $path ][] = '        <node_info_description>' .  $this->_formValues[ 'kickstarter_node_description' ]  . '</node_info_description>';
+        }
+        
+        // Checks if an administration settings page has been added
+        if( $this->_formValues[ 'kickstarter_admin_add' ] ) {
+            
+            // Adds the admin labels
+            $this->_files[ $path ][] = '        <menu_admin_title>' .  $this->_formValues[ 'kickstarter_admin_title' ]  . '</menu_admin_title>';
+            $this->_files[ $path ][] = '        <menu_admin_description>' .  $this->_formValues[ 'kickstarter_admin_description' ]  . '</menu_admin_description>';
+        }
+        
         // Ends the system section
         $this->_files[ $path ][] = '    </system>';
         
         // Starts the settings section
         $this->_files[ $path ][] = '    <settings>';
         
+        // Checks if the number of blocks is settable through the admin page
+        if( $this->_formValues[ 'kickstarter_admin_add' ]
+            && $this->_formValues[ 'kickstarter_admin_blocks_number' ]
+        ) {
+            
+            // Adds the label for the settable number of blocks
+            $this->_files[ $path ][] = '        <number_of_blocks_title>Number of blocks</number_of_blocks_title>';
+            $this->_files[ $path ][] = '        <number_of_blocks_description>The desired number of blocks. This will allow you to place this block more than once.</number_of_blocks_description>';
+        }
+        
         // Ends the settings section
         $this->_files[ $path ][] = '    </settings>';
         
         // Starts the module section
         $this->_files[ $path ][] = '    <module>';
+        
+        // Checks if the number of blocks is settable through the admin page
+        if( $this->_formValues[ 'kickstarter_admin_add' ]
+            && $this->_formValues[ 'kickstarter_admin_blocks_number' ]
+        ) {
+            
+            // Adds the error message for a non-numeric value
+            $this->_files[ $path ][] = '        <blocksNumberNotNumeric>The number of blocks must be a numeric value</blocksNumberNotNumeric>';
+        }
         
         // Ends the module section
         $this->_files[ $path ][] = '    </module>';
