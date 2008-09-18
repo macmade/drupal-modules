@@ -269,6 +269,79 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '}';
             $this->_files[ $path ][] = '';
         }
+        
+        // Checks if an administration and/or a menu item page must be added
+        if( $this->_formValues[ 'kickstarter_admin_add' ] && $this->_formValues[ 'kickstarter_menu_add' ] ) {
+            
+            // Adds the menu hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    $module = Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' );';
+            $this->_files[ $path ][] = '    return $module->addMenuItems( $module->addAdminSettingsMenu() );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the adminForm function
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->getAdminForm();';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the validate hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm_validate()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            
+            // Adds the show() function
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_show()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->createModuleContent( \'show\' );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+        } elseif( $this->_formValues[ 'kickstarter_admin_add' ] ) {
+            
+            // Adds the menu hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->addAdminSettingsMenu();';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the adminForm() function
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->getAdminForm();';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the validate hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm_validate()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+        } elseif( $this->_formValues[ 'kickstarter_menu_add' ] ) {
+            
+            // Adds the menu hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->addMenuItems();';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the show() function
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_show()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->createModuleContent( \'show\' );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+        }
     }
     
     /**
