@@ -15,8 +15,8 @@
         <infos_description_description>The module description, as displayed in the module list. This will also be used to generate the 'help' hook.</infos_description_description>
         <infos_package_title>Package</infos_package_title>
         <infos_package_description>The module's package, used to group the modules in the modules list.</infos_package_description>
-        <infos_cvs_title>CVS</infos_cvs_title>
-        <infos_cvs_description>Adds the CVS $Id$ variable in all generated files.</infos_cvs_description>
+        <infos_cvs_title>CVS/SVN</infos_cvs_title>
+        <infos_cvs_description>Adds the CVS/SVN $Id$ variable in all generated files.</infos_cvs_description>
         <author_title>Author</author_title>
         <author_description>Informations about the author of the module.</author_description>
         <author_name_title>Name</author_name_title>
