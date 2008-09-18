@@ -586,7 +586,7 @@ class shell extends Oop_Drupal_ModuleBase
      */
     public function validateAdminForm( $form, &$formState )
     {
-        $fontSize = $form[ '#post' ][ 'shell_font_size' ];
+        $fontSize = $formState[ 'values' ][ 'shell_font_size' ];
         
         if( !is_numeric( $fontSize ) ) {
             

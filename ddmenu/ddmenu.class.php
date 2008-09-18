@@ -173,7 +173,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
      */
     public function validateAdminForm( $form, &$formState )
     {
-        $number = $form[ '#post' ][ 'ddmenu_number_of_blocks' ];
+        $number = $formState[ 'values' ][ 'ddmenu_number_of_blocks' ];
         
         if( !is_numeric( $number ) ) {
             
