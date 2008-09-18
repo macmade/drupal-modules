@@ -888,6 +888,13 @@ class kickstarter extends Oop_Drupal_ModuleBase
             
         } else {
             
+            // Adds the intro text
+            $content->div->strong = $this->_lang->introTitle;
+            $content->div         = $this->_lang->introText;
+            
+            // Adds a spacer
+            $content->spacer( 10 );
+            
             // Creates the kickstarter form
             $content->div = drupal_get_form( 'kickstarter_form' );
         }
