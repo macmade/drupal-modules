@@ -203,4 +203,12 @@ final class Oop_Lang_Getter
         
         return $oldLanguage;
     }
+    
+    /**
+     * 
+     */
+    public static function getDefaultLanguage()
+    {
+        return self::$_defaultLanguage;
+    }
 }
