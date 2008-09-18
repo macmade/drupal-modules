@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Drupal database class
  * 

@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Abstract for the exception classes
  * 

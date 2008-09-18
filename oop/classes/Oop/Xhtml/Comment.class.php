@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Class to create HTML comments
  * 

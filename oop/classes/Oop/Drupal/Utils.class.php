@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Miscellaneous Drupal utilities
  * 

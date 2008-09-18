@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Getter class for the request variables
  * 

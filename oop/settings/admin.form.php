@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 $formConf = array(
     'html_format' => array(
         '#type'          => 'checkbox',

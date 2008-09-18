@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Exception class for the Oop_Lang_Getter class
  * 

@@ -1,5 +1,7 @@
 // <![CDATA[
 
+// $Id$
+
 function Oop()
 {
     /**

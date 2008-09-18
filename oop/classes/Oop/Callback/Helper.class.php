@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Callback helper class
  * 

@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 // Checks the PHP version
 if( ( double )PHP_VERSION < 5 ) {
     
