@@ -1,10 +1,5 @@
 <?php
 
-function shell_perm()
-{
-    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->perm();
-}
-
 function shell_menu()
 {
     $module = Oop_Core_ClassManager::getInstance()->getModule( 'shell' );
