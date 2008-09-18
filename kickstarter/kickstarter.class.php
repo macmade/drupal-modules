@@ -386,11 +386,18 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Checks if the perm hook is implemented
         if( $this->_formValues[ 'kickstarter_block_add' ] || $this->_formValues[ 'kickstarter_node_add' ] ) {
             
+            // Access arguments
+            $blockAccessArray = explode( ',', preg_replace( '/,\s+/', ',', trim( $this->_formValues[ 'kickstarter_block_access' ] ) ) );
+            $nodeAccessArray  = explode( ',', preg_replace( '/,\s+/', ',', trim( $this->_formValues[ 'kickstarter_node_access' ] ) ) );
+            $accessArray      = array_merge( $blockAccessArray, $nodeAccessArray );
+            $access           = '\'' . implode( '\', \'', $accessArray ) . '\'';
+            $access           = ( $access ) ? ' ' . $access . ' ' : '';
+            
             // Adds the permissions array
             $this->_files[ $path ][] = '    /**';
             $this->_files[ $path ][] = '     * An array with the Drupal permission for the module';
             $this->_files[ $path ][] = '     */';
-            $this->_files[ $path ][] = '    protected $_perms = array();';
+            $this->_files[ $path ][] = '    protected $_perms = array(' . $access . ');';
             $this->_files[ $path ][] = '    ';
         }
         
@@ -516,6 +523,11 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 $this->_files[ $path ][] = '    ';
             }
             
+            // Access arguments
+            $accessArray = explode( ',', preg_replace( '/,\s+/', ',', trim( $this->_formValues[ 'kickstarter_menu_access' ] ) ) );
+            $access      = '\'' . implode( '\', \'', $accessArray ) . '\'';
+            $access      = ( $access ) ? ' ' . $access . ' ' : '';
+            
             // Adds the addMenuItems() method
             $this->_files[ $path ][] = '    /**';
             $this->_files[ $path ][] = '     * Adds items to the Drupal menu';
@@ -528,7 +540,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '        $items[ \'' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ] = array(';
             $this->_files[ $path ][] = '            \'title\'            => $this->_lang->menuTitle,';
             $this->_files[ $path ][] = '            \'page callback\'    => \'' . $this->_moduleName . '_show\',';
-            $this->_files[ $path ][] = '            \'access arguments\' => array( \'access administration pages\' ),';
+            $this->_files[ $path ][] = '            \'access arguments\' => array(' . $access . '),';
             $this->_files[ $path ][] = '        );';
             $this->_files[ $path ][] = '        ';
             $this->_files[ $path ][] = '        return $items';

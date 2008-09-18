@@ -150,8 +150,9 @@ $formConf = array(
             '#size' => 100
         ),
         'menu_access' => array(
-            '#type' => 'textfield',
-            '#size' => 100
+            '#type'          => 'textfield',
+            '#size'          => 100,
+            '#default_value' => 'access administration pages'
         )
     ),
     'misc' => array(
