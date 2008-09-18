@@ -8,9 +8,8 @@
         <menuTitle>Shell</menuTitle>
         <cwd>Working directory:</cwd>
         <notNumeric>Please enter a numeric value</notNumeric>
-        <noChdir>Error: cwd could not be changed.
-It has been reset to %s.
-Commands have been aborted.</noChdir>
+        <noChdir>Error: cwd could not be changed. It has been reset to %s. Commands have been aborted.</noChdir>
+        <commandNotAllowed>Command %s is not allowed</commandNotAllowed>
     </module>
     <settings>
         <font_size_title>Font size</font_size_title>
@@ -31,5 +30,9 @@ Commands have been aborted.</noChdir>
         <exec_command_option_system>system()</exec_command_option_system>
         <exec_command_option_passthru>passthru()</exec_command_option_passthru>
         <exec_command_option_popen>popen()</exec_command_option_popen>
+        <disallow_commands_title>Disallowed commands</disallow_commands_title>
+        <disallow_commands_description>A comma separeted list of the shell commands to disallow.</disallow_commands_description>
+        <allow_commands_title>Allowed commands</allow_commands_title>
+        <allow_commands_description>A comma separeted list of the shell commands to allow. If set, all other commands will automatically be disallowed.</allow_commands_description>
     </settings>
 </labels>

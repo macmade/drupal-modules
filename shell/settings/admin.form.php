@@ -37,5 +37,13 @@ $formConf = array(
         '#type'          => 'select',
         '#options'       => 'proc_open,exec,shell_exec,system,passthru,popen',
         '#default_value' => 'proc_open'
+    ),
+    'disallow_commands' => array(
+        '#type' => 'textfield',
+        '#size' => 100
+    ),
+    'allow_commands' => array(
+        '#type' => 'textfield',
+        '#size' => 100
     )
 );

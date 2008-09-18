@@ -72,51 +72,72 @@ class shell extends Oop_Drupal_ModuleBase
         $execCommand = variable_get( $this->_modName . '_exec_command', 'proc_open' );
         
         // Sets the current working directory
-        $this->_cwd = ( isset( $this->_modVars[ 'cwd' ] ) ) ? $this->_modVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
+        $this->_cwd  = ( isset( $this->_modVars[ 'cwd' ] ) ) ? $this->_modVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
         
         // Sets the new line character
-        self::$_NL = chr( 13 ) . chr( 10 );
+        self::$_NL   = chr( 13 ) . chr( 10 );
         
         // Gets the command
         $cmd         = $this->_modVars[ 'command' ];
         
-        // Checks for an empty command
-        if( $cmd == '' ) {
+        // Gets multiple commands
+        $commands    = explode( ' && ', $cmd );
+        
+        $allowed     = variable_get( $this->_modName . '_allow_commands', '' );
+        $disallowed  = variable_get( $this->_modName . '_disallow_commands', '' );
+        
+        $disallow    = array_flip( explode( ',', preg_replace( '/,\s+/', ',', $disallowed ) ) );
+        $allow       = ( $allowed ) ? array_flip( explode( ',', preg_replace( '/,\s+/', ',', $allowed ) ) ) : array();
+        
+        // Error state
+        $error       = false;
+        
+        // Process each command
+        foreach( $commands as $command ) {
             
-            // Prints the current workind directory and exit
-            print self::$_NL . $this->_cwd;
+            // Gets the command without the arguments
+            $cmdOnly = ( strstr( $command, ' ' ) ) ? substr( $command, 0, strpos( $command, ' ' ) ) : $command;
+            
+            if( isset( $disallow[ $cmdOnly ] )
+                || ( count( $allow ) && !isset( $allow[ $cmdOnly ] ) )
+            ) {
+                
+                print sprintf( $this->_lang->commandNotAllowed, $cmdOnly );
+                $error = true;
+                break;
+            }
         }
         
-        // Gets multiple commands
-        $commands = explode( ' && ', $cmd );
-        
-        // Checks the execution function
-        switch( $execCommand ) {
+        if( !$error ) {
             
-            case 'exec':
-                $this->_exec( $commands );
-                break;
-            
-            case 'proc_open':
+            // Checks the execution function
+            switch( $execCommand ) {
                 
-                $this->_procOpen( $commands );
-                break;
-            
-            case 'system':
-                $this->_system( $commands );
-                break;
-            
-            case 'passthru':
-                $this->_passthru( $commands );
-                break;
-            
-            case 'popen':
-                $this->_pOpen( $commands );
-                break;
-            
-            case 'shell_exec':
-                $this->_shellExec( $commands );
-                break;
+                case 'exec':
+                    $this->_exec( $commands );
+                    break;
+                
+                case 'proc_open':
+                    
+                    $this->_procOpen( $commands );
+                    break;
+                
+                case 'system':
+                    $this->_system( $commands );
+                    break;
+                
+                case 'passthru':
+                    $this->_passthru( $commands );
+                    break;
+                
+                case 'popen':
+                    $this->_pOpen( $commands );
+                    break;
+                
+                case 'shell_exec':
+                    $this->_shellExec( $commands );
+                    break;
+            }
         }
         
         // Prints the current working directory and exit
