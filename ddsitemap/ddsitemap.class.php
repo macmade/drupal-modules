@@ -115,10 +115,10 @@ class ddsitemap extends Oop_Drupal_ModuleBase
     /**
      * Gets the node view
      * 
-     * @param   stdClass        The node object
      * @param   Oop_Xhtml_Tag   The placeholder for the module content
-     * @param   
-     * @param   
+     * @param   stdClass        The node object
+     * @param   boolean         Wheter a teaser must be generated instead of the full content
+     * @param   boolean         Whether the node is being displayed as a standalone page
      * @return  NULL
      */
     public function getNode( Oop_Xhtml_Tag $content, stdClass $node, $teaser, $page )

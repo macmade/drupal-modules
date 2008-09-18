@@ -273,8 +273,8 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * Drupal 'view' hook
      * 
      * @param   stdClass    The node object
-     * @param   
-     * @param   
+     * @param   boolean     Wheter a teaser must be generated instead of the full content
+     * @param   boolean     Whether the node is being displayed as a standalone page
      * @return  stdClass    The node object
      * @throws  Oop_Drupal_Hooks_Exception  If the method getNode() is not defined in the module class
      */
