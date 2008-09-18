@@ -149,7 +149,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
             // Adds the JS script
             drupal_add_js(
                 self::$_classManager->getModuleRelativePath( 'oop' )
-              . 'ressources/javascript/oop/oop.js',
+              . 'oop.js',
                 'module'
             );
         }
