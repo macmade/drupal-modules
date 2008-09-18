@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 function emailcrypt_filter( $op, $delta = 0, $format = -1, $text = '' )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'emailcrypt' )->filter( $op, $delta, $format, $text );

@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 function kickstarter_menu()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->addMenuItems();

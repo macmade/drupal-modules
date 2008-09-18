@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 function emailcrypt_install()
 {
     $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = 'oop'" ) );

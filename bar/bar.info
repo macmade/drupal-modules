@@ -1,3 +1,5 @@
+; $Id$
+
 name = Bar
 description = An override of the Foo module, to demonstrate the override mechanism of the OOP framework
 core = 6.x

@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * OOP kickstarter module for Drupal
  * 

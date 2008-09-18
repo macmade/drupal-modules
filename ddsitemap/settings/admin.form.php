@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 $formConf = array(
     'css_file' => array(
         '#type'          => 'textfield',

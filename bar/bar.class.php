@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Override of the Foo module for Drupal
  * 

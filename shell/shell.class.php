@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Terminal module for Drupal
  * 

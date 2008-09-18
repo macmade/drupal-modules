@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- $Id$ -->
+
 <labels>
     <system>
         <block_0_subject>Hello World</block_0_subject>

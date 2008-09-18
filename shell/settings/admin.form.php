@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 $formConf = array(
     'font_size' => array(
         '#type'          => 'textfield',

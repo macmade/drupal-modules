@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 function ddsitemap_help( $path, $arg )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->help( $path, $arg );

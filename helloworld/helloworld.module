@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 function helloworld_help( $path, $arg )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->help( $path, $arg );

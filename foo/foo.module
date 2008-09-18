@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 function foo_help( $path, $arg )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'foo' )->help( $path, $arg );

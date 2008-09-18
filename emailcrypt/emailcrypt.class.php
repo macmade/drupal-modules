@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Email crypt filter for Drupal
  * 

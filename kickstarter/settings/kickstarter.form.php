@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 $formConf = array(
     'infos' => array(
         '#type'        => 'fieldset',

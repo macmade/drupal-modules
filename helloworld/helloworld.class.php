@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Hello World module for Drupal
  * 

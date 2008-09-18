@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 /**
  * Foo module for Drupal
  * 

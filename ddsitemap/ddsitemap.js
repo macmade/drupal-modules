@@ -1,5 +1,7 @@
 // <![CDATA[
 
+// $Id$
+
 /**
  * JavaScript class for the Drupal 'ddsitemap' module
  * 

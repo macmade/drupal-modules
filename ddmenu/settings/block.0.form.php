@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 $formConf = array(
     'linktype' => array(
         '#type'          => 'select',

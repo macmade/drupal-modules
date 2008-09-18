@@ -1,5 +1,7 @@
 <?php
 
+# $Id$
+
 $formConf = array(
     'number_of_blocks' => array(
         '#type'          => 'textfield',
