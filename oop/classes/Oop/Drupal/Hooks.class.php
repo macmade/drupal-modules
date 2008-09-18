@@ -319,7 +319,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         if( $op === 'list' ) {
             
             // Repeat for each available block
-            for( $i = 0; $i < $this->_blockNum; $i++ ) {
+            for( $i = 0; $i < $this->_numberOfBlocks; $i++ ) {
                 
                 // Index for the label
                 $langIndex = ( $this->_sameBlocks ) ? 0 : $i;
