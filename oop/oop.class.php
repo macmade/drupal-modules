@@ -12,36 +12,121 @@ class oop extends Oop_Drupal_ModuleBase
     /**
      * 
      */
-    protected $_files = array();
+    protected $_files             = array();
     
     /**
      * 
      */
-    protected function _createInfoFile( $path, $name, $title, $description, $package, $drupalVersion, $phpVersion, $dependencies )
+    protected $_formValues        = array();
+    
+    /**
+     * 
+     */
+    protected $_moduleName        = '';
+    
+    /**
+     * 
+     */
+    protected $_moduleDir         = '';
+    
+    /**
+     * 
+     */
+    protected $_moduleLangDir     = '';
+    
+    /**
+     * 
+     */
+    protected $_moduleSettingsDir = '';
+    
+    /**
+     * 
+     */
+    protected function _createDirs()
+    {
+        // Tries to create the module directory
+        if( !mkdir( $this->_moduleDir ) ) {
+            
+            // Error- Cannot create the module directory
+            drupal_set_message( sprintf( $this->_lang->cannotCreateDir, $this->_moduleDir ) );
+            
+            return false;
+        }
+        
+        // Tries to create the lang directory
+        if( !mkdir( $this->_moduleLangDir ) ) {
+            
+            // Error- Cannot create the lang directory
+            drupal_set_message( sprintf( $this->_lang->cannotCreateDir, $this->_moduleLangDir ) );
+            
+            return false;
+        }
+        
+        // Checks if the settings directory is needed
+        if( $this->_formValues[ 'oop_block_add_config' ]
+            || $this->_formValues[ 'oop_node_add' ]
+            || $this->_formValues[ 'oop_admin_add' ]
+        ) {
+            
+            // Tries to create the settings directory
+            if( !mkdir( $this->_moduleSettingsDir ) ) {
+                
+                // Error- Cannot create the settings directory
+                drupal_set_message( sprintf( $this->_lang->cannotCreateDir, $this->_moduleSettingsDir ) );
+                
+                return false;
+            }
+        }
+        
+        // All directories have been created successfully
+        return true;
+    }
+    
+    /**
+     * 
+     */
+    protected function _createInfoFile()
     {
         // Path to the .info file
-        $path                    = $path . DIRECTORY_SEPARATOR . $name . '.info';
+        $path                    = $this->_moduleDir
+                                 . DIRECTORY_SEPARATOR
+                                 . $this->_moduleName
+                                 . '.info';
         
         // Storage array
         $this->_files[ $path ]   = array();
         
         // Gets the dependencies, if any
-        $deps                    = explode( ',', str_replace( ' ', '', $dependencies ) );
+        $deps                    = explode(
+            ',',
+            str_replace(
+                ' ',
+                '',
+                $this->_formValues[ 'oop_dependencies_dependencies' ]
+            )
+        );
+        
+        // Checks the dependencies array
+        if( $deps[ 0 ] === '' ) {
+            
+            // Removes the empty dependecy
+            array_pop( $deps );
+        }
         
         // Adds a dependency to the OOP module
         array_unshift( $deps, 'oop' );
         
         // Creates the required lines
-        $this->_files[ $path ][] = 'name = ' . $title;
-        $this->_files[ $path ][] = 'description = ' . $description;
-        $this->_files[ $path ][] = 'core = ' . $drupalVersion;
-        $this->_files[ $path ][] = 'php = ' . $phpVersion;
+        $this->_files[ $path ][] = 'name = ' . $this->_formValues[ 'oop_infos_title' ];
+        $this->_files[ $path ][] = 'description = ' . $this->_formValues[ 'oop_infos_description' ];
+        $this->_files[ $path ][] = 'core = ' . $this->_formValues[ 'oop_dependencies_version_core' ];
+        $this->_files[ $path ][] = 'php = ' . $this->_formValues[ 'oop_dependencies_version_php' ];
         
         // Checks for a package
-        if( $package ) {
+        if( $this->_formValues[ 'oop_infos_package' ] ) {
             
             // Adds the package informations
-            $this->_files[ $path ][] = 'package = ' . $package;
+            $this->_files[ $path ][] = 'package = ' . $this->_formValues[ 'oop_infos_package' ];
         }
         
         // Process each dependency
@@ -58,10 +143,13 @@ class oop extends Oop_Drupal_ModuleBase
     /**
      * 
      */
-    protected function _createInstallFile( $path, $name )
+    protected function _createInstallFile()
     {
         // Path to the .install file
-        $path                    = $path . DIRECTORY_SEPARATOR . $name . '.install';
+        $path                    = $this->_moduleDir
+                                 . DIRECTORY_SEPARATOR
+                                 . $this->_moduleName
+                                 . '.install';
         
         // Storage array
         $this->_files[ $path ]   = array();
@@ -69,17 +157,374 @@ class oop extends Oop_Drupal_ModuleBase
         // Creates the required lines
         $this->_files[ $path ][] = '<?php';
         $this->_files[ $path ][] = '';
-        $this->_files[ $path ][] = 'function ' . $name . '_install()';
+        $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_install()';
         $this->_files[ $path ][] = '{';
         $this->_files[ $path ][] = '    $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = \'oop\'" ) );';
-        $this->_files[ $path ][] = '    db_query( "UPDATE {system} SET weight = %d WHERE name = \'' . $name . '\'", $oopWeight + 1 );';
+        $this->_files[ $path ][] = '    db_query( "UPDATE {system} SET weight = %d WHERE name = \'' . $this->_moduleName . '\'", $oopWeight + 1 );';
         $this->_files[ $path ][] = '}';
         $this->_files[ $path ][] = '';
-        $this->_files[ $path ][] = 'function ' . $name . '_uninstall()';
+        $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_uninstall()';
         $this->_files[ $path ][] = '{';
-        $this->_files[ $path ][] = '    Oop_Drupal_Utils::getInstance()->deleteModuleVariables( \'' . $name . '\' );';
+        $this->_files[ $path ][] = '    Oop_Drupal_Utils::getInstance()->deleteModuleVariables( \'' . $this->_moduleName . '\' );';
         $this->_files[ $path ][] = '}';
         $this->_files[ $path ][] = '';
+    }
+    
+    /**
+     * 
+     */
+    protected function _createModuleFile()
+    {
+        // Path to the .module file
+        $path                    = $this->_moduleDir
+                                 . DIRECTORY_SEPARATOR
+                                 . $this->_moduleName
+                                 . '.module';
+        
+        // Storage array
+        $this->_files[ $path ]   = array();
+        
+        // Starts the file
+        $this->_files[ $path ][] = '<?php';
+        $this->_files[ $path ][] = '';
+        
+        // Creates the help hook
+        $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_help( $path, $arg )';
+        $this->_files[ $path ][] = '{';
+        $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->help( $path, $arg );';
+        $this->_files[ $path ][] = '}';
+        $this->_files[ $path ][] = '';
+        
+        // Checks if a block content must be added
+        if( $this->_formValues[ 'oop_block_add' ] ) {
+            
+            // Creates the perm hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_perm()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->perm();';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Creates the block hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_block( $op = \'list\', $delta = 0, array $edit = array() ) )';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->block( $op, $delta, $edit );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+        }
+        
+        // Checks if a node content must be added
+        if( $this->_formValues[ 'oop_node_add' ] ) {
+            
+            // Checks if a block has already been added
+            if( !$this->_formValues[ 'oop_block_add' ] ) {
+                
+                // Creates the perm hook
+                $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_perm()';
+                $this->_files[ $path ][] = '{';
+                $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->perm();';
+                $this->_files[ $path ][] = '}';
+                $this->_files[ $path ][] = '';
+            }
+            
+            // Adds the access hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_access( $op, $node )';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->access( $op, $node );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the form hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_form( stdClass $node )';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->form( $node );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the node_info hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_node_info()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->node_info();';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the view hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_view( stdClass $node, $teaser = false, $page = false )';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->view( $node, $teaser, $page );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the insert hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_insert( stdClass $node )';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->insert( $node );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+            
+            // Adds the update hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_update( stdClass $node )';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->update( $node );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+        }
+    }
+    
+    /**
+     * 
+     */
+    protected function _createClassFile()
+    {
+        // Path to the class file
+        $path                    = $this->_moduleDir
+                                 . DIRECTORY_SEPARATOR
+                                 . $this->_moduleName
+                                 . '.class.php';
+        
+        // Storage array
+        $this->_files[ $path ]   = array();
+        
+        // Starts the file
+        $this->_files[ $path ][] = '<?php';
+        $this->_files[ $path ][] = '';
+        
+        // Starts the class comments
+        $this->_files[ $path ][] = '/**';
+        $this->_files[ $path ][] = ' * ' . $this->_formValues[ 'oop_infos_title' ] . ' module for Drupal';
+        $this->_files[ $path ][] = ' * ';
+        $this->_files[ $path ][] = ' * @author          ' . $this->_formValues[ 'oop_author_name' ] . ' <' . $this->_formValues[ 'oop_author_email' ] . '>';
+        $this->_files[ $path ][] = ' * @copyright       Copyright &copy; ' . date( 'Y' );
+        $this->_files[ $path ][] = ' * @version         0.1';
+        $this->_files[ $path ][] = ' */';
+        
+        // Starts the class
+        $this->_files[ $path ][] = 'class ' . $this->_moduleName . ' extends Oop_Drupal_ModuleBase';
+        $this->_files[ $path ][] = '{';
+        
+        // Checks if the perm hook is implemented
+        if( $this->_formValues[ 'oop_block_add' ] || $this->_formValues[ 'oop_node_add' ] ) {
+            
+            // Adds the permissions array
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * An array with the Drupal permission for the module';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    protected $_perms = array();';
+            $this->_files[ $path ][] = '    ';
+        }
+        
+        // Checks if the block hook is implemented
+        if( $this->_formValues[ 'oop_block_add' ] ) {
+            
+            // Adds the getBlock() method
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * Gets the block view';
+            $this->_files[ $path ][] = '     *';
+            $this->_files[ $path ][] = '     * @param   Oop_Xhtml_Tag   The placeholder for the module content';
+            $this->_files[ $path ][] = '     * @param   int             The delta offset, used to generate different contents for different blocks';
+            $this->_files[ $path ][] = '     * @return  NULL';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    public function getBlock( Oop_Xhtml_Tag $content, $delta )';
+            $this->_files[ $path ][] = '    {';
+            
+            // Checks if the CSS file has to be included
+            if( $this->_formValues[ 'oop_misc_css' ] ) {
+                
+                // Adds the CSS inclusion
+                $this->_files[ $path ][] = '        // Includes the CSS file';
+                $this->_files[ $path ][] = '        $this->_includeModuleCss();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
+            // Checks if the JS file has to be included
+            if( $this->_formValues[ 'oop_misc_css' ] ) {
+                
+                // Adds the JS inclusion
+                $this->_files[ $path ][] = '        // Includes the JS file';
+                $this->_files[ $path ][] = '        $this->_includeModuleScript();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
+            // Ends the getBlock() method
+            $this->_files[ $path ][] = '        // Adds some content';
+            $this->_files[ $path ][] = '        $content->span = \'Block content for the module \' . __CLASS__;';
+            $this->_files[ $path ][] = '    }';
+        }
+        
+        // Checks if the node hook is implemented
+        if( $this->_formValues[ 'oop_node_add' ] ) {
+            
+            // Checks if the block hook has been implemented
+            if( $this->_formValues[ 'oop_block_add' ] ) {
+                
+                // Adds a blank line
+                $this->_files[ $path ][] = '    ';
+            }
+            
+            // Adds the getNode() method
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * Gets the node view';
+            $this->_files[ $path ][] = '     *';
+            $this->_files[ $path ][] = '     * @param   Oop_Xhtml_Tag   The placeholder for the module content';
+            $this->_files[ $path ][] = '     * @param   stdClass        The node object';
+            $this->_files[ $path ][] = '     * @param   boolean         Wheter a teaser must be generated instead of the full content';
+            $this->_files[ $path ][] = '     * @param   boolean         Whether the node is being displayed as a standalone page';
+            $this->_files[ $path ][] = '     * @return  NULL';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    public function getNode( Oop_Xhtml_Tag $content, stdClass $node, $teaser, $page )';
+            $this->_files[ $path ][] = '    {';
+            
+            // Checks if the CSS file has to be included
+            if( $this->_formValues[ 'oop_misc_css' ] ) {
+                
+                // Adds the CSS inclusion
+                $this->_files[ $path ][] = '        // Includes the CSS file';
+                $this->_files[ $path ][] = '        $this->_includeModuleCss();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
+            // Checks if the JS file has to be included
+            if( $this->_formValues[ 'oop_misc_css' ] ) {
+                
+                // Adds the JS inclusion
+                $this->_files[ $path ][] = '        // Includes the JS file';
+                $this->_files[ $path ][] = '        $this->_includeModuleScript();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
+            // Ends the getNode() method
+            $this->_files[ $path ][] = '        // Adds some content';
+            $this->_files[ $path ][] = '        $content->span = \'Node content for the module \' . __CLASS__;';
+            $this->_files[ $path ][] = '    }';
+        }
+        
+        // Ends the class
+        $this->_files[ $path ][] = '}';
+        $this->_files[ $path ][] = '';
+    }
+    
+    /**
+     * 
+     */
+    protected function _createLangFile()
+    {
+        // Path to the lang file
+        $path                    = $this->_moduleLangDir
+                                 . DIRECTORY_SEPARATOR
+                                 . Oop_Lang_Getter::getDefaultLanguage()
+                                 . '.xml';
+        
+        // Storage array
+        $this->_files[ $path ]   = array();
+        
+        // Starts the file
+        $this->_files[ $path ][] = '<?xml version="1.0" encoding="utf-8"?' . '>';
+        $this->_files[ $path ][] = '<labels>';
+        
+        // Starts the system section
+        $this->_files[ $path ][] = '    <system>';
+        
+        // Adds the help label
+        $this->_files[ $path ][] = '        <help>' . $this->_formValues[ 'oop_infos_description' ] . '</help>';
+        
+        // Ends the system section
+        $this->_files[ $path ][] = '    </system>';
+        
+        // Starts the settings section
+        $this->_files[ $path ][] = '    <settings>';
+        
+        // Ends the settings section
+        $this->_files[ $path ][] = '    </settings>';
+        
+        // Starts the module section
+        $this->_files[ $path ][] = '    <module>';
+        
+        // Ends the module section
+        $this->_files[ $path ][] = '    </module>';
+        
+        // Ends the file
+        $this->_files[ $path ][] = '</labels>';
+        $this->_files[ $path ][] = '';
+    }
+    
+    /**
+     * 
+     */
+    protected function _createSettingsFiles()
+    {}
+    
+    /**
+     * 
+     */
+    protected function _createCssFile()
+    {
+        // Checks if the CSS file must be written
+        if( $this->_formValues[ 'oop_misc_css' ] ) {
+            
+            // Path to the CSS file
+            $path                    = $this->_moduleDir
+                                     . DIRECTORY_SEPARATOR
+                                     . $this->_moduleName
+                                     . '.css';
+            
+            // Storage array
+            $this->_files[ $path ]   = array();
+            
+            // Starts the file
+            $this->_files[ $path ][] = '/* <![CDATA[ */';
+            $this->_files[ $path ][] = '';
+            $this->_files[ $path ][] = '';
+            $this->_files[ $path ][] = '';
+            $this->_files[ $path ][] = '/* // ]]> */';
+            $this->_files[ $path ][] = '';
+        }
+    }
+    
+    /**
+     * 
+     */
+    protected function _createJsFile()
+    {
+        // Checks if the JS file must be written
+        if( $this->_formValues[ 'oop_misc_js' ] ) {
+            
+            // Path to the CSS file
+            $path                    = $this->_moduleDir
+                                     . DIRECTORY_SEPARATOR
+                                     . $this->_moduleName
+                                     . '.js';
+            
+            // Storage array
+            $this->_files[ $path ]   = array();
+            
+            // Starts the file
+            $this->_files[ $path ][] = '// <![CDATA[';
+            $this->_files[ $path ][] = '';
+            
+            // Starts the class comments
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * JavaScript class for the Drupal \'' . $this->_moduleName . '\' module';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @author          ' . $this->_formValues[ 'oop_author_name' ] . ' <' . $this->_formValues[ 'oop_author_email' ] . '>';
+            $this->_files[ $path ][] = ' * @copyright       Copyright &copy; ' . date( 'Y' );
+            $this->_files[ $path ][] = ' * @version         0.1';
+            $this->_files[ $path ][] = ' */';
+            
+            // Starts the class
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '()';
+            $this->_files[ $path ][] = '{}';
+            
+            // Starts the class instanciation
+            $this->_files[ $path ][] = '';
+            $this->_files[ $path ][] = '// Creates a new instance of the module class';
+            $this->_files[ $path ][] = $this->_moduleName . ' = new ' . $this->_moduleName . '();';
+            
+            
+            // Ends the file
+            $this->_files[ $path ][] = '';
+            $this->_files[ $path ][] = '// ]]>';
+            $this->_files[ $path ][] = '';
+        }
     }
     
     /**
@@ -143,6 +588,30 @@ class oop extends Oop_Drupal_ModuleBase
      */
     public function validateKickstarterForm( $form, &$formState )
     {
+        // Path to the module directory
+        $this->_moduleDir         = self::$_classManager->getDrupalPath()
+                                  . 'sites'
+                                  . DIRECTORY_SEPARATOR
+                                  . 'all'
+                                  . DIRECTORY_SEPARATOR
+                                  . 'modules'
+                                  . DIRECTORY_SEPARATOR
+                                  . $form[ '#post' ][ 'oop_infos_name' ];
+        
+        // Checks if the module directory already exists
+        if( file_exists( $this->_moduleDir ) ) {
+            
+            // Error - The directory already exists
+            drupal_set_message( sprintf( $this->_lang->dirExists, $path ) );
+        }
+        
+        // Checks if the author email is valid
+        if( !valid_email_address( $form[ '#post' ][ 'oop_author_email' ] ) ) {
+            
+            // Error - Invalid email address
+            form_set_error( 'oop_author_email', $this->_lang->invalidEmail );
+        }
+        
         // Checks the module name
         if( !preg_match( '/^[a-z_]+$/', $form[ '#post' ][ 'oop_infos_name' ] ) ) {
             
@@ -163,63 +632,63 @@ class oop extends Oop_Drupal_ModuleBase
      */
     public function submitKickstarterForm( $formId, $formValues )
     {
-        // Gets the submitted values
-        $values =& $formValues[ 'values' ];
+        // Stores the submitted values
+        $this->_formValues        =& $formValues[ 'values' ];
         
         // Path to the module directory
-        $moduleDir = self::$_classManager->getDrupalPath()
-                   . 'sites'
-                   . DIRECTORY_SEPARATOR
-                   . 'all'
-                   . DIRECTORY_SEPARATOR
-                   . 'modules'
-                   . DIRECTORY_SEPARATOR
-                   . $values[ 'oop_infos_name' ];
+        $this->_moduleDir         = self::$_classManager->getDrupalPath()
+                                  . 'sites'
+                                  . DIRECTORY_SEPARATOR
+                                  . 'all'
+                                  . DIRECTORY_SEPARATOR
+                                  . 'modules'
+                                  . DIRECTORY_SEPARATOR
+                                  . $this->_formValues[ 'oop_infos_name' ];
         
-        // Tries to create the directory
-        if( mkdir( $moduleDir ) ) {
+        // Path to the lang directory
+        $this->_moduleLangDir     = $this->_moduleDir
+                                  . DIRECTORY_SEPARATOR
+                                  . 'lang';
+        
+        // Path to the settings directory
+        $this->_moduleSettingsDir = $this->_moduleDir
+                                  . DIRECTORY_SEPARATOR
+                                  . 'settings';
+        
+        // Name of the module to write
+        $this->_moduleName        = $this->_formValues[ 'oop_infos_name' ];
+        
+        // Checks if the directories can be created
+        if( file_exists( $this->_moduleDir ) ) {
+            
+            // Error - The directory already exists
+            drupal_set_message( sprintf( $this->_lang->dirExists, $path ) );
+            
+        } elseif( $this->_createDirs() ) {
             
             // Creates the .info file
-            $this->_createInfoFile(
-                $moduleDir,
-                $values[ 'oop_infos_name' ],
-                $values[ 'oop_infos_title' ],
-                $values[ 'oop_infos_description' ],
-                $values[ 'oop_infos_package' ],
-                $values[ 'oop_dependencies_version_core' ],
-                $values[ 'oop_dependencies_version_php' ],
-                $values[ 'oop_dependencies_dependencies' ]
-            );
+            $this->_createInfoFile();
             
             // Creates the .install file
-            $this->_createInstallFile(
-                $moduleDir,
-                $values[ 'oop_infos_name' ]
-            );
+            $this->_createInstallFile();
             
             // Creates the .module file
-            #$this->_createModuleFile(
-            #    $moduleDir,
-            #    $values[ 'oop_infos_name' ]
-            #);
+            $this->_createModuleFile();
             
             // Creates the class file
-            #$this->_createClassFile(
-            #    $moduleDir,
-            #    $values[ 'oop_infos_name' ]
-            #);
+            $this->_createClassFile();
             
             // Creates the lang file
-            #$this->_createLangFile(
-            #    $moduleDir,
-            #    $values[ 'oop_infos_name' ]
-            #);
+            $this->_createLangFile();
             
             // Creates the settings file(s)
-            #$this->_createSettingsFiles(
-            #    $moduleDir,
-            #    $values[ 'oop_infos_name' ]
-            #);
+            $this->_createSettingsFiles();
+            
+            // Creates the CSS file
+            $this->_createCssFile();
+            
+            // Creates the JS file
+            $this->_createJsFile();
             
             // Process each file
             foreach( $this->_files as $path => &$lines ) {
@@ -232,11 +701,6 @@ class oop extends Oop_Drupal_ModuleBase
                     break;
                 }
             }
-            
-        } else {
-            
-            // Error- Cannot create the module directory
-            drupal_set_message( sprintf( $this->_lang->cannotCreateDir, $moduleDir ) );
         }
     }
     
