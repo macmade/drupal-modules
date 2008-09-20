@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- $Id$ -->
+
+<labels>
+    <system>
+        <help>Creates a Google sitemap with the Drupal pages.</help>
+        <menu_admin_title>Google sitemap</menu_admin_title>
+        <menu_admin_description>Configuration options for the Google sitemap module.</menu_admin_description>
+        <menu_item_title>Google Sitemap</menu_item_title>
+        <menu_item_description>Generates a Google sitemap.</menu_item_description>
+    </system>
+    <settings>
+        <linktype_title>Link type</linktype_title>
+        <linktype_description>Choose the kind of link to display.</linktype_description>
+        <linktype_option_primary>Primary links</linktype_option_primary>
+        <linktype_option_secondary>Secondary links</linktype_option_secondary>
+        <linktype_option_both>Both primary and secondary links</linktype_option_both>
+    </settings>
+    <module>
+    </module>
+</labels>

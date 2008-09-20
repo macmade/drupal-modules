@@ -1,0 +1,8 @@
+; $Id$
+
+name = Google sitemap
+description = Creates a Google sitemap with the Drupal pages.
+core = 6.x
+php = 5.2
+package = SEO
+dependencies[] = oop
