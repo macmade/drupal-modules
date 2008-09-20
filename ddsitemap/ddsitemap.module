@@ -22,9 +22,9 @@ function ddsitemap_adminForm()
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->getAdminForm();
 }
 
-function ddsitemap_access( $op, $node )
+function ddsitemap_access( $op, stdClass $node, stdClass $account )
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->access( $op, $node );
+    return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->access( $op, $node, $account );
 }
 
 function ddsitemap_form( stdClass $node )
