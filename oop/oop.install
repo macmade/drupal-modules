@@ -50,6 +50,38 @@ function oop_schema()
                     'not null'    => true,
                     'description' => t( 'The ID of the variable (primary key).' )
                 ),
+                'ctime' => array(
+                    'type'     => 'int',
+                    'unsigned' => true,
+                    'not null' => true,
+                    'default ' => 0
+                ),
+                'mtime' => array(
+                    'type'     => 'int',
+                    'unsigned' => true,
+                    'not null' => true,
+                    'default ' => 0
+                ),
+                'hidden' => array(
+                    'type'     => 'int',
+                    'size'     => 'tiny',
+                    'unsigned' => true,
+                    'not null' => true,
+                    'default ' => 0
+                ),
+                'deleted' => array(
+                    'type'     => 'int',
+                    'size'     => 'tiny',
+                    'unsigned' => true,
+                    'not null' => true,
+                    'default ' => 0
+                ),
+                'id_users' => array(
+                    'type'     => 'int',
+                    'unsigned' => true,
+                    'not null' => true,
+                    'default ' => 0
+                ),
                 'module_name'    => array(
                     'type'     => 'varchar',
                     'length'   => 255,
