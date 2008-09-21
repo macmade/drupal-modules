@@ -38,6 +38,11 @@ abstract class Oop_Drupal_Module
     protected static $_string       = NULL;
     
     /**
+     * The instance of the Drupal utilities
+     */
+    protected static $_string       = NULL;
+    
+    /**
      * The new line character
      */
     protected static $_NL           = '';
@@ -99,7 +104,7 @@ abstract class Oop_Drupal_Module
         $this->_getModuleRequestVariables();
         
         // Gets the database variables for the current module
-        $this->_getModuleDatabaseVariables();
+        $this->_modVars = self::$_utils->getModuleVariables( $this->_modName );
     }
     
     /**
@@ -123,6 +128,9 @@ abstract class Oop_Drupal_Module
         
         // Gets the instance of the string utilities class
         self::$_string       = Oop_String_Utils::getInstance();
+        
+        // Gets the instance of the Drupal utilities class
+        self::$_utils        = Oop_Drupal_Utils::getInstance();
         
         // Sets the new line character
         self::$_NL           = chr( 10 );
@@ -174,38 +182,6 @@ abstract class Oop_Drupal_Module
                     }
                 }
             }
-        }
-    }
-    
-    /**
-     * Gets each database variable from this module
-     * 
-     * @return  NULL
-     */
-    private function _getModuleDatabaseVariables()
-    {
-        // Parameters for the PDO query
-        $params = array(
-            ':module_name' => $this->_modName
-        );
-        
-        // SQL query to select the variables from this module
-        $sql    = 'SELECT *
-                   FROM {OOP_MODULES_VARIABLES}
-                   WHERE module_name = :module_name
-                   ORDER BY variable_name';
-        
-        // Prepares the PDO query
-        $query  = self::$_db->prepare( $sql );
-        
-        // Executes the PDO query
-        $query->execute( $params );
-        
-        // Process each variable
-        while( $variable = $query->fetchObject() ) {
-            
-            // Stores the current variable
-            $this->_modVars[ $variable->variable_name ] = $variable->variable_value;
         }
     }
     

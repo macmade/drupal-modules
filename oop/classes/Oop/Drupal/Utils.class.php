@@ -23,6 +23,11 @@ final class Oop_Drupal_Utils
     private static $_db       = NULL;
     
     /**
+     * An array with the variables for the OOP modules
+     */
+    private static $_modVars  = array();
+    
+    /**
      * Class constructor
      * 
      * The class constructor is private to avoid multiple instances of the
@@ -72,7 +77,81 @@ final class Oop_Drupal_Utils
     }
     
     /**
-     * Deletes variables belonging to a module from the Drupal database
+     * Gets the variables belonging to a module from the Drupal database
+     * 
+     * @param   string  The module name
+     * @return  array   An array with all the module variables
+     */
+    public function getModuleVariables( $name )
+    {
+        // Checks if the variables already exists for the requested module
+        if( isset( $this->_modVars[ $name ] ) ) {
+            
+            // Returns the module variables
+            return $this->_modVars[ $name ];
+        }
+        
+        // Creates the storage array
+        $this->_modVars[ $name ] = array();
+        
+        // Parameters for the PDO query
+        $params = array(
+            ':module_name' => $name
+        );
+        
+        // SQL query to select the variables from this module
+        $sql    = 'SELECT *
+                   FROM {OOP_MODULES_VARIABLES}
+                   WHERE module_name = :module_name
+                   ORDER BY variable_name';
+        
+        // Prepares the PDO query
+        $query  = self::$_db->prepare( $sql );
+        
+        // Executes the PDO query
+        $query->execute( $params );
+        
+        // Process each variable
+        while( $variable = $query->fetchObject() ) {
+            
+            // Stores the current variable
+            $this->_modVars[ $name ][ $variable->variable_name ] = $variable->variable_value;
+        }
+        
+        // Returns the module variables
+        return $this->_modVars[ $name ];
+    }
+    
+    /**
+     * Gets a variables belonging to a module from the Drupal database
+     * 
+     * @param   string  The module name
+     * @param   string  The variable name
+     * @param   mixed   An optionnal default value to return if the variable does not exist
+     * @return  mixed   The value of the variable
+     */
+    public function getModuleVariable( $modName, $varName, $defaultValue = false )
+    {
+        // Checks if the module variables exists
+        if( !isset( $this->_modVars[ $modName ] ) ) {
+            
+            // Gets all the module variables
+            $this->getModuleVariables( $modName );
+        }
+        
+        // Checks if the variable exist
+        if( isset( $this->_modVars[ $modName ][ $varName ] ) ) {
+            
+            // Returns the variable value
+            return $this->_modVars[ $modName ][ $varName ];
+        }
+        
+        // Returns the default value
+        return $defaultValue;
+    }
+    
+    /**
+     * Deletes the variables belonging to a module from the Drupal database
      * 
      * @param   string  The name of the module
      * @return  NULL
