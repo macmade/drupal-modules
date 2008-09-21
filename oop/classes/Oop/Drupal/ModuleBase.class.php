@@ -431,7 +431,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
         $this->_includeOopJs();
         
         // Crypts the email
-        $link[ 'href' ] = 'javascript:oop.decryptEmail( \''
+        $link[ 'href' ] = 'javascript:oopManager.getInstance().getModule( \'oop\' ).decryptEmail( \''
                         . self::$_string->cryptEmail( $email )
                         . '\' );';
         

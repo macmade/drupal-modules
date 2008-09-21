@@ -129,9 +129,7 @@ class helloworld extends Oop_Drupal_ModuleBase
             
             // Adds the href attribute
             $moduleLink[ 'title' ] = $iniInfos[ 'description' ];
-            $moduleLink[ 'href' ]  = 'javascript:'
-                                   . $this->_modName
-                                   . '.display( \''
+            $moduleLink[ 'href' ]  = 'javascript:oopManager.getInstance().getModule( \'helloworld\' ).display( \''
                                    . $this->_modName
                                    . '-'
                                    . $module->name
@@ -172,9 +170,7 @@ class helloworld extends Oop_Drupal_ModuleBase
             
             // Adds the href attribute
             $funcLink[ 'title' ] = $funcName;
-            $funcLink[ 'href' ]  = 'javascript:'
-                                   . $this->_modName
-                                   . '.display( \''
+            $funcLink[ 'href' ]  = 'javascript:oopManager.getInstance().getModule( \'helloworld\' ).display( \''
                                    . $this->_modName
                                    . '-backtrace-'
                                    . $key

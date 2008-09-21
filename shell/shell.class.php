@@ -510,6 +510,7 @@ class shell extends Oop_Drupal_ModuleBase
     public function show( Oop_Xhtml_Tag $content )
     {
         $this->_includeModuleCss();
+        $this->_includeModuleScript();
         
         $this->_history         = ( isset( $this->_modVars[ 'history' ] ) )      ? $this->_modVars[ 'history' ]       : true;
         $this->_fontSize        = ( isset( $this->_modVars[ 'font_size' ] ) )    ? $this->_modVars[ 'font_size' ]    : 10;
@@ -544,20 +545,14 @@ class shell extends Oop_Drupal_ModuleBase
         $promptInput[ 'name' ]  = $this->_modName . '_command';
         $promptInput[ 'type' ]  = 'text';
         $promptInput[ 'size' ]  = 50;
-        $script1                = $content->script;
-        $script1[ 'type' ]      = 'text/javascript';
-        $script1[ 'charset' ]   = 'utf-8';
-        $script1[ 'src' ]       = self::$_classManager->getModuleWebPath( 'shell' )
-                                . $this->_modName
-                                . '.js';
-                                
-        $script2                = $content->script;
-        $script2[ 'type' ]      = 'text/javascript';
-        $script2[ 'charset' ]   = 'utf-8';
+        $script                = $content->script;
+        $script[ 'type' ]      = 'text/javascript';
+        $script[ 'charset' ]   = 'utf-8';
         
-        $script2->addTextData(
-            'shell.setPrompt( \'' . $this->_prompt . '\' );'
-          . 'shell.setAjaxUrl( \'/' . self::$_request->q . '\' );'
+        $script->addTextData(
+            'oopManager.getInstance().getModule( \'shell\' ).init();'
+          . 'oopManager.getInstance().getModule( \'shell\' ).setPrompt( \'' . $this->_prompt . '\' );'
+          . 'oopManager.getInstance().getModule( \'shell\' ).setAjaxUrl( \'/' . self::$_request->q . '\' );'
         );
         
         $this->_id( $cwd, 'cwd' );

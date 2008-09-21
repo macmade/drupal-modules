@@ -64,7 +64,7 @@ class ddsitemap extends Oop_Drupal_ModuleBase
             if( $page->has_children ) {
                 
                 $link            = $icon->a;
-                $link[ 'href' ]  = 'javascript:ddsitemap.display( \'ddsitemap-page-' . $page->mlid . '\' );';
+                $link[ 'href' ]  = 'javascript:oopManager.getInstance().getModule( \'ddsitemap\' ).display( \'ddsitemap-page-' . $page->mlid . '\' );';
                 $link[ 'title' ] = $this->_lang->openClose;
                 
                 $link->addChildNode( $this->_iconDir );

@@ -69,7 +69,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
             if( $page->has_children ) {
                 
                 $link            = $icon->a;
-                $link[ 'href' ]  = 'javascript:ddmenu.display( \'ddmenu-' . $this->_delta . '-page-' . $page->mlid . '\' );';
+                $link[ 'href' ]  = 'javascript:oopManager.getInstance().getModule( \'ddmenu\' ).display( \'ddmenu-' . $this->_delta . '-page-' . $page->mlid . '\' );';
                 $link[ 'title' ] = $this->_lang->openClose;
                 
                 $link->addChildNode( $this->_iconDir );
