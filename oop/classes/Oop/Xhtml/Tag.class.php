@@ -346,7 +346,7 @@ class Oop_Xhtml_Tag implements ArrayAccess, Iterator
         if( !$this->_childrenCount ) {
             
             // No - Checks if the tag is self closed
-            $tag .= ( isset( self::$_emptyTags[ $this->_tagName ] ) ) ? ' />' : '></' . $this->_tagName . '>';
+            $tag .= ( isset( self::$_emptyTags[ $this->_tagName ] ) || $xmlCompliant ) ? ' />' : '></' . $this->_tagName . '>';
             
         } else {
             
