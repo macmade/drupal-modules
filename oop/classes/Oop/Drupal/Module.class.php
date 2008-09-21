@@ -40,7 +40,7 @@ abstract class Oop_Drupal_Module
     /**
      * The instance of the Drupal utilities
      */
-    protected static $_string       = NULL;
+    protected static $_utils        = NULL;
     
     /**
      * The new line character
