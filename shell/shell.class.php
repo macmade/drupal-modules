@@ -512,11 +512,11 @@ class shell extends Oop_Drupal_ModuleBase
         $this->_includeModuleCss();
         
         $this->_history         = ( isset( $this->_modVars[ 'history' ] ) )      ? $this->_modVars[ 'history' ]       : true;
-        $this->_fontSize        = ( isset( $this->_modVars[ 'font_size' ] ) )    ? $this->_modVars[ '_font_size' ]    : 10;
-        $this->_execCommand     = ( isset( $this->_modVars[ 'exec_command' ] ) ) ? $this->_modVars[ '_exec_command' ] : 'proc_open';
-        $this->_backgroundColor = ( isset( $this->_modVars[ 'background' ] ) )   ? $this->_modVars[ '_background' ]   : '#000000';
-        $this->_foregroundColor = ( isset( $this->_modVars[ 'foreground' ] ) )   ? $this->_modVars[ '_foreground' ]   : '#FFFFFF';
-        $this->_promptColor     = ( isset( $this->_modVars[ 'prompt' ] ) )       ? $this->_modVars[ '_prompt' ]       : '#00FF00';
+        $this->_fontSize        = ( isset( $this->_modVars[ 'font_size' ] ) )    ? $this->_modVars[ 'font_size' ]    : 10;
+        $this->_execCommand     = ( isset( $this->_modVars[ 'exec_command' ] ) ) ? $this->_modVars[ 'exec_command' ] : 'proc_open';
+        $this->_backgroundColor = ( isset( $this->_modVars[ 'background' ] ) )   ? $this->_modVars[ 'background' ]   : '#000000';
+        $this->_foregroundColor = ( isset( $this->_modVars[ 'foreground' ] ) )   ? $this->_modVars[ 'foreground' ]   : '#FFFFFF';
+        $this->_promptColor     = ( isset( $this->_modVars[ 'prompt' ] ) )       ? $this->_modVars[ 'prompt' ]       : '#00FF00';
         
         // Sets the current working directory
         $this->_cwd = ( isset( $this->_reqVars[ 'cwd' ] ) ) ? $this->_reqVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
