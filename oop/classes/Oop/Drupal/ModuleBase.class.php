@@ -169,6 +169,9 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
         // Only includes the script once
         if( !$this->_hasScriptFile ) {
             
+            // Includes the OOP JS script
+            $this->_includeOopJs();
+            
             // Adds the JS script
             drupal_add_js(
                 self::$_classManager->getModuleRelativePath( $this->_modName )
