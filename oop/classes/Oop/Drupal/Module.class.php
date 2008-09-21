@@ -60,7 +60,7 @@ abstract class Oop_Drupal_Module
     /**
      * The request variables for the module
      */
-    public $_modVars                = array();
+    public $_reqVars                = array();
     
     /**
      * Class constructor
@@ -158,10 +158,10 @@ abstract class Oop_Drupal_Module
                     }
                     
                     // Only sets the value if the variable does not already exist
-                    if( !isset( $this->_modVars[ $varName ] ) ) {
+                    if( !isset( $this->_reqVars[ $varName ] ) ) {
                         
                         // Stores the variable
-                        $this->_modVars[ $varName ] =& $value; 
+                        $this->_reqVars[ $varName ] =& $value; 
                     }
                 }
             }

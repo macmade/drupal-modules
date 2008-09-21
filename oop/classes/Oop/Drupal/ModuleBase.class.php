@@ -344,7 +344,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
         if( $keepVars === true ) {
             
             // Keep all variables
-            $vars = $this->_modVars;
+            $vars = $this->_reqVars;
             
             // Gets the final URL variables
             $vars = array_merge( $vars, $setVars );
@@ -358,10 +358,10 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
             foreach( $keepVars as $varName ) {
                 
                 // Checks if the variable can be added
-                if( isset( $this->_modVars[ $varName ] ) && !isset( $vars[ $varName ] ) ) {
+                if( isset( $this->_reqVars[ $varName ] ) && !isset( $vars[ $varName ] ) ) {
                     
                     // Adds the variable
-                    $vars[ $varName ] = &$this->_modVars[ $varName ];
+                    $vars[ $varName ] = &$this->_reqVars[ $varName ];
                 }
             }
             

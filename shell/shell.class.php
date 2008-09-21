@@ -58,7 +58,7 @@ class shell extends Oop_Drupal_ModuleBase
     {
         parent::__construct( $modPath );
         
-        if( isset( $this->_modVars[ 'ajaxCall' ] ) ) {
+        if( isset( $this->_reqVars[ 'ajaxCall' ] ) ) {
             
             $this->_processCommand();
             exit();
@@ -74,13 +74,13 @@ class shell extends Oop_Drupal_ModuleBase
         $execCommand = variable_get( $this->_modName . '_exec_command', 'proc_open' );
         
         // Sets the current working directory
-        $this->_cwd  = ( isset( $this->_modVars[ 'cwd' ] ) ) ? $this->_modVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
+        $this->_cwd  = ( isset( $this->_reqVars[ 'cwd' ] ) ) ? $this->_reqVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
         
         // Sets the new line character
         self::$_NL   = chr( 13 ) . chr( 10 );
         
         // Gets the command
-        $cmd         = $this->_modVars[ 'command' ];
+        $cmd         = $this->_reqVars[ 'command' ];
         
         // Gets multiple commands
         $commands    = explode( ' && ', $cmd );
@@ -519,7 +519,7 @@ class shell extends Oop_Drupal_ModuleBase
         $this->_promptColor     = variable_get( $this->_modName . '_prompt',       '#00FF00' );
         
         // Sets the current working directory
-        $this->_cwd = ( isset( $this->_modVars[ 'cwd' ] ) ) ? $this->_modVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
+        $this->_cwd = ( isset( $this->_reqVars[ 'cwd' ] ) ) ? $this->_reqVars[ 'cwd' ] : self::$_classManager->getDrupalPath();
                 
         $this->_prompt          = $_SERVER[ 'HTTP_HOST' ]
                                 . ': '
