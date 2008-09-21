@@ -190,4 +190,121 @@ final class Oop_Drupal_Database
         // Returns the unique instance
         return self::$_instance;
     }
+    
+    /**
+     * Creates a Drupal database schema corresponding to the OOP framework conventions
+     * 
+     * This method will automatically create a Drupal database schema for the
+     * requested database table. Conventions are the following:
+     * - The table name will be converted in uppercase
+     * - The primary key will be 'id_' plus the table name in lowercase
+     * Additionnaly, some fields, which are going to be used by the OOP
+     * framework, will be automatically added:
+     * - ctime: a timestamp corresponding to the creation time of the record
+     * - mtime: a timestamp corresponding to the last update time of the record
+     * - hidden: a flag telling if the record should be hidden in the frontend
+     * - deleted: a flag telling if the record has been deleted
+     * - id_users: the id of the user that created the record
+     * 
+     * @param   string  The name of the table
+     * @param   array   An array with the fields, as specified by the Drupal database schema API
+     * @param   array   An array with the indexes, if any
+     * @param   array   An array with the unique fields, if any
+     * @return  array   The final database schema
+     */
+    public static function createSchema( $tableName, array $fields, array $indexes = array(), array $unique = array() )
+    {
+        // Table name should be in uppercase
+        $tableName = strtoupper( $tableName );
+        
+        // Name of the primary key
+        $pKey      = 'id_' . strtolower( $tableName );
+        
+        // Creates the basic schema
+        $schema = array(
+            $tableName => array(
+                'primary key' => array( $pKey ),
+                'fields'      => array()
+        );
+        
+        // Process each field
+        foreach( $fields as $key => $value ) {
+            
+            // Adds the current field
+            $schema[ $tableName ][ 'fields' ][ $key ] = $value;
+        }
+        
+        // Adds the control fields
+        $schema[ $tableName ][ 'fields' ][ $pKey ] => array(
+            'type'        => 'serial',
+            'unsigned'    => true,
+            'not null'    => true
+        );
+        $schema[ $tableName ][ 'fields' ][ 'ctime' ] => array(
+            'type'     => 'int',
+            'unsigned' => true,
+            'not null' => true,
+            'default ' => 0
+        );
+        $schema[ $tableName ][ 'fields' ][ 'mtime' ] => array(
+            'type'     => 'int',
+            'unsigned' => true,
+            'not null' => true,
+            'default ' => 0
+        );
+        $schema[ $tableName ][ 'fields' ][ 'hidden' ] => array(
+            'type'     => 'int',
+            'size'     => 'tiny',
+            'unsigned' => true,
+            'not null' => true,
+            'default ' => 0
+        );
+        $schema[ $tableName ][ 'fields' ][ 'deleted' ] => array(
+            'type'     => 'int',
+            'size'     => 'tiny',
+            'unsigned' => true,
+            'not null' => true,
+            'default ' => 0
+        );
+        $schema[ $tableName ][ 'fields' ][ 'id_users' ] => array(
+            'type'     => 'int',
+            'unsigned' => true,
+            'not null' => true,
+            'default ' => 0
+        );
+        
+        // Checks for indexes
+        if( count( $indexes ) ) {
+            
+            // Creates the schema entry
+            $schema[ $tableName ][ 'indexes' ] = array();
+            
+            // Index name
+            $indexName                         = ( is_array( $value ) ) ? 'index_' . implode( '_', $value ) : 'index_' . $value;
+            
+            // Process each field
+            foreach( $indexes as $key => $value ) {
+                
+                // Adds the current field
+                $schema[ $tableName ][ 'indexes' ][ $indexName ] = $value;
+            }
+        }
+        
+        // Checks for unique fields
+        if( count( $unique ) ) {
+            
+            // Creates the schema entry
+            $schema[ $tableName ][ 'unique keys' ] = array();
+            
+            // Unique name
+            $uniqueName                            = ( is_array( $value ) ) ? 'index_' . implode( '_', $value ) : 'index_' . $value;
+            
+            // Process each field
+            foreach( $unique as $key => $value ) {
+                
+                // Adds the current field
+                $schema[ $tableName ][ 'unique keys' ][ $uniqueName ] = $value;
+            }
+        }
+    }
 }
