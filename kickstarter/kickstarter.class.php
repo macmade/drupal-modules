@@ -989,24 +989,22 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 $this->_files[ $path ][] = '';
             }
             
-            // Starts the class comments
-            $this->_files[ $path ][] = '/**';
-            $this->_files[ $path ][] = ' * JavaScript class for the Drupal \'' . $this->_moduleName . '\' module';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * @author          ' . $this->_formValues[ 'kickstarter_author_name' ] . ' <' . $this->_formValues[ 'kickstarter_author_email' ] . '>';
-            $this->_files[ $path ][] = ' * @copyright       Copyright &copy; ' . date( 'Y' );
-            $this->_files[ $path ][] = ' * @version         0.1';
-            $this->_files[ $path ][] = ' */';
-            
-            // Starts the class
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '()';
-            $this->_files[ $path ][] = '{}';
-            
-            // Starts the class instanciation
-            $this->_files[ $path ][] = '';
-            $this->_files[ $path ][] = '// Creates a new instance of the module class';
-            $this->_files[ $path ][] = $this->_moduleName . ' = new ' . $this->_moduleName . '();';
-            
+            // Registers the module class
+            $this->_files[ $path ][] = '// Registers the class for the \'' . $this->_moduleName . '\' module';
+            $this->_files[ $path ][] = 'oopManager.getInstance().registerModuleClass(';
+            $this->_files[ $path ][] = '    \'' . $this->_moduleName . '\',';
+            $this->_files[ $path ][] = '    function()';
+            $this->_files[ $path ][] = '    {';
+            $this->_files[ $path ][] = '        /*';
+            $this->_files[ $path ][] = '        Place the module methods here:';
+            $this->_files[ $path ][] = '        Eg.:';
+            $this->_files[ $path ][] = '        ';
+            $this->_files[ $path ][] = '        this.sayHello = function()';
+            $this->_files[ $path ][] = '        {';
+            $this->_files[ $path ][] = '            alert( \'Hello world!\' );';
+            $this->_files[ $path ][] = '        }';
+            $this->_files[ $path ][] = '        */';
+            $this->_files[ $path ][] = '    }';
             
             // Ends the file
             $this->_files[ $path ][] = '';
