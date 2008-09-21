@@ -480,7 +480,7 @@ final class Oop_Drupal_Database
         
         // Parameters for the PDO query
         $params = array(
-            ':' . $pkey => $id,
+            ':' . $pKey => $id,
             ':mtime'    => time()
         );
         
@@ -501,7 +501,7 @@ final class Oop_Drupal_Database
         $sql  = substr( $sql, 0, -1 );
         
         // Adds the where clause
-        $sql .= ' WHERE ' . $pkey . ' = :' . $pkey;
+        $sql .= ' WHERE ' . $pKey . ' = :' . $pKey;
         
         // Prepares the PDO query
         $query = $this->prepare( $sql );
@@ -530,7 +530,7 @@ final class Oop_Drupal_Database
             );
             
             // SQL for the update statement
-            $sql = 'DELETE FROM ' . $table . ' WHERE ' . $pkey . ' = :id';
+            $sql = 'DELETE FROM ' . $table . ' WHERE ' . $pKey . ' = :id';
             
             // Prepares the PDO query
             $query = $this->prepare( $sql );

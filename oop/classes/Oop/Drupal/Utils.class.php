@@ -184,13 +184,41 @@ final class Oop_Drupal_Utils
      */
     public function storeModuleVariable( $modName, $varName, $value )
     {
-        return self::$_db->insertRecord(
+        // Tries to get an existing variable
+        $var = self::$_db->getRecordsByFields(
             'oop_modules_variables',
             array(
-                'module_name'    => $modName,
-                'variable_name'  => $varName,
-                'variable_value' => $value
+                'module_name'   => $modName,
+                'variable_name' => $varName
             )
         );
+        
+        // Checks if the variable exits
+        if( count( $var ) ) {
+            
+            // Gets the database object
+            $var = array_shift( $var );
+            
+            // Updates the variable
+            return self::$_db->updateRecord(
+                'oop_modules_variables',
+                $var->id_oop_modules_variables,
+                array(
+                    'variable_value' => $value
+                )
+            );
+            
+        } else {
+            
+            // Inserts the variable
+            return self::$_db->insertRecord(
+                'oop_modules_variables',
+                array(
+                    'module_name'    => $modName,
+                    'variable_name'  => $varName,
+                    'variable_value' => $value
+                )
+            );
+        }
     }
 }
