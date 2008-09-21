@@ -495,15 +495,120 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     public function getAdminForm()
     {
         // Gets the path of the configuration file
-        $confPath = self::$_classManager->getModulePath( $this->_modName )
-                  . 'settings'
-                  . DIRECTORY_SEPARATOR
-                  . 'admin.form.php';
+        $confPath                      = self::$_classManager->getModulePath( $this->_modName )
+                                       . 'settings'
+                                       . DIRECTORY_SEPARATOR
+                                       . 'admin.form.php';
         
         // Creates the form
-        $form = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+        $form                          = new Oop_Drupal_Form_Builder(
+            $confPath,
+            $this->_modName,
+            $this->_lang
+        );
+        
+        // Gets the final form configuration
+        $conf = $form->getConf();
+        
+        // Adds the submit button
+        $conf[ 'buttons' ][ 'submit' ] = array(
+            '#type'  => 'submit',
+            '#value' => t('Save configuration')
+        );
+        
+        // Adds the reset button
+        $conf[ 'buttons' ][ 'reset' ]  = array(
+            '#type'  => 'submit',
+            '#value' => t('Reset to defaults')
+        );
+        
+        // Checks the POST data and the form errors
+        if( !empty($_POST) && form_get_errors() ) {
+            
+            // Displays the error message
+            drupal_set_message(
+                t( 'The settings have not been saved because of the errors.' ),
+                'error'
+            );
+        }
+        
+        // Adds the submit callback
+        $conf[ '#submit' ][] = 'oop_submitAdminForm';
+        
+        // Adds the theming support
+        $conf[ '#theme' ]    = 'system_settings_form';
         
         // Returns the form
-        return system_settings_form( $form->getConf() );
+        return $conf;
+    }
+    
+    /**
+     * Submission callback for the administration settings form
+     * 
+     * @param   array   The form configuration
+     * @param   array   The submitted form values
+     * @return  NULL
+     */
+    public function submitAdminForm( array $form, array &$formState )
+    {
+        // Gets the operation
+        $op = isset( $formState[ 'values' ][ 'op' ] ) ? $formState[ 'values' ][ 'op' ] : '';
+
+        // Excludes all unnecessary elements from the array
+        unset(
+            $formState[ 'values' ][ 'submit' ],
+            $formState[ 'values' ][ 'reset' ],
+            $formState[ 'values' ][ 'form_id' ],
+            $formState[ 'values' ][ 'op' ],
+            $formState[ 'values' ][ 'form_token' ],
+            $formState[ 'values' ][ 'form_build_id' ]
+        );
+        
+        // Process the form values
+        foreach( $formState[ 'values' ] as $key => $value ) {
+            
+            // Checks the operation
+            if( $op === t( 'Reset to defaults' ) ) {
+                
+                // Deletes all variables from this module
+                self::$_utils->deleteModuleVariables( $this->_modName );
+                
+            } else {
+                
+                // Checks if we have to filter the array
+                if( is_array( $value ) && isset( $formState[ 'values' ][ 'array_filter' ] ) ) {
+                    
+                    // Filters the array
+                    $value = array_keys( array_filter( $value ) );
+                }
+                
+                // Gets the short variable name
+                $varName = substr( $key, strpos( $key, '_' ) + 1 );
+                
+                // Gets the module name
+                $modName = substr( $key, 0, strpos( $key, '_' ) );
+                
+                // Stores the current variable
+                self::$_utils->storeModuleVariable( $modName, $varName, $value );
+            }
+        }
+    
+        // Checks the operation
+        if( $op === t( 'Reset to defaults' ) ) {
+            
+            // Sets the confirmation message
+            drupal_set_message( t( 'The configuration options have been reset to their default values.' ) );
+            
+        } else {
+            
+            // Sets the confirmation message
+            drupal_set_message(t('The configuration options have been saved.'));
+        }
+        
+        // Clears the Drupal cache
+        cache_clear_all();
+        
+        // Rebuilds the Drupal theme registry
+        drupal_rebuild_theme_registry();
     }
 }

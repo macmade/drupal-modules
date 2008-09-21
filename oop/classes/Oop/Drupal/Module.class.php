@@ -206,13 +206,6 @@ abstract class Oop_Drupal_Module
      */
     protected function _storeModuleVar( $name, $value )
     {
-        return self::$_db->insertRecord(
-            'OOP_MODULES_VARIABLES',
-            array(
-                'module_name'    => $this->_modName,
-                'variable_name'  => $name,
-                'variable_value' => $value
-            )
-        );
+        return self::$_utils->storeModuleVariable( $this->_modName, $name, $value );
     }
 }

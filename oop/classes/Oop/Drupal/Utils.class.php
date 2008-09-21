@@ -173,4 +173,24 @@ final class Oop_Drupal_Utils
         // Executes the PDO query
         return $query->execute( $sqlParams );
     }
+    
+    /**
+     * Stores a variable belonging to a module in the Drupal database
+     * 
+     * @param   string  The module name
+     * @param   string  The variable name
+     * @param   mixed   Tha value to store in the database
+     * @return  boolean
+     */
+    public function storeModuleVariable( $modName, $varName, $value )
+    {
+        return self::$_db->insertRecord(
+            'OOP_MODULES_VARIABLES',
+            array(
+                'module_name'    => $modName,
+                'variable_name'  => $varName,
+                'variable_value' => $value
+            )
+        );
+    }
 }

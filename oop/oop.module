@@ -61,3 +61,15 @@ function oop_adminForm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->getAdminForm();
 }
+
+/**
+ * Submission callback for the administration settings form
+ * 
+ * @param   array   The form configuration
+ * @param   array   The submitted form values
+ * @return  NULL
+ */
+function oop_submitAdminForm( array $form, array &$formState )
+{
+    Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->submitAdminForm( $form, $formState );
+}
