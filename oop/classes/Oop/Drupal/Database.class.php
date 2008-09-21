@@ -309,7 +309,7 @@ final class Oop_Drupal_Database
     /**
      * 
      */
-    public function getRecord( $table, $id, $fields = '*' )
+    public function getRecord( $table, $id, $getHidden = false )
     {
         // Primary key
         $pKey   = 'id_' . $table;
@@ -319,21 +319,101 @@ final class Oop_Drupal_Database
         
         // Parameters for the PDO query
         $params = array(
-            ':id' => $id
+            ':id'      => $id,
+            ':deleted' => 0
         );
         
-        // Prepares the PDO query
-        $query   = $this->prepare(
-            'SELECT ' . $fields . ' FROM ' . $table . '
-             WHERE ' . $pKey . ' = :id
-             LIMIT 1'
-        );
+        // Checks if the hidden records must be selected or not
+        if( $getHidden === false ) {
+            
+            // Do not select hidden records
+            $params[ ':hidden' ] = 0;
+        
+            // Prepares the PDO query
+            $query = $this->prepare(
+                'SELECT * FROM ' . $table . '
+                 WHERE ' . $pKey . ' = :id
+                    AND hidden = :hidden
+                 LIMIT 1'
+            );
+            
+        } else {
+            
+            // Prepares the PDO query
+            $query = $this->prepare(
+                'SELECT * FROM ' . $table . '
+                 WHERE ' . $pKey . ' = :id
+                 LIMIT 1'
+            );
+        }
         
         // Executes the PDO query
         $query->execute( $params );
         
         // Returns the record
         return $query->fetchObject();
+    }
+    
+    /**
+     * 
+     */
+    public function getRecordsByFields( $table, array $fieldsValues, $getHidden = false  )
+    {
+        // Primary key
+        $pKey   = 'id_' . $table;
+        
+        // Table name, to support prefixes
+        $table  = '{' . $table . '}';
+        
+        // Starts the query
+        $sql = 'SELECT * FROM ' . $table . ' WHERE ';
+        
+        // Parameters for the PDO query
+        $params = array();
+        
+        // Process each field to check
+        foreach( $fieldsValues as $fieldName => $fieldValue ) {
+            
+            // Adds the parameter
+            $params[ ':' . $fieldName ] = $fieldValue;
+            
+            // Adds the statement
+            $sql .= $fieldName . ' = :' . $fieldName . ' AND ';
+        }
+        
+        // Checks if the hidden records must be selected or not
+        if( $getHidden === false ) {
+            
+            // Do not select hidden records
+            $params[ ':hidden' ] = 0;
+            
+            // Adds the statement
+            $sql .= ' hidden = :hidden';
+            
+        } else {
+            
+            // Removes the last 'AND' from the sql query
+            $sql = substr( $sql, 0, -5 );
+        }
+        
+        // Prepares the PDO query
+        $query = $this->prepare( $sql );
+        
+        // Executes the PDO query
+        $query->execute( $params );
+        
+        // Storage
+        $rows = array();
+        
+        // Process each row
+        while( $row = $query->fetchObject() ) {
+            
+            // Stores the current row
+            $rows[ $row->$pKey ] = $row;
+        }
+        
+        // Returns the rows
+        return $rows;
     }
     
     /**
@@ -375,7 +455,7 @@ final class Oop_Drupal_Database
         }
         
         // Removes the last comma
-        $sql  = substr( $sql, 0, strlen( $sql ) - 1 );
+        $sql  = substr( $sql, 0, -1 );
         
         // Prepares the PDO query
         $query = $this->prepare( $sql );
@@ -418,7 +498,7 @@ final class Oop_Drupal_Database
         }
         
         // Removes the last comma
-        $sql  = substr( $sql, 0, strlen( $sql ) - 1 );
+        $sql  = substr( $sql, 0, -1 );
         
         // Adds the where clause
         $sql .= ' WHERE ' . $pkey . ' = :' . $pkey;
