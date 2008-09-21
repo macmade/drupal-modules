@@ -198,6 +198,7 @@ final class Oop_Drupal_Database
      * requested database table. Conventions are the following:
      * - The table name will be converted in uppercase
      * - The primary key will be 'id_' plus the table name in lowercase
+     * 
      * Additionnaly, some fields, which are going to be used by the OOP
      * framework, will be automatically added:
      * - ctime: a timestamp corresponding to the creation time of the record
