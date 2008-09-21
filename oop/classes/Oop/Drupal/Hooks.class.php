@@ -567,11 +567,14 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         // Process the form values
         foreach( $formState[ 'values' ] as $key => $value ) {
             
+            // Gets the module name
+            $modName = substr( $key, 0, strpos( $key, '_' ) );
+            
             // Checks the operation
             if( $op === t( 'Reset to defaults' ) ) {
                 
                 // Deletes all variables from this module
-                self::$_utils->deleteModuleVariables( $this->_modName );
+                self::$_utils->deleteModuleVariables( $modName );
                 
             } else {
                 
@@ -584,9 +587,6 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
                 
                 // Gets the short variable name
                 $varName = substr( $key, strpos( $key, '_' ) + 1 );
-                
-                // Gets the module name
-                $modName = substr( $key, 0, strpos( $key, '_' ) );
                 
                 // Stores the current variable
                 self::$_utils->storeModuleVariable( $modName, $varName, $value );

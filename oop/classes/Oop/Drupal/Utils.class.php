@@ -165,7 +165,7 @@ final class Oop_Drupal_Utils
         
         // SQL query
         $sql       = 'DELETE FROM {oop_modules_variables}
-                      WHERE module_name = :name';
+                      WHERE module_name = :module_name';
         
         // Prepares the PDO query
         $query     = self::$_db->prepare( $sql );
