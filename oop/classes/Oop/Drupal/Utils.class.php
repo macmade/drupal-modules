@@ -101,7 +101,7 @@ final class Oop_Drupal_Utils
         
         // SQL query to select the variables from this module
         $sql    = 'SELECT *
-                   FROM {OOP_MODULES_VARIABLES}
+                   FROM {oop_modules_variables}
                    WHERE module_name = :module_name
                    ORDER BY variable_name';
         
@@ -164,7 +164,7 @@ final class Oop_Drupal_Utils
         );
         
         // SQL query
-        $sql       = 'DELETE FROM {OOP_MODULES_VARIABLES}
+        $sql       = 'DELETE FROM {oop_modules_variables}
                       WHERE module_name = :name';
         
         // Prepares the PDO query
@@ -185,7 +185,7 @@ final class Oop_Drupal_Utils
     public function storeModuleVariable( $modName, $varName, $value )
     {
         return self::$_db->insertRecord(
-            'OOP_MODULES_VARIABLES',
+            'oop_modules_variables',
             array(
                 'module_name'    => $modName,
                 'variable_name'  => $varName,

@@ -30,7 +30,7 @@ function oop_uninstall()
 function oop_schema()
 {
     $schema = array(
-        'OOP_MODULES_VARIABLES' => array(
+        'oop_modules_variables' => array(
             'description' => t( 'Storage table for the OOP modules, to avoid using the built-in \'variable\' table.' ),
             'primary key' => array(
                 'id_oop_modules_variables'

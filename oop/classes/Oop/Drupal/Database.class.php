@@ -214,11 +214,8 @@ final class Oop_Drupal_Database
      */
     public static function createSchema( $tableName, array $fields, array $indexes = array(), array $unique = array() )
     {
-        // Table name should be in uppercase
-        $tableName = strtoupper( $tableName );
-        
         // Name of the primary key
-        $pKey      = 'id_' . strtolower( $tableName );
+        $pKey      = 'id_' . $tableName;
         
         // Creates the basic schema
         $schema = array(
@@ -315,10 +312,10 @@ final class Oop_Drupal_Database
     public function getRecord( $table, $id, $fields = '*' )
     {
         // Primary key
-        $pKey   = 'id_' . strtolower( $table );
+        $pKey   = 'id_' . $table;
         
-        // Table name is uppercase
-        $table  = '{' . strtoupper( $table ) . '}';
+        // Table name, to support prefixes
+        $table  = '{' . $table . '}';
         
         // Parameters for the PDO query
         $params = array(
@@ -344,8 +341,8 @@ final class Oop_Drupal_Database
      */
     public function insertRecord( $table, array $values )
     {
-        // Table name is uppercase
-        $table  = '{' . strtoupper( $table ) . '}';
+        // Table name to support prefixes
+        $table  = '{' . $table . '}';
         
         // Gets the current time
         $time   = time();
@@ -396,10 +393,10 @@ final class Oop_Drupal_Database
     public function updateRecord( $table, $id, array $values )
     {
         // Primary key
-        $pKey   = 'id_' . strtolower( $table );
+        $pKey   = 'id_' . $table;
         
-        // Table name is uppercase
-        $table  = '{' . strtoupper( $table ) . '}';
+        // Table name to support prefixes
+        $table  = '{' . $table . '}';
         
         // Parameters for the PDO query
         $params = array(
@@ -442,10 +439,10 @@ final class Oop_Drupal_Database
         if( $deleteFromTable ) {
             
             // Primary key
-            $pKey   = '' . strtolower( $table );
+            $pKey   = '' . $table;
             
-            // Table name is uppercase
-            $table  = '{' . strtoupper( $table ) . '}';
+            // Table name to support prefixes
+            $table  = '{' . $table . '}';
             
             // Parameters for the PDO query
             $params = array(
