@@ -63,13 +63,19 @@ abstract class Oop_Drupal_Module
     public $_reqVars                = array();
     
     /**
+     * The database variables for the module
+     */
+    public $_modVars                = array();
+    
+    /**
      * Class constructor
      * 
      * @param   string  The path of the module
      * @return  NULL
      * @see     Oop_Lang_Getter::getInstance
      * @see     _setStaticVars
-     * @see     _getModuleVariables
+     * @see     _getModuleRequestVariables
+     * @see     _getModuleDatabaseVariables
      */
     public function __construct( $modPath )
     {
@@ -90,7 +96,10 @@ abstract class Oop_Drupal_Module
         }
         
         // Gets the request variables for the current module
-        $this->_getModuleVariables();
+        $this->_getModuleRequestVariables();
+        
+        // Gets the database variables for the current module
+        $this->_getModuleDatabaseVariables();
     }
     
     /**
@@ -126,7 +135,7 @@ abstract class Oop_Drupal_Module
      * @see     Oop_Request_Getter::requestVarExists
      * @see     Oop_Request_Getter::getRequestVar
      */
-    private function _getModuleVariables()
+    private function _getModuleRequestVariables()
     {
         // Keys to search in the request variables
         $requestKeys = array( 'G', 'P', 'C', 'S', 'E' );
@@ -169,6 +178,38 @@ abstract class Oop_Drupal_Module
     }
     
     /**
+     * Gets each database variable from this module
+     * 
+     * @return  NULL
+     */
+    private function _getModuleDatabaseVariables()
+    {
+        // Parameters for the PDO query
+        $params = array(
+            ':module_name' => $this->_modName
+        );
+        
+        // SQL query to select the variables from this module
+        $sql    = 'SELECT *
+                   FROM {OOP_MODULES_VARIABLES}
+                   WHERE module_name = :module_name
+                   ORDER BY variable_name';
+        
+        // Prepares the PDO query
+        $query  = self::$_db->prepare( $sql );
+        
+        // Executes the PDO query
+        $query->execute( $params );
+        
+        // Process each variable
+        while( $variable = $query->fetchObject() ) {
+            
+            // Stores the current variable
+            $this->_modVars[ $variable->variable_name ] = $variable->variable_value;
+        }
+    }
+    
+    /**
      * 
      */
     protected function _storeSessionVar( $name, $value )
@@ -179,5 +220,20 @@ abstract class Oop_Drupal_Module
         }
         
         $_SESSION[ $this->_modName ][ $name ] = $value;
+    }
+    
+    /**
+     * 
+     */
+    protected function _storeModuleVar( $name, $value )
+    {
+        return self::$_db->insertRecord(
+            'OOP_MODULES_VARIABLES',
+            array(
+                'module_name'    => $this->_modName,
+                'variable_name'  => $name,
+                'variable_value' => $value
+            )
+        );
     }
 }
