@@ -128,11 +128,9 @@ class ddmenu extends Oop_Drupal_ModuleBase
      */
     public function getBlock( Oop_Xhtml_Tag $content, $delta )
     {
-        $css = variable_get( $this->_modName . '_css_file', false );
-        
-        if( $css ) {
+        if( isset( $this->_modVars[ 'css_file' ] ) {
             
-            $this->_includeCss( $css );
+            $this->_includeCss( $this->_modVars[ 'css_file' ] );
             
         } else {
             
@@ -141,7 +139,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
         
         $this->_delta = $delta;
         
-        $linkType = variable_get( $this->_modName . '_linktype_' . $this->_delta, 'primary' );
+        $linkType = ( isset( $this->_modVars[ 'linktype_' . $delta ] ) ) ? $this->_modVars[ 'linktype_' . $delta ] : 'primary';
         
         switch( $linkType ) {
             

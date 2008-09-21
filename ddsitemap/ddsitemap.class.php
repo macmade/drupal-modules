@@ -125,18 +125,16 @@ class ddsitemap extends Oop_Drupal_ModuleBase
      */
     public function getNode( Oop_Xhtml_Tag $content, stdClass $node, $teaser, $page )
     {
-        $css = variable_get( $this->_modName . '_css_file', false );
-        
-        if( $css ) {
+        if( isset( $this->_modVars[ 'css_file' ] ) ) {
             
-            $this->_includeCss( $css );
+            $this->_includeCss( $this->_modVars[ 'css_file' ] );
             
         } else {
             
             $this->_includeModuleCSS();
         }
         
-        $linkType = variable_get( $this->_modName . '_linktype', 'primary' );
+        $linkType = ( isset( $this->_modVars[ 'linktype_' . $delta ] ) ) ? $this->_modVars[ 'linktype_' . $delta ] : 'primary';
         
         switch( $linkType ) {
             
