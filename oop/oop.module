@@ -34,13 +34,13 @@ require_once(
 spl_autoload_register( array( 'Oop_Core_ClassManager', 'autoLoad' ) );
 
 // Sets the HTML formatting option
-Oop_Xhtml_Tag::useFormattedOutput( variable_get( 'oop_html_format', 1 ) );
+Oop_Xhtml_Tag::useFormattedOutput( Oop_Drupal_Utils::getInstance()->getModuleVariable( 'oop', 'html_format', 1 ) );
 
 // Sets the substitution character for the @ sign
-Oop_Drupal_ModuleBase::setEmailCryptSymbol( variable_get( 'oop_email_crypt_symbol', '(at)' ) );
+Oop_Drupal_ModuleBase::setEmailCryptSymbol( Oop_Drupal_Utils::getInstance()->getModuleVariable( 'oop', 'email_crypt_symbol', '(at)' ) );
 
 // Sets the default language
-Oop_Lang_Getter::setDefaultLanguage( variable_get( 'oop_default_language', 'en' ) );
+Oop_Lang_Getter::setDefaultLanguage( Oop_Drupal_Utils::getInstance()->getModuleVariable( 'oop', 'default_language', 'en' ) );
 
 /**
  * Drupal 'menu' hook

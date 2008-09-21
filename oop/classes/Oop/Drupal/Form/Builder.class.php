@@ -13,6 +13,15 @@
 class Oop_Drupal_Form_Builder
 {
     /**
+     * Wether the static variables are set or not
+     */
+    private static $_hasStatic      = false;
+    
+    /**
+     * The instance of the Drupal utilities
+     */
+    protected static $_utils        = NULL;
+    /**
      * 
      */
     protected $_lang     = NULL;
@@ -37,6 +46,13 @@ class Oop_Drupal_Form_Builder
      */
     public function __construct( $confPath, $modName, Oop_Lang_Getter $lang, $delta = false )
     {
+        // Checks if the static variables are set
+        if( !self::$_hasStatic ) {
+            
+            // Sets the static variables
+            self::_setStaticVars();
+        }
+        
         // Checks if the file exists
         if( !file_exists( $confPath ) ) {
             
@@ -68,6 +84,23 @@ class Oop_Drupal_Form_Builder
     }
     
     /**
+     * Sets the needed static variables
+     * 
+     * @return  NULL
+     * @see     Oop_Core_ClassManager::getInstance
+     * @see     Oop_Drupal_Database::getInstance
+     * @see     Oop_Request_Getter::getInstance
+     */
+    private static function _setStaticVars()
+    {
+        // Gets the instance of the Drupal utilities class
+        self::$_utils     = Oop_Drupal_Utils::getInstance();
+        
+        // Static variables are set
+        self::$_hasStatic = true;
+    }
+    
+    /**
      * 
      */
     protected function _createFormConf( array &$conf, array &$storage )
@@ -82,10 +115,12 @@ class Oop_Drupal_Form_Builder
             if( is_numeric( $this->_delta ) ) {
                 
                 $fieldName = $this->_modName . '_' . $field . '_' . $this->_delta;
+                $varName   = $field . $this->_delta;
                 
             } else {
                 
                 $fieldName = $this->_modName . '_' . $field;
+                $varName   = $field;
             }
             
             $storage[ $fieldName ] = array();
@@ -113,7 +148,7 @@ class Oop_Drupal_Form_Builder
                 $storage[ $fieldName ][ '#description' ] = $this->_lang->getLabel( $field . '_description', 'settings' );
             }
             
-            $storage[ $fieldName ][ '#default_value' ] = variable_get( $fieldName, $fieldConf[ '#default_value' ] );
+            $storage[ $fieldName ][ '#default_value' ] = self::$_utils->getModuleVariable( $this->_modName, $varName, $fieldConf[ '#default_value' ] );
             
             if( $fieldConf[ '#type' ] === 'select' && isset( $fieldConf[ '#options' ] ) && !is_array( $fieldConf[ '#options' ] ) ) {
                 

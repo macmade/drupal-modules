@@ -134,6 +134,9 @@ abstract class Oop_Drupal_Module
         
         // Sets the new line character
         self::$_NL           = chr( 10 );
+        
+        // Static variables are set
+        self::$_hasStatic    = true;
     }
     
     /**

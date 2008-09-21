@@ -229,7 +229,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             if( $this->_formValues[ 'kickstarter_admin_add' ] && $this->_formValues[ 'kickstarter_admin_blocks_number' ] ) {
                 
                 // Sets the number of blocks
-                $this->_files[ $path ][] = 'Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->setNumberOfBlocks( variable_get( \'' . $this->_moduleName . '_number_of_blocks\', 1 ), true );';
+                $this->_files[ $path ][] = 'Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->setNumberOfBlocks( Oop_Drupal_Utils::getInstance()->getModuleVariable( \'' . $this->_moduleName . '\', \'number_of_blocks\', 1 ), true );';
                 $this->_files[ $path ][] = '';
             }
             
