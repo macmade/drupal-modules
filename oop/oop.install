@@ -1,0 +1,79 @@
+<?php
+
+# $Id$
+
+/**
+ * Drupal 'install' hook
+ * 
+ * @return  NULL
+ */
+function oop_install()
+{
+    drupal_install_schema( 'oop' );
+}
+
+/**
+ * Drupal 'uninstall' hook
+ * 
+ * @return  NULL
+ */
+function oop_uninstall()
+{
+    drupal_uninstall_schema( 'oop' );
+}
+
+/**
+ * Drupal 'schema' hook
+ * 
+ * @return  array   The schema array
+ */
+function oop_schema()
+{
+    $schema = array(
+        'OOP_MODULES_VARIABLES' => array(
+            'description' => t( 'Storage table for the OOP modules, to avoid using the built-in \'variable\' table.' ),
+            'primary key' => array(
+                'id_oop_modules_variables'
+            ),
+            'indexes'     => array(
+                'index_module_name'   => array(
+                    'module_name'
+                ),
+                'index_variable_name' => array(
+                    'variable_name'
+                )
+            ),
+            'fields'      => array(
+                'id_oop_modules_variables' => array(
+                    'type'        => 'serial',
+                    'unsigned'    => true,
+                    'not null'    => true,
+                    'description' => t( 'The ID of the variable (primary key).' )
+                ),
+                'module_name'    => array(
+                    'type'     => 'varchar',
+                    'length'   => 255,
+                    'not null' => true,
+                    'default'  => '',
+                    'description' => t( 'The name of the module.' )
+                ),
+                'variable_name'  => array(
+                    'type'     => 'varchar',
+                    'length'   => 255,
+                    'not null' => true,
+                    'default'  => '',
+                    'description' => t( 'The name of the variable.' )
+                ),
+                'variable_value' => array(
+                    'type'     => 'text',
+                    'size'     => 'big',
+                    'not null' => true,
+                    'default'  => '',
+                    'description' => t( 'The value of the variable.' )
+                )
+            )
+        )
+    );
+    
+    return $schema;
+}
