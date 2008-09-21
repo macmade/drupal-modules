@@ -81,19 +81,17 @@ final class Oop_Drupal_Utils
     {
         // Parameters for the PDO query
         $sqlParams = array(
-            ':name'   => $name . '_%',
+            ':module_name'   => $name
         );
         
         // SQL query
-        $sql       = 'DELETE FROM {variable}
-                      WHERE name LIKE :name';
+        $sql       = 'DELETE FROM {OOP_MODULES_VARIABLES}
+                      WHERE module_name = :name';
         
         // Prepares the PDO query
         $query     = self::$_db->prepare( $sql );
         
         // Executes the PDO query
-        $query->execute( $sqlParams );
-        
-        print_r( $query->fetchAll() );
+        return $query->execute( $sqlParams );
     }
 }

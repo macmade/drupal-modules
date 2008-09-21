@@ -245,8 +245,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             // Checks the property name
             if( substr( $key, 0, strlen( $this->_modName ) + 1 ) === $this->_modName . '_' ) {
                 
+                // Gets the variable short name
+                $varName = substr( $key, strlen( $this->_modName ) + 1 );
+                
                 // Sets the variable
-                variable_set( $key, $value );
+                $this->_storeModuleVariable( $varName, $value );
             }
         }
     }
@@ -265,8 +268,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             // Checks the property name
             if( substr( $key, 0, strlen( $this->_modName ) + 1 ) === $this->_modName . '_' ) {
                 
+                // Gets the variable short name
+                $varName = substr( $key, strlen( $this->_modName ) + 1 );
+                
                 // Sets the variable
-                variable_set( $key, $value );
+                $this->_storeModuleVariable( $varName, $value );
             }
         }
     }
@@ -358,8 +364,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             // Process each item
             foreach( $edit as $key => $value ) {
                 
+                // Gets the variable short name
+                $varName = substr( $key, strlen( $this->_modName ) + 1 );
+                
                 // Sets the variable
-                variable_set( $key, $value );
+                $this->_storeModuleVariable( $varName, $value );
             }
             
         } elseif( $op === 'view' ) {
