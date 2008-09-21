@@ -342,7 +342,7 @@ final class Oop_Drupal_Database
     /**
      * 
      */
-    public function insertRecord( $table, $values )
+    public function insertRecord( $table, array $values )
     {
         // Table name is uppercase
         $table  = '{' . strtoupper( $table ) . '}';
@@ -356,15 +356,16 @@ final class Oop_Drupal_Database
             ':mtime' => $time
         );
         
+        // SQL for the insert statement
+        $sql    = 'INSERT INTO ' . $table . ' SET ctime = :ctime, mtime = :mtime,';
+        
         // Checks for a connected used
         if( isset( $GLOBALS[ 'user' ] ) && $GLOBALS[ 'user' ] instanceof stdClass ) {
             
             // Adds the user ID
             $params[ ':id_users' ] = $GLOBALS[ 'user' ]->uid;
+            $sql                  .= ' id_users = :id_users,';
         }
-        
-        // SQL for the insert statement
-        $sql    = 'INSERT INTO ' . $table . ' SET';
         
         // Process each value
         foreach( $values as $fieldName => $value ) {
@@ -386,13 +387,13 @@ final class Oop_Drupal_Database
         $query->execute( $params );
         
         // Returns the insert ID
-        return $query->lastInsertId();
+        return $this->lastInsertId();
     }
     
     /**
      * 
      */
-    public function updateRecord( $table, $id, $values )
+    public function updateRecord( $table, $id, array $values )
     {
         // Primary key
         $pKey   = 'id_' . strtolower( $table );
@@ -402,11 +403,12 @@ final class Oop_Drupal_Database
         
         // Parameters for the PDO query
         $params = array(
-            ':' . $pkey => $id
+            ':' . $pkey => $id,
+            ':mtime'    => time()
         );
         
         // SQL for the update statement
-        $sql    = 'UPDATE ' . $table . ' SET';
+        $sql    = 'UPDATE ' . $table . ' SET mtime = :mtime,';
         
         // Process each value
         foreach( $values as $fieldName => $value ) {

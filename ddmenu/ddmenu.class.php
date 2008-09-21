@@ -128,7 +128,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
      */
     public function getBlock( Oop_Xhtml_Tag $content, $delta )
     {
-        if( isset( $this->_modVars[ 'css_file' ] ) {
+        if( isset( $this->_modVars[ 'css_file' ] ) ) {
             
             $this->_includeCss( $this->_modVars[ 'css_file' ] );
             
