@@ -544,4 +544,21 @@ final class Oop_Drupal_Database
             return $this->updateRecord( $table, $id, array( 'deleted' => 1 ) );
         }
     }
+    
+    /**
+     * 
+     */
+    public function removeDeletedRecords( $table )
+    {
+        // Table name to support prefixes
+        $table  = '{' . $table . '}';
+        
+        // Prepares the PDO query
+        $query = $this->prepare(
+            'DELETE FROM ' . $table . ' WHERE deleted = 1'
+        );
+        
+        // Executes the PDO query
+        return $this->execute( $params );
+    }
 }
