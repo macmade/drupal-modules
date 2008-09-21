@@ -225,6 +225,7 @@ final class Oop_Drupal_Database
             $tableName => array(
                 'primary key' => array( $pKey ),
                 'fields'      => array()
+            )
         );
         
         // Process each field
@@ -235,38 +236,38 @@ final class Oop_Drupal_Database
         }
         
         // Adds the control fields
-        $schema[ $tableName ][ 'fields' ][ $pKey ] => array(
+        $schema[ $tableName ][ 'fields' ][ $pKey ] = array(
             'type'        => 'serial',
             'unsigned'    => true,
             'not null'    => true
         );
-        $schema[ $tableName ][ 'fields' ][ 'ctime' ] => array(
+        $schema[ $tableName ][ 'fields' ][ 'ctime' ] = array(
             'type'     => 'int',
             'unsigned' => true,
             'not null' => true,
             'default ' => 0
         );
-        $schema[ $tableName ][ 'fields' ][ 'mtime' ] => array(
+        $schema[ $tableName ][ 'fields' ][ 'mtime' ] = array(
             'type'     => 'int',
             'unsigned' => true,
             'not null' => true,
             'default ' => 0
         );
-        $schema[ $tableName ][ 'fields' ][ 'hidden' ] => array(
-            'type'     => 'int',
-            'size'     => 'tiny',
-            'unsigned' => true,
-            'not null' => true,
-            'default ' => 0
-        );
-        $schema[ $tableName ][ 'fields' ][ 'deleted' ] => array(
+        $schema[ $tableName ][ 'fields' ][ 'hidden' ] = array(
             'type'     => 'int',
             'size'     => 'tiny',
             'unsigned' => true,
             'not null' => true,
             'default ' => 0
         );
-        $schema[ $tableName ][ 'fields' ][ 'id_users' ] => array(
+        $schema[ $tableName ][ 'fields' ][ 'deleted' ] = array(
+            'type'     => 'int',
+            'size'     => 'tiny',
+            'unsigned' => true,
+            'not null' => true,
+            'default ' => 0
+        );
+        $schema[ $tableName ][ 'fields' ][ 'id_users' ] = array(
             'type'     => 'int',
             'unsigned' => true,
             'not null' => true,
@@ -305,6 +306,163 @@ final class Oop_Drupal_Database
                 // Adds the current field
                 $schema[ $tableName ][ 'unique keys' ][ $uniqueName ] = $value;
             }
+        }
+    }
+    
+    /**
+     * 
+     */
+    public function getRecord( $table, $id, $fields = '*' )
+    {
+        // Primary key
+        $pKey   = 'id_' . strtolower( $table );
+        
+        // Table name is uppercase
+        $table  = '{' . strtoupper( $table ) . '}';
+        
+        // Parameters for the PDO query
+        $params = array(
+            ':id' => $id
+        );
+        
+        // Prepares the PDO query
+        $query   = $this->prepare(
+            'SELECT ' . $fields . ' FROM ' . $table . '
+             WHERE ' . $pKey . ' = :id
+             LIMIT 1'
+        );
+        
+        // Executes the PDO query
+        $query->execute( $params );
+        
+        // Returns the record
+        return $query->fetchObject();
+    }
+    
+    /**
+     * 
+     */
+    public function insertRecord( $table, $values )
+    {
+        // Table name is uppercase
+        $table  = '{' . strtoupper( $table ) . '}';
+        
+        // Gets the current time
+        $time   = time();
+        
+        // Parameters for the PDO query
+        $params = array(
+            ':ctime' => $time,
+            ':mtime' => $time
+        );
+        
+        // Checks for a connected used
+        if( isset( $GLOBALS[ 'user' ] ) && $GLOBALS[ 'user' ] instanceof stdClass ) {
+            
+            // Adds the user ID
+            $params[ ':id_users' ] = $GLOBALS[ 'user' ]->uid;
+        }
+        
+        // SQL for the insert statement
+        $sql    = 'INSERT INTO ' . $table . ' SET';
+        
+        // Process each value
+        foreach( $values as $fieldName => $value ) {
+            
+            // Adds the PDO parameter for the current value
+            $params[ ':' . $fieldName ] = $value;
+            
+            // Adds the update statement for the current value
+            $sql .= ' ' . $fieldName . ' = :' . $fieldName . ',';
+        }
+        
+        // Removes the last comma
+        $sql  = substr( $sql, 0, strlen( $sql ) - 1 );
+        
+        // Prepares the PDO query
+        $query = $this->prepare( $sql );
+        
+        // Executes the PDO query
+        $query->execute( $params );
+        
+        // Returns the insert ID
+        return $query->lastInsertId();
+    }
+    
+    /**
+     * 
+     */
+    public function updateRecord( $table, $id, $values )
+    {
+        // Primary key
+        $pKey   = 'id_' . strtolower( $table );
+        
+        // Table name is uppercase
+        $table  = '{' . strtoupper( $table ) . '}';
+        
+        // Parameters for the PDO query
+        $params = array(
+            ':' . $pkey => $id
+        );
+        
+        // SQL for the update statement
+        $sql    = 'UPDATE ' . $table . ' SET';
+        
+        // Process each value
+        foreach( $values as $fieldName => $value ) {
+            
+            // Adds the PDO parameter for the current value
+            $params[ ':' . $fieldName ] = $value;
+            
+            // Adds the update statement for the current value
+            $sql .= ' ' . $fieldName . ' = :' . $fieldName . ',';
+        }
+        
+        // Removes the last comma
+        $sql  = substr( $sql, 0, strlen( $sql ) - 1 );
+        
+        // Adds the where clause
+        $sql .= ' WHERE ' . $pkey . ' = :' . $pkey;
+        
+        // Prepares the PDO query
+        $query = $this->prepare( $sql );
+        
+        // Executes the PDO query
+        return $query->execute( $params );
+    }
+    
+    /**
+     * 
+     */
+    public function deleteRecord( $table, $id, $deleteFromTable = false )
+    {
+        // Checks if we should really delete the record, or just set the delete flag
+        if( $deleteFromTable ) {
+            
+            // Primary key
+            $pKey   = '' . strtolower( $table );
+            
+            // Table name is uppercase
+            $table  = '{' . strtoupper( $table ) . '}';
+            
+            // Parameters for the PDO query
+            $params = array(
+                ':id' => $id
+            );
+            
+            // SQL for the update statement
+            $sql = 'DELETE FROM ' . $table . ' WHERE ' . $pkey . ' = :id';
+            
+            // Prepares the PDO query
+            $query = $this->prepare( $sql );
+            
+            // Executes the PDO query
+            return $this->execute( $params );
+            
+        } else {
+            
+            // Just sets the delete flag
+            return $this->updateRecord( $table, $id, array( 'deleted' => 1 ) );
         }
     }
 }
