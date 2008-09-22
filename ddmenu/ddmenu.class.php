@@ -43,30 +43,10 @@ class ddmenu extends Oop_Drupal_ModuleBase
     /**
      * 
      */
-    protected function _getPages( Oop_Xhtml_Tag $list, $type, $parent )
+    protected function _getPages( array $pages, Oop_Xhtml_Tag $list, $type )
     {
-        // Parameters for the PDO query
-        $sqlParams = array(
-            ':menu_name' => $type,
-            ':plid'      => $parent
-        );
-        
-        // WHERE clause to select the pages
-        $where = '{menu_links}.menu_name    = :menu_name
-                    AND {menu_links}.plid   = :plid
-                    AND {menu_links}.hidden = 0
-                  ORDER BY {menu_links}.weight, {menu_links}.link_title';
-        
-        // Gets the pages
-        $pages = Oop_Drupal_Page_Getter::getPages( $where, $sqlParams );
-        
         // Process each pages
         foreach( $pages as $id => $page ) {
-            
-            if( !$page->isAccessible() ) {
-                
-                continue;
-            }
             
             $li   = $list->li;
             $icon = $li->span;
@@ -75,7 +55,27 @@ class ddmenu extends Oop_Drupal_ModuleBase
             $title = $li->span;
             $title->addChildNode( $this->_link( $page->getTitle(), array(), false, $page->getPath() ) );
             
+            $subPages = array();
+            
             if( $page->has_children ) {
+                
+                // Parameters for the PDO query
+                $sqlParams = array(
+                    ':menu_name' => $type,
+                    ':plid'      => $page->mlid
+                );
+                
+                // WHERE clause to select the pages
+                $where = '{menu_links}.menu_name    = :menu_name
+                            AND {menu_links}.plid   = :plid
+                            AND {menu_links}.hidden = 0
+                          ORDER BY {menu_links}.weight, {menu_links}.link_title';
+                
+                // Gets the pages
+                $subPages = Oop_Drupal_Page_Getter::getPages( $where, $sqlParams, true );
+            }
+            
+            if( is_array( $subPages ) && count( $subPages ) ) {
                 
                 $link            = $icon->a;
                 $link[ 'href' ]  = 'javascript:oopManager.getInstance().getModule( \'ddmenu\' ).display( \'ddmenu-' . $this->_delta . '-page-' . $page->mlid . '\' );';
@@ -105,7 +105,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
                     $subList[ 'style' ] = 'display: none;';
                 }
                 
-                $this->_getPages( $subList, $type, $page->mlid );
+                $this->_getPages( $subPages, $subList, $type );
                 
             } else {
                 
@@ -137,7 +137,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
      */
     public function getBlock( Oop_Xhtml_Tag $content, $delta )
     {
-        if( isset( $this->_modVars[ 'css_file' ] ) ) {
+        if( isset( $this->_modVars[ 'css_file' ] ) && $this->_modVars[ 'css_file' ] ) {
             
             $this->_includeCss( $this->_modVars[ 'css_file' ] );
             
@@ -174,7 +174,26 @@ class ddmenu extends Oop_Drupal_ModuleBase
         $this->_iconPage = $this->_getIcon( 'page_white.png' );
         $this->_includeModuleScript();
         $list = $content->ul;
-        $this->_getPages( $list, $section, 0 );
+        
+        // Parameters for the PDO query
+        $sqlParams = array(
+            ':menu_name' => $section,
+            ':plid'      => 0
+        );
+        
+        // WHERE clause to select the pages
+        $where = '{menu_links}.menu_name    = :menu_name
+                    AND {menu_links}.plid   = :plid
+                    AND {menu_links}.hidden = 0
+                  ORDER BY {menu_links}.weight, {menu_links}.link_title';
+        
+        // Gets the pages
+        $pages = Oop_Drupal_Page_Getter::getPages( $where, $sqlParams );
+        
+        if( is_array( $pages ) && count( $pages ) ) {
+            
+            $this->_getPages( $pages, $list, $section );
+        }
     }
     
     /**
