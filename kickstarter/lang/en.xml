@@ -95,6 +95,11 @@
         <submit_value>Writes the module</submit_value>
     </settings>
     <module>
+        <moduleCreated>The module was sucessfully generated in %s</moduleCreated>
+        <cannotCreateDir>Error: impossible to create the directory %s</cannotCreateDir>
+        <cannotCreateFile>Error: impossible to create the file %s</cannotCreateFile>
+        <dirExists>Error: the directory %s already exists</dirExists>
+        <invalidEmail>Invalid email address</invalidEmail>
         <errorNoDir>Error: the modules directory does not exist (path: %s)</errorNoDir>
         <errorDirNotWriteable>Error: the modules directory is not writeable (path: %s)</errorDirNotWriteable>
         <invalidModuleName>Invalid module name. Only lowercase letters, without special characters or spaces</invalidModuleName>
