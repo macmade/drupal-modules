@@ -353,7 +353,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             if( in_array( 'access ' . $modName . ' block config', $this->_perms ) ) {
                 
                 // Checks the access for the block
-                $access = user_access( 'configure ' . $modName . ' block' );
+                $access = user_access( 'access ' . $modName . ' block config' );
             }
             
             // Checks the access
