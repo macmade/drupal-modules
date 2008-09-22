@@ -2,6 +2,11 @@
 
 # $Id$
 
+function kickstarter_perm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->perm();
+}
+
 function kickstarter_menu()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->addMenuItems();

@@ -24,6 +24,13 @@ class kickstarter extends Oop_Drupal_ModuleBase
     /**
      * 
      */
+    protected $_perms             = array(
+        'access kickstarter admin/build/oopkickstarter'
+    );
+    
+    /**
+     * 
+     */
     protected $_moduleName        = '';
     
     /**
@@ -1263,7 +1270,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             'title'            => $this->_lang->getLabel( 'admin_build_oopkickstarter_title', 'system' ),
             'description'      => $this->_lang->getLabel( 'admin_build_oopkickstarter_description', 'system' ),
             'page callback'    => 'kickstarter_show',
-            'access arguments' => array('access administration pages'),
+            'access arguments' => array( 'access kickstarter admin/build/oopkickstarter' )
         );
         
         // Returns the menu items
