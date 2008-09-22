@@ -677,7 +677,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '            \'title\'            => $this->_lang->getLabel( \'menu_item_title\', \'system\' ),';
             $this->_files[ $path ][] = '            \'description\'      => $this->_lang->getLabel( \'menu_item_description\', \'system\' ),';
             $this->_files[ $path ][] = '            \'page callback\'    => \'' . $this->_moduleName . '_show\',';
-            $this->_files[ $path ][] = '            \'access arguments\' => array( \'access ' . $this->_modName . ' ' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ),';
+            $this->_files[ $path ][] = '            \'access arguments\' => array( \'access ' . $this->_moduleName . ' ' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ),';
             $this->_files[ $path ][] = '        );';
             $this->_files[ $path ][] = '        ';
             $this->_files[ $path ][] = '        return $items;';
