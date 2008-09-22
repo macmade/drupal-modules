@@ -22,3 +22,8 @@ function shell_show()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->createModuleContent( 'show' );
 }
+
+function shell_perm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->perm();
+}
