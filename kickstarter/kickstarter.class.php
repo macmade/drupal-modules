@@ -262,6 +262,21 @@ class kickstarter extends Oop_Drupal_ModuleBase
         $this->_files[ $path ][] = '}';
         $this->_files[ $path ][] = '';
         
+        // Checks if we have to add the perm hook
+        if( $this->_formValues[ 'kickstarter_block_add' ]
+            || $this->_formValues[ 'kickstarter_node_add' ]
+            || $this->_formValues[ 'kickstarter_admin_add' ]
+            || $this->_formValues[ 'kickstarter_menu_add' ]
+        ) {
+            
+            // Creates the perm hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_perm()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->perm();';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+        }
+        
         // Checks if a block content must be added
         if( $this->_formValues[ 'kickstarter_block_add' ] ) {
             
@@ -273,13 +288,6 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 $this->_files[ $path ][] = '';
             }
             
-            // Creates the perm hook
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_perm()';
-            $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->perm();';
-            $this->_files[ $path ][] = '}';
-            $this->_files[ $path ][] = '';
-            
             // Creates the block hook
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_block( $op = \'list\', $delta = 0, array $edit = array() )';
             $this->_files[ $path ][] = '{';
@@ -290,17 +298,6 @@ class kickstarter extends Oop_Drupal_ModuleBase
         
         // Checks if a node content must be added
         if( $this->_formValues[ 'kickstarter_node_add' ] ) {
-            
-            // Checks if a block has already been added
-            if( !$this->_formValues[ 'kickstarter_block_add' ] ) {
-                
-                // Creates the perm hook
-                $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_perm()';
-                $this->_files[ $path ][] = '{';
-                $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->perm();';
-                $this->_files[ $path ][] = '}';
-                $this->_files[ $path ][] = '';
-            }
             
             // Adds the access hook
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_access( $op, $node, $account )';
@@ -470,20 +467,57 @@ class kickstarter extends Oop_Drupal_ModuleBase
         $this->_files[ $path ][] = '{';
         
         // Checks if the perm hook is implemented
-        if( $this->_formValues[ 'kickstarter_block_add' ] || $this->_formValues[ 'kickstarter_node_add' ] ) {
+        if( $this->_formValues[ 'kickstarter_block_add' ]
+            || $this->_formValues[ 'kickstarter_node_add' ]
+            || $this->_formValues[ 'kickstarter_admin_add' ]
+            || $this->_formValues[ 'kickstarter_menu_add' ]
+        ) {
             
-            // Access arguments
-            $blockAccessArray = explode( ',', preg_replace( '/,\s+/', ',', trim( $this->_formValues[ 'kickstarter_block_access' ] ) ) );
-            $nodeAccessArray  = explode( ',', preg_replace( '/,\s+/', ',', trim( $this->_formValues[ 'kickstarter_node_access' ] ) ) );
-            $accessArray      = array_merge( $blockAccessArray, $nodeAccessArray );
-            $access           = '\'' . implode( '\', \'', $accessArray ) . '\'';
-            $access           = ( $access ) ? ' ' . $access . ' ' : '';
-            
-            // Adds the permissions array
+            // Starts the permissions array
             $this->_files[ $path ][] = '    /**';
             $this->_files[ $path ][] = '     * An array with the Drupal permission for the module';
             $this->_files[ $path ][] = '     */';
-            $this->_files[ $path ][] = '    protected $_perms = array(' . $access . ');';
+            $this->_files[ $path ][] = '    protected $_perms = array(';
+            
+            // Checks if we have a block
+            if( $this->_formValues[ 'kickstarter_block_add' ] ) {
+                
+                // Adds the permissions
+                $this->_files[ $path ][] = '        \'access ' . $this->_moduleName . ' block\',';
+                
+                // Checks if we have a block configuration
+                if( $this->_formValues[ 'block_add_config' ] ) {
+                    
+                    // Adds the permissions
+                    $this->_files[ $path ][] = '        \'access ' . $this->_moduleName . ' block config\',';
+                }
+            }
+            
+            // Checks if we have a node
+            if( $this->_formValues[ 'kickstarter_node_add' ] ) {
+                
+                // Adds the permissions
+                $this->_files[ $path ][] = '        \'access ' . $this->_moduleName . ' node\',';
+                $this->_files[ $path ][] = '        \'create ' . $this->_moduleName . ' node\',';
+                $this->_files[ $path ][] = '        \'edit ' . $this->_moduleName . ' node\',';
+                $this->_files[ $path ][] = '        \'edit own ' . $this->_moduleName . ' node\',';
+            }
+            
+            // Checks if we have an administration settings page
+            if( $this->_formValues[ 'kickstarter_admin_add' ] ) {
+                
+                // Adds the permissions
+                $this->_files[ $path ][] = '        \'access ' . $this->_moduleName . ' admin\',';
+            }
+            
+            // Checks if we have an custom menu item
+            if( $this->_formValues[ 'kickstarter_menu_add' ] ) {
+                
+                // Adds the permissions
+                $this->_files[ $path ][] = '        \'access ' . $this->_moduleName . ' ' . $this->_formValues[ 'kickstarter_menu_path' ] . '\',';
+            }
+            
+            $this->_files[ $path ][] = '    );';
             $this->_files[ $path ][] = '    ';
         }
         
@@ -630,11 +664,6 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 $this->_files[ $path ][] = '    ';
             }
             
-            // Access arguments
-            $accessArray = explode( ',', preg_replace( '/,\s+/', ',', trim( $this->_formValues[ 'kickstarter_menu_access' ] ) ) );
-            $access      = '\'' . implode( '\', \'', $accessArray ) . '\'';
-            $access      = ( $access ) ? ' ' . $access . ' ' : '';
-            
             // Adds the addMenuItems() method
             $this->_files[ $path ][] = '    /**';
             $this->_files[ $path ][] = '     * Adds items to the Drupal menu';
@@ -648,7 +677,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '            \'title\'            => $this->_lang->getLabel( \'menu_item_title\', \'system\' ),';
             $this->_files[ $path ][] = '            \'description\'      => $this->_lang->getLabel( \'menu_item_description\', \'system\' ),';
             $this->_files[ $path ][] = '            \'page callback\'    => \'' . $this->_moduleName . '_show\',';
-            $this->_files[ $path ][] = '            \'access arguments\' => array(' . $access . '),';
+            $this->_files[ $path ][] = '            \'access arguments\' => array( \'access ' . $this->_modName . ' ' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ),';
             $this->_files[ $path ][] = '        );';
             $this->_files[ $path ][] = '        ';
             $this->_files[ $path ][] = '        return $items;';

@@ -91,10 +91,6 @@ $formConf = array(
         ),
         'block_add_config' => array(
             '#type' => 'checkbox'
-        ),
-        'block_access' => array(
-            '#type' => 'textfield',
-            '#size' => 100
         )
     ),
     'node' => array(
@@ -109,10 +105,6 @@ $formConf = array(
             '#size' => 30
         ),
         'node_description' => array(
-            '#type' => 'textfield',
-            '#size' => 100
-        ),
-        'node_access' => array(
             '#type' => 'textfield',
             '#size' => 100
         )
@@ -154,11 +146,6 @@ $formConf = array(
         'menu_description' => array(
             '#type' => 'textfield',
             '#size' => 100
-        ),
-        'menu_access' => array(
-            '#type'          => 'textfield',
-            '#size'          => 100,
-            '#default_value' => 'access administration pages'
         )
     ),
     'filter' => array(
