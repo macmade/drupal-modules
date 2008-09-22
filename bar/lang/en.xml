@@ -3,10 +3,6 @@
 <!-- $Id$ -->
 
 <labels>
-    <system>
-        <block_0_subject>Foo</block_0_subject>
-        <block_0_info>Foo</block_0_info>
-    </system>
     <module>
         <hello>At this place you should see the 'foo' module.
 But I'm the 'bar' module, and I just overrided the 'foo' module, thanx to the OOP Framework...</hello>
