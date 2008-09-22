@@ -176,17 +176,50 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
         }
         
+        // Starts the install hook
         $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_install()';
         $this->_files[ $path ][] = '{';
         $this->_files[ $path ][] = '    $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = \'oop\'" ) );';
         $this->_files[ $path ][] = '    db_query( "UPDATE {system} SET weight = %d WHERE name = \'' . $this->_moduleName . '\'", $oopWeight + 1 );';
+        
+        // Checks if we have to add a database table
+        if( $this->_formValues[ 'kickstarter_table_add' ] ) {
+            
+            // Installs the schema
+            $this->_files[ $path ][] = '    drupal_install_schema( \'' . $this->_moduleName . '\' );';
+        }
+        
+        // Ends the install hook and starts the uninstall hook
         $this->_files[ $path ][] = '}';
         $this->_files[ $path ][] = '';
         $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_uninstall()';
         $this->_files[ $path ][] = '{';
         $this->_files[ $path ][] = '    Oop_Drupal_Utils::getInstance()->deleteModuleVariables( \'' . $this->_moduleName . '\' );';
+        
+        // Checks if we have to add a database table
+        if( $this->_formValues[ 'kickstarter_table_add' ] ) {
+            
+            // Uninstalls the schema
+            $this->_files[ $path ][] = '    drupal_uninstall_schema( \'' . $this->_moduleName . '\' );';
+        }
+        
+        // Ends the uninstall hook
         $this->_files[ $path ][] = '}';
         $this->_files[ $path ][] = '';
+        
+        // Checks if we have to add a database table
+        if( $this->_formValues[ 'kickstarter_table_add' ] ) {
+            
+            // Adds the schema hook
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_schema()';
+            $this->_files[ $path ][] = '{';
+            $this->_files[ $path ][] = '    $fields  = array();';
+            $this->_files[ $path ][] = '    $indexes = array();';
+            $this->_files[ $path ][] = '    $unique  = array();';
+            $this->_files[ $path ][] = '    return Oop_Drupal_Database::createSchema( \'' . $this->_moduleName . '_' . $this->_formValues[ 'kickstarter_table_name' ] . '\', $fields, $indexes, $unique );';
+            $this->_files[ $path ][] = '}';
+            $this->_files[ $path ][] = '';
+        }
     }
     
     /**
@@ -1122,6 +1155,13 @@ class kickstarter extends Oop_Drupal_ModuleBase
             
             // Error - PHP version cannot be under 5
             form_set_error( 'kickstarter_dependencies_version_php', $this->_lang->phpVersionTooOld );
+        }
+        
+        // Checks for a database table
+        if( $formState[ 'values' ][ 'kickstarter_table_add' ] && !preg_match( '/^[a-zA-Z0-9_]+$/', $formState[ 'values' ][ 'kickstarter_table_name' ] ) ) {
+            
+            // Error - Invalid table name
+            form_set_error( 'kickstarter_table_name', $this->_lang->invalidTableName );
         }
     }
     

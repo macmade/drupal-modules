@@ -177,6 +177,18 @@ $formConf = array(
             '#size' => 100
         )
     ),
+    'table' => array(
+        '#type'        => 'fieldset',
+        '#collapsible' => true,
+        '#collapsed'   => true,
+        'table_add' => array(
+            '#type' => 'checkbox'
+        ),
+        'table_name' => array(
+            '#type' => 'textfield',
+            '#size' => 30
+        )
+    ),
     'misc' => array(
         '#type'        => 'fieldset',
         '#collapsible' => true,

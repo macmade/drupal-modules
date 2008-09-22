@@ -86,6 +86,12 @@
         <filter_title_description>The title of the filter.</filter_title_description>
         <filter_description_title>Description</filter_description_title>
         <filter_description_description>The description of the filter.</filter_description_description>
+        <table_title>Database table</table_title>
+        <table_description>Controls the database table options for the module.</table_description>
+        <table_add_title>Add a database table</table_add_title>
+        <table_add_description>Wheter the module has a custom database table or not. The options below are only relevant is this checkbox is set.</table_add_description>
+        <table_name_title>Table name</table_name_title>
+        <table_name_description>The name of the database table (will be automatically prefixed by the module name).</table_name_description>
         <misc_title>Miscellaneous</misc_title>
         <misc_description>Miscellaneous options for the module.</misc_description>
         <misc_css_title>CSS</misc_css_title>
@@ -100,6 +106,7 @@
         <invalidModuleName>Invalid module name. Only lowercase letters, without special characters or spaces</invalidModuleName>
         <phpVersionTooOld>PHP version needs to be at least 5.0</phpVersionTooOld>
         <invalidPath>Invalid menu path</invalidPath>
+        <invalidTableName>Invalid database table name</invalidTableName>
         <introTitle>Introduction</introTitle>
         <introText>This wizard will let you configure a Drupal module , taking advantage of the OOP Framework.
 It will generate all the necessary files, depending on the type of module you want.
