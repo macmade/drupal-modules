@@ -31,17 +31,8 @@ function oopManager()
      */
     this.registerModuleClass = function( moduleName, moduleClass )
     {
-        // Checks if the module can be registered
-        if( _moduleClasses[ moduleName ] === undefined ) {
-            
-            // Creates an instance of the module class, and stores it
-            _moduleClasses[ moduleName ] = new moduleClass();
-            
-        } else {
-            
-            // Error - The module is already registered
-            throw new Error( 'Module \'' + moduleName + '\' has already been registered.' );
-        }
+        // Creates an instance of the module class, and stores it
+        _moduleClasses[ moduleName ] = new moduleClass();
     }
     
     /**
