@@ -172,6 +172,20 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
             // Includes the OOP JS script
             $this->_includeOopJs();
             
+            // Gets the override status
+            $override = self::$_classManager->isOverride( $this->_modName );
+            
+            // Checks if the module is an ovveride
+            if( $override ) {
+                
+                // Adds the base JS script
+                drupal_add_js(
+                    self::$_classManager->getModuleRelativePath( $override )
+                  . $override . '.js',
+                    'module'
+                );
+            }
+            
             // Adds the JS script
             drupal_add_js(
                 self::$_classManager->getModuleRelativePath( $this->_modName )
@@ -213,6 +227,20 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     {
         // Only includes the script once
         if( !$this->_hasCssFile ) {
+            
+            // Gets the override status
+            $override = self::$_classManager->isOverride( $this->_modName );
+            
+            // Checks if the module is an ovveride
+            if( $override ) {
+                
+                // Adds the base CSS file
+                drupal_add_css(
+                    self::$_classManager->getModuleRelativePath( $override )
+                  . $override . '.css',
+                    'module'
+                );
+            }
             
             // Adds the CSS file
             drupal_add_css(
@@ -294,8 +322,14 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
      */
     protected function _cssClass( Oop_Xhtml_Tag $tag, $className )
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Adds the CSS class name
-        $tag[ 'class' ] = 'module-' . $this->_modName . '-' . $className;
+        $tag[ 'class' ] = 'module-' . $modName . '-' . $className;
     }
     
     /**
@@ -307,8 +341,14 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
      */
     protected function _id( Oop_Xhtml_Tag $tag, $id )
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Adds the CSS class name
-        $tag[ 'id' ] = 'module-' . $this->_modName . '-' . $id;
+        $tag[ 'id' ] = 'module-' . $modName . '-' . $id;
     }
     
     /**
@@ -374,6 +414,12 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
             $vars = $setVars;
         }
         
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Process the URL parameters
         foreach( $vars as $key => $value ) {
             
@@ -381,7 +427,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
             if( $queryString === false ) {
                 
                 // Start of the query string
-                $url        .= '?' . $this->_modName . '[' . $key . ']=' . urlencode( $value );
+                $url        .= '?' . $modName . '[' . $key . ']=' . urlencode( $value );
                 
                 // Query string has been started
                 $queryString = true;
@@ -389,7 +435,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
             } else {
                 
                 // Append the variable to the query string
-                $url .= '&' . $this->_modName . '[' . $key . ']=' . urlencode( $value );
+                $url .= '&' . $modName . '[' . $key . ']=' . urlencode( $value );
             }
         }
         
