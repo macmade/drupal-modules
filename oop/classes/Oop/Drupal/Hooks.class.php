@@ -170,24 +170,59 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function access( $op, $node, $account )
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
+        // By default, access is granted for everything
+        $access   = true;
+        
         // Checks the operation
         if( $op === 'create' ) {
             
-            // Only users with permission to do so may create this node type
-            return user_access( 'create ' . $this->_modName );
+            // Checks for a node creation permission
+            if( in_array( 'create ' . $modName . ' node', $this->_perms ) ) {
+                
+                // Checks the access for the node creation
+                $access = user_access( 'create ' . $modName . ' node' );
+            }
             
         } elseif( $op === 'update' || $op === 'delete' ) {
             
-            // Users who create a node may edit or delete it later, assuming they have the necessary permissions
-            if( user_access( 'edit own ' . $this->_modName ) && ( $GLOBALS[ 'user' ]->uid === $node->uid ) ) {
+            // Checks if the current user has created the current node
+            if( $GLOBALS[ 'user' ]->uid === $node->uid ) {
                 
-                // Access granted
-                return true;
+                // Checks for a own node edit permission
+                if( in_array( 'edit own ' . $modName . ' node', $this->_perms ) ) {
+                    
+                    // Checks the access for the own node edition
+                    $access = user_access( 'edit own ' . $modName . ' node' );
+                }
+                
+            } else {
+                
+                // Checks for a node edit permission
+                if( in_array( 'edit ' . $modName . ' node', $this->_perms ) ) {
+                    
+                    // Checks the access for the node edition
+                    $access = user_access( 'edit ' . $modName . ' node' );
+                }
+            }
+            
+        } elseif( $op === 'view' ) {
+            
+            // Checks for a node view permission
+            if( in_array( 'access ' . $modName . ' node', $this->_perms ) ) {
+                
+                // Checks the access for the node view
+                $access = user_access( 'access ' . $modName . ' node' );
             }
         }
         
-        // No access
-        return false;
+        // Returns the access
+        return $access;
     }
     
     /**

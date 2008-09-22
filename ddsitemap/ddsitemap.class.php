@@ -25,7 +25,11 @@ class ddsitemap extends Oop_Drupal_ModuleBase
      * The permissions array
      */
     protected $_perms    = array(
-        'access ddsitemap admin'
+        'access ddsitemap admin',
+        'create ddsitemap node',
+        'edit own ddsitemap node',
+        'edit ddsitemap node',
+        'access ddsitemap node'
     );
     
     /**
