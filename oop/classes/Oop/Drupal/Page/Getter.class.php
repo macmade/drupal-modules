@@ -215,7 +215,7 @@ final class Oop_Drupal_Page_Getter implements ArrayAccess
     /**
      * 
      */
-    public static function getPages( $where, array $params = array() )
+    public static function getPages( $where, array $params = array(), $onlyAccessible = false )
     {
         // Checks if the static variables are set
         if( !self::$_hasStatic ) {
@@ -248,15 +248,17 @@ final class Oop_Drupal_Page_Getter implements ArrayAccess
         while( $page = $query->fetchObject() ) {
             
             // Checks if an instance for that path already exist
-            if( isset( self::$_instances[ $page->link_path ] ) ) {
+            if( !isset( self::$_instances[ $page->link_path ] ) ) {
+                
+                // Process the current page
+                new self( $page->link_path, $page );
+            }
+            
+            // Checks if we have to return only accessible pages, and if so, if the current page is accessible
+            if( !$onlyAccessible || self::$_instances[ $page->link_path ]->isAccessible() ) {
                 
                 // Stores the existing instance
                 $pages[ $page->mlid ] = self::$_instances[ $page->link_path ];
-                
-            } else {
-                
-                // Process and stores the current page
-                $pages[ $page->mlid ] = new self( $page->link_path, $page );
             }
         }
         
