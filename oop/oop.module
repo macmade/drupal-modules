@@ -43,6 +43,16 @@ Oop_Drupal_ModuleBase::setEmailCryptSymbol( Oop_Drupal_Utils::getInstance()->get
 Oop_Lang_Getter::setDefaultLanguage( Oop_Drupal_Utils::getInstance()->getModuleVariable( 'oop', 'default_language', 'en' ) );
 
 /**
+ * Drupal 'perm' hook
+ * 
+ * @return  array   An array with the permissions
+ */
+function oop_perm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->perm();
+}
+
+/**
  * Drupal 'menu' hook
  * 
  * @return  array   The menu items

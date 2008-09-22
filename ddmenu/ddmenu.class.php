@@ -36,7 +36,8 @@ class ddmenu extends Oop_Drupal_ModuleBase
      */
     protected $_perms    = array(
         'access ddmenu block',
-        'access ddmenu block config'
+        'access ddmenu block config',
+        'access ddmenu admin'
     );
     
     /**

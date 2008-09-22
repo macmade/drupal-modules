@@ -10,4 +10,11 @@
  * @version         0.1
  */
 class oop extends Oop_Drupal_ModuleBase
-{}
+{
+    /**
+     * The permissions array
+     */
+    protected $_perms = array(
+        'access oop admin'
+    );
+}

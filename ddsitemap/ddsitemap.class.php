@@ -22,6 +22,13 @@ class ddsitemap extends Oop_Drupal_ModuleBase
     protected $_iconPage = NULL;
     
     /**
+     * The permissions array
+     */
+    protected $_perms    = array(
+        'access ddsitemap admin'
+    );
+    
+    /**
      * 
      */
     protected $_path     = '';

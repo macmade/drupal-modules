@@ -512,6 +512,15 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function addAdminSettingsMenu()
     {
+        // Checks if the current module is an override
+        $override   = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName    = ( $override ) ? $override : $this->_modName;
+        
+        // Access arguments
+        $accessArgs = ( in_array( 'access ' . $modName . ' admin', $this->_perms ) ) ? 'access ' . $modName . ' admin' : 'access administration pages';
+        
         // Storage
         $items = array();
         
@@ -521,7 +530,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             'description'      => $this->_lang->getLabel( 'menu_admin_description', 'system' ),
             'page callback'    => 'drupal_get_form',
             'page arguments'   => array( $this->_modName . '_adminForm' ),
-            'access arguments' => array( 'access administration pages' ),
+            'access arguments' => array( $accessArgs ),
             'type'             => MENU_NORMAL_ITEM
         );
         

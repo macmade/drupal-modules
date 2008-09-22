@@ -12,6 +12,14 @@
 class shell extends Oop_Drupal_ModuleBase
 {
     /**
+     * The permissions array
+     */
+    protected $_perms = array(
+        'access shell admin',
+        'access shell admin/shell'
+    );
+    
+    /**
      * 
      */
     protected $_history         = true;
@@ -593,7 +601,7 @@ class shell extends Oop_Drupal_ModuleBase
         $items[ 'admin/shell' ] = array(
             'title'            => $this->_lang->menuTitle,
             'page callback'    => 'shell_show',
-            'access arguments' => array( 'access administration pages' ),
+            'access arguments' => array( 'access shell admin/shell' ),
         );
         
         return $items;
