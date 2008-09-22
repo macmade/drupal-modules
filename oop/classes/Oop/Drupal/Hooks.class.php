@@ -340,14 +340,20 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         
         } elseif( $op === 'configure' ) {
             
+            // Checks if the current module is an override
+            $override = self::$_classManager->isOverride( $this->_modName );
+            
+            // Name of the module, to support the overrides
+            $modName  = ( $override ) ? $override : $this->_modName;
+            
             // By default, access is granted to the block
-            $access = true;
+            $access   = true;
             
             // Checks for a block permission
-            if( in_array( 'access ' . $this->_modName . ' block config', $this->_perms ) ) {
+            if( in_array( 'access ' . $modName . ' block config', $this->_perms ) ) {
                 
                 // Checks the access for the block
-                $access = user_access( 'configure ' . $this->_modName . ' block' );
+                $access = user_access( 'configure ' . $modName . ' block' );
             }
             
             // Checks the access
@@ -391,14 +397,20 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
         } elseif( $op === 'view' ) {
             
+            // Checks if the current module is an override
+            $override = self::$_classManager->isOverride( $this->_modName );
+            
+            // Name of the module, to support the overrides
+            $modName  = ( $override ) ? $override : $this->_modName;
+            
             // By default, access is granted to the block
             $access = true;
             
             // Checks for a block permission
-            if( in_array( 'access ' . $this->_modName . ' block', $this->_perms ) ) {
+            if( in_array( 'access ' . $modName . ' block', $this->_perms ) ) {
                 
                 // Checks the access for the block
-                $access = user_access( 'access ' . $this->_modName . ' block' );
+                $access = user_access( 'access ' . $modName . ' block' );
             }
             
             // Checks the access
