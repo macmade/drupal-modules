@@ -184,6 +184,17 @@ class kickstarter extends Oop_Drupal_ModuleBase
         }
         
         // Starts the install hook
+        $this->_files[ $path ][] = '/**';
+        $this->_files[ $path ][] = ' * Drupal \'install\' hook';
+        $this->_files[ $path ][] = ' * ';
+        $this->_files[ $path ][] = ' * This function will be called when the module is installed.';
+        $this->_files[ $path ][] = ' * It will automatically set the weight of the module to be sure that the \'oop\'';
+        $this->_files[ $path ][] = ' * module will be loded first.';
+        $this->_files[ $path ][] = ' * If you have custom database tables, you should also install them here,';
+        $this->_files[ $path ][] = ' * using the drupal_install_schema() function.';
+        $this->_files[ $path ][] = ' * ';
+        $this->_files[ $path ][] = ' * @return  NULL';
+        $this->_files[ $path ][] = ' */';
         $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_install()';
         $this->_files[ $path ][] = '{';
         $this->_files[ $path ][] = '    $oopWeight = (int)db_result( db_query( "SELECT weight FROM {system} WHERE name = \'oop\'" ) );';
@@ -199,6 +210,18 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Ends the install hook and starts the uninstall hook
         $this->_files[ $path ][] = '}';
         $this->_files[ $path ][] = '';
+        $this->_files[ $path ][] = '/**';
+        $this->_files[ $path ][] = ' * Drupal \'uninstall\' hook';
+        $this->_files[ $path ][] = ' * ';
+        $this->_files[ $path ][] = ' * This function will be called when the module is uninstalled.';
+        $this->_files[ $path ][] = ' * It will automatically delete all the variables belonging to this module,';
+        $this->_files[ $path ][] = ' * stored in the database.';
+        $this->_files[ $path ][] = ' * If you have custom database tables, you should also uninstall them here,';
+        $this->_files[ $path ][] = ' * using the drupal_uninstall_schema() function.';
+        $this->_files[ $path ][] = ' * ';
+        $this->_files[ $path ][] = ' * @return  NULL';
+        $this->_files[ $path ][] = ' * @see     Oop_Drupal_Utils::deleteModuleVariables';
+        $this->_files[ $path ][] = ' */';
         $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_uninstall()';
         $this->_files[ $path ][] = '{';
         $this->_files[ $path ][] = '    Oop_Drupal_Utils::getInstance()->deleteModuleVariables( \'' . $this->_moduleName . '\' );';
@@ -218,6 +241,14 @@ class kickstarter extends Oop_Drupal_ModuleBase
         if( $this->_formValues[ 'kickstarter_table_add' ] ) {
             
             // Adds the schema hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'schema\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function will install the database needed by the module.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  NULL';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Database::createSchema';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_schema()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    $fields  = array();';
@@ -255,7 +286,35 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
         }
         
+        // Checks if the number of blocks can be set
+        if( $this->_formValues[ 'kickstarter_admin_add' ] && $this->_formValues[ 'kickstarter_admin_blocks_number' ] ) {
+            
+            // Sets the number of blocks
+            $this->_files[ $path ][] = '// Sets the number of blocks available from this module';
+            $this->_files[ $path ][] = 'Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->setNumberOfBlocks(';
+            $this->_files[ $path ][] = '    Oop_Drupal_Utils::getInstance()->getModuleVariable(';
+            $this->_files[ $path ][] = '        \'test\',';
+            $this->_files[ $path ][] = '        \'number_of_blocks\',';
+            $this->_files[ $path ][] = '        1';
+            $this->_files[ $path ][] = '    ),';
+            $this->_files[ $path ][] = '    true';
+            $this->_files[ $path ][] = ');';
+            $this->_files[ $path ][] = '';
+        }
+        
         // Creates the help hook
+        $this->_files[ $path ][] = '/**';
+        $this->_files[ $path ][] = ' * Drupal \'help\' hook';
+        $this->_files[ $path ][] = ' * ';
+        $this->_files[ $path ][] = ' * This function returns the help text for the admin/help# page. The label';
+        $this->_files[ $path ][] = ' * returned must be placed in the module\'s lang file, in the \'lang/\'';
+        $this->_files[ $path ][] = ' * directory. It\'s the \'help\' node of the \'system\' section.';
+        $this->_files[ $path ][] = ' * ';
+        $this->_files[ $path ][] = ' * @param   string  The path for which to display help';
+        $this->_files[ $path ][] = ' * @param   array   An array that holds the current path as would be returned from the arg() function';
+        $this->_files[ $path ][] = ' * @return  string  The help text';
+        $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::help';
+        $this->_files[ $path ][] = ' */';
         $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_help( $path, $arg )';
         $this->_files[ $path ][] = '{';
         $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->help( $path, $arg );';
@@ -270,6 +329,15 @@ class kickstarter extends Oop_Drupal_ModuleBase
         ) {
             
             // Creates the perm hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'perm\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function returns the available permissions for the module. They must';
+            $this->_files[ $path ][] = ' * be declared in the $_perm property of the module class.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  array   The permissions array';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::perm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_perm()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->perm();';
@@ -280,15 +348,21 @@ class kickstarter extends Oop_Drupal_ModuleBase
         // Checks if a block content must be added
         if( $this->_formValues[ 'kickstarter_block_add' ] ) {
             
-            // Checks if the number of blocks can be set
-            if( $this->_formValues[ 'kickstarter_admin_add' ] && $this->_formValues[ 'kickstarter_admin_blocks_number' ] ) {
-                
-                // Sets the number of blocks
-                $this->_files[ $path ][] = 'Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->setNumberOfBlocks( Oop_Drupal_Utils::getInstance()->getModuleVariable( \'' . $this->_moduleName . '\', \'number_of_blocks\', 1 ), true );';
-                $this->_files[ $path ][] = '';
-            }
-            
             // Creates the block hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'block\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function lets Drupal know that the module has block content. The method';
+            $this->_files[ $path ][] = ' * used to generate the block content is getBlock(), defined in the module';
+            $this->_files[ $path ][] = ' * class.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   string  The kind of block to display';
+            $this->_files[ $path ][] = ' * @param   int     The delta offset, used to generate different contents for different blocks';
+            $this->_files[ $path ][] = ' * @param   array   The edited items (only if $op is \'save\')';
+            $this->_files[ $path ][] = ' * @return  array   The Drupal block';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::block';
+            $this->_files[ $path ][] = ' * @see     ' . $this->_moduleName . '::getBlock';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_block( $op = \'list\', $delta = 0, array $edit = array() )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->block( $op, $delta, $edit );';
@@ -300,6 +374,19 @@ class kickstarter extends Oop_Drupal_ModuleBase
         if( $this->_formValues[ 'kickstarter_node_add' ] ) {
             
             // Adds the access hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'access\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function controls the access for the node content. Permissions must';
+            $this->_files[ $path ][] = ' * be declared in the $_perm property of the module class.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   string  The requested operation';
+            $this->_files[ $path ][] = ' * @param   mixed   The node object, if any';
+            $this->_files[ $path ][] = ' * @param   mixed   The user account, if any';
+            $this->_files[ $path ][] = ' * @return  boolean Wheter the access is granted or not for the given operation';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::access';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::perm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_access( $op, $node, $account )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->access( $op, $node, $account );';
@@ -307,6 +394,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the form hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'form\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function returns the form configuration for the node creation/ edition.';
+            $this->_files[ $path ][] = ' * The form configuration must be defined in the \'settings/node.form.php\' file.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   stdClass    The node object';
+            $this->_files[ $path ][] = ' * @return  array       An array with the form configuration';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::form';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_form( stdClass $node )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->form( $node );';
@@ -314,6 +411,17 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the node_info hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'node_info\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function returns informations about the node. The labels used must be';
+            $this->_files[ $path ][] = ' * placed in the module\'s lang file, in the \'lang/\' directory. They are all';
+            $this->_files[ $path ][] = ' * in the \'system\' section, and are called \'node_info_name\' and';
+            $this->_files[ $path ][] = ' * \'node_info_description\'.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  array    The information array for the Drupal node';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::node_info';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_node_info()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->node_info();';
@@ -321,6 +429,20 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the view hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'view\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function lets Drupal know that the module has node content. The method';
+            $this->_files[ $path ][] = ' * used to generate the node content is getNode(), defined in the module';
+            $this->_files[ $path ][] = ' * class.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   stdClass    The node object';
+            $this->_files[ $path ][] = ' * @param   boolean     Wheter a teaser must be generated instead of the full content';
+            $this->_files[ $path ][] = ' * @param   boolean     Whether the node is being displayed as a standalone page';
+            $this->_files[ $path ][] = ' * @return  stdClass    The node object';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::view';
+            $this->_files[ $path ][] = ' * @see     ' . $this->_moduleName . '::getNode';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_view( stdClass $node, $teaser = false, $page = false )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->view( $node, $teaser, $page );';
@@ -328,6 +450,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the insert hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'insert\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function is called when a new node is created. All fields will be';
+            $this->_files[ $path ][] = ' * automatically stored in the database and placed in the $_modVars property';
+            $this->_files[ $path ][] = ' * of the module class.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   stdClass    The node object';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::insert';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_insert( stdClass $node )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->insert( $node );';
@@ -335,6 +467,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the update hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'update\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function is called when a node is updated. All fields will be';
+            $this->_files[ $path ][] = ' * automatically stored in the database and placed in the $_modVars property';
+            $this->_files[ $path ][] = ' * of the module class.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   stdClass    The node object';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::insert';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_update( stdClass $node )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->update( $node );';
@@ -346,6 +488,18 @@ class kickstarter extends Oop_Drupal_ModuleBase
         if( $this->_formValues[ 'kickstarter_admin_add' ] && $this->_formValues[ 'kickstarter_menu_add' ] ) {
             
             // Adds the menu hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'menu\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function lets Drupal know that the module has custom menu items.';
+            $this->_files[ $path ][] = ' * An administration settings page can be automatically added with the';
+            $this->_files[ $path ][] = ' * Oop_Drupal_Hooks::addAdminSettingsMenu() method.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  array   An array with the menu items';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addMenuItems';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addAdminSettingsMenu';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::perm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    $module = Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' );';
@@ -354,6 +508,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the adminForm function
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Gets the admin form';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function returns the form configuration for the administration settings';
+            $this->_files[ $path ][] = ' * page. The form configuration must be defined in the \'settings/admin.form.php\'';
+            $this->_files[ $path ][] = ' * file.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  array   An array with the form configuration';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::getAdminForm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->getAdminForm();';
@@ -361,14 +525,33 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the validate hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Validates the admin form';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function will be called when the form in the administration settings';
+            $this->_files[ $path ][] = ' * page is submitted.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   array   The form configuration';
+            $this->_files[ $path ][] = ' * @param   array   The submitted values';
+            $this->_files[ $path ][] = ' * @return  NULL';
+            $this->_files[ $path ][] = ' * @see     ' . $this->_moduleName . '::validateAdminForm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm_validate( array $form, array &$formState )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
             $this->_files[ $path ][] = '}';
             $this->_files[ $path ][] = '';
             
-            
             // Adds the show() function
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Displays the page for a menu item';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function generates the content for a page placed in a custom menu item';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  string  The content of the page';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::menu';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::createModuleContent';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_show()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->createModuleContent( \'show\' );';
@@ -378,6 +561,18 @@ class kickstarter extends Oop_Drupal_ModuleBase
         } elseif( $this->_formValues[ 'kickstarter_admin_add' ] ) {
             
             // Adds the menu hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'menu\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function lets Drupal know that the module has custom menu items.';
+            $this->_files[ $path ][] = ' * An administration settings page can be automatically added with the';
+            $this->_files[ $path ][] = ' * Oop_Drupal_Hooks::addAdminSettingsMenu() method.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  array   An array with the menu items';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addMenuItems';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addAdminSettingsMenu';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::perm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->addAdminSettingsMenu();';
@@ -385,6 +580,16 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the adminForm() function
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Gets the admin form';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function returns the form configuration for the administration settings';
+            $this->_files[ $path ][] = ' * page. The form configuration must be defined in the \'settings/admin.form.php\'';
+            $this->_files[ $path ][] = ' * file.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  array   An array with the form configuration';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::getAdminForm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->getAdminForm();';
@@ -392,6 +597,17 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the validate hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Validates the admin form';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function will be called when the form in the administration settings';
+            $this->_files[ $path ][] = ' * page is submitted.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   array   The form configuration';
+            $this->_files[ $path ][] = ' * @param   array   The submitted values';
+            $this->_files[ $path ][] = ' * @return  NULL';
+            $this->_files[ $path ][] = ' * @see     ' . $this->_moduleName . '::validateAdminForm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm_validate( array $form, array &$formState )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
@@ -401,6 +617,18 @@ class kickstarter extends Oop_Drupal_ModuleBase
         } elseif( $this->_formValues[ 'kickstarter_menu_add' ] ) {
             
             // Adds the menu hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'menu\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function lets Drupal know that the module has custom menu items.';
+            $this->_files[ $path ][] = ' * An administration settings page can be automatically added with the';
+            $this->_files[ $path ][] = ' * Oop_Drupal_Hooks::addAdminSettingsMenu() method.';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  array   An array with the menu items';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addMenuItems';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addAdminSettingsMenu';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::perm';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->addMenuItems();';
@@ -408,6 +636,15 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '';
             
             // Adds the show() function
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Displays the page for a menu item';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * This function generates the content for a page placed in a custom menu item';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @return  string  The content of the page';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::menu';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::createModuleContent';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_show()';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->createModuleContent( \'show\' );';
@@ -419,6 +656,21 @@ class kickstarter extends Oop_Drupal_ModuleBase
         if( $this->_formValues[ 'kickstarter_filter_add' ] ) {
             
             // Adds the filter hook
+            $this->_files[ $path ][] = '/**';
+            $this->_files[ $path ][] = ' * Drupal \'filter\' hook';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * Process a filter. The methods used to prepare and process the filter must';
+            $this->_files[ $path ][] = ' * be declared in the module class. They are prepareFilter() and processFilter().';
+            $this->_files[ $path ][] = ' * ';
+            $this->_files[ $path ][] = ' * @param   string  Which filtering operation to perform';
+            $this->_files[ $path ][] = ' * @param   int     Which of the module\'s filters to use';
+            $this->_files[ $path ][] = ' * @param   int     Which input format the filter is being used';
+            $this->_files[ $path ][] = ' * @param   string  The content to filter';
+            $this->_files[ $path ][] = ' * @return  mixed   Depends on $op';
+            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::filter';
+            $this->_files[ $path ][] = ' * @see     ' . $this->_moduleName . '::prepareFilter';
+            $this->_files[ $path ][] = ' * @see     ' . $this->_moduleName . '::processFilter';
+            $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_filter( $op, $delta = 0, $format = -1, $text = \'\' )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->filter( $op, $delta, $format, $text );';
@@ -932,6 +1184,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             }
             
             // Adds the configuration array
+            $this->_files[ $path ][] = '// Drupal form configuration array';
             $this->_files[ $path ][] = '$formConf = array();';
             $this->_files[ $path ][] = '';
         }
@@ -962,6 +1215,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 }
                 
                 // Adds the number of blocks field
+                $this->_files[ $adminConfigPath ][] = '// Drupal form configuration array';
                 $this->_files[ $adminConfigPath ][] = '$formConf = array(';
                 $this->_files[ $adminConfigPath ][] = '        \'number_of_blocks\' => array(';
                 $this->_files[ $adminConfigPath ][] = '        \'#type\'          => \'textfield\',';
@@ -988,6 +1242,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 }
                 
                 // Adds the configuration array
+                $this->_files[ $adminConfigPath ][] = '// Drupal form configuration array';
                 $this->_files[ $adminConfigPath ][] = '$formConf = array();';
                 $this->_files[ $adminConfigPath ][] = '';
             }
@@ -1066,15 +1321,21 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '    \'' . $this->_moduleName . '\',';
             $this->_files[ $path ][] = '    function()';
             $this->_files[ $path ][] = '    {';
-            $this->_files[ $path ][] = '        /*';
-            $this->_files[ $path ][] = '        Place the module methods here:';
-            $this->_files[ $path ][] = '        Eg.:';
-            $this->_files[ $path ][] = '        ';
-            $this->_files[ $path ][] = '        this.sayHello = function()';
-            $this->_files[ $path ][] = '        {';
-            $this->_files[ $path ][] = '            alert( \'Hello world!\' );';
-            $this->_files[ $path ][] = '        }';
-            $this->_files[ $path ][] = '        */';
+            $this->_files[ $path ][] = '        /**';
+            $this->_files[ $path ][] = '         * Place the JavaScript methods for your module here.';
+            $this->_files[ $path ][] = '         * For instance:';
+            $this->_files[ $path ][] = '         * ';
+            $this->_files[ $path ][] = '         * this.sayHello = function()';
+            $this->_files[ $path ][] = '         * {';
+            $this->_files[ $path ][] = '         *     alert( \'Hello world!\' );';
+            $this->_files[ $path ][] = '         * }';
+            $this->_files[ $path ][] = '         * ';
+            $this->_files[ $path ][] = '         * You will then be able to access the module class by using the';
+            $this->_files[ $path ][] = '         * OOP JavaScript class manager.';
+            $this->_files[ $path ][] = '         * For instance:';
+            $this->_files[ $path ][] = '         * ';
+            $this->_files[ $path ][] = '         * oopManager.getInstance().getModule( \'' . $this->_moduleName . '\' ).sayHello();';
+            $this->_files[ $path ][] = '         */';
             $this->_files[ $path ][] = '    }';
             $this->_files[ $path ][] = ');';
             
@@ -1238,7 +1499,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
         if( file_exists( $this->_moduleDir ) ) {
             
             // Error - The directory already exists
-            drupal_set_message( sprintf( $this->_lang->dirExists, $path ) );
+            drupal_set_message( sprintf( $this->_lang->dirExists, $this->_moduleDir ) );
             
         } elseif( $this->_createDirs() ) {
             
@@ -1286,7 +1547,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             if( !$error ) {
                 
                 // Displays the success message
-                drupal_set_message( sprintf( $this->_lang->moduleCreated, $path ) );
+                drupal_set_message( sprintf( $this->_lang->moduleCreated, $this->_moduleDir ) );
             }
         }
     }
