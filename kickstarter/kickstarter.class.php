@@ -457,6 +457,8 @@ class kickstarter extends Oop_Drupal_ModuleBase
         $this->_files[ $path ][] = '/**';
         $this->_files[ $path ][] = ' * ' . $this->_formValues[ 'kickstarter_infos_title' ] . ' module for Drupal';
         $this->_files[ $path ][] = ' * ';
+        $this->_files[ $path ][] = ' * ' . $this->_formValues[ 'kickstarter_infos_description' ];
+        $this->_files[ $path ][] = ' * ';
         $this->_files[ $path ][] = ' * @author          ' . $this->_formValues[ 'kickstarter_author_name' ] . ' <' . $this->_formValues[ 'kickstarter_author_email' ] . '>';
         $this->_files[ $path ][] = ' * @copyright       Copyright &copy; ' . date( 'Y' );
         $this->_files[ $path ][] = ' * @version         0.1';
