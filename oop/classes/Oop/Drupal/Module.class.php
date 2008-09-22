@@ -100,11 +100,17 @@ abstract class Oop_Drupal_Module
             self::_setStaticVars();
         }
         
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Gets the request variables for the current module
         $this->_getModuleRequestVariables();
         
         // Gets the database variables for the current module
-        $this->_modVars = self::$_utils->getModuleVariables( $this->_modName );
+        $this->_modVars = self::$_utils->getModuleVariables( $modName );
     }
     
     /**
@@ -148,6 +154,12 @@ abstract class Oop_Drupal_Module
      */
     private function _getModuleRequestVariables()
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Keys to search in the request variables
         $requestKeys = array( 'G', 'P', 'C', 'S', 'E' );
         
@@ -155,10 +167,10 @@ abstract class Oop_Drupal_Module
         foreach( $requestKeys as $key ) {
             
             // Checks if a variable corresponding to the module name exist
-            if( self::$_request->requestVarExists( $this->_modName, $key ) ) {
+            if( self::$_request->requestVarExists( $modName, $key ) ) {
                 
                 // Gets the variable
-                $var = self::$_request->getRequestVar( $this->_modName, $key );
+                $var = self::$_request->getRequestVar( $modName, $key );
                 
                 // Checks for an array
                 if( !is_array( $var ) ) {
@@ -193,12 +205,18 @@ abstract class Oop_Drupal_Module
      */
     protected function _storeSessionVar( $name, $value )
     {
-        if( !isset( $_SESSION[ $this->_modName ] ) ) {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
+        if( !isset( $_SESSION[ $modName ] ) ) {
             
-            $_SESSION[ $this->_modName ] = array();
+            $_SESSION[ $modName ] = array();
         }
         
-        $_SESSION[ $this->_modName ][ $name ] = $value;
+        $_SESSION[ $modName ][ $name ] = $value;
     }
     
     /**
@@ -206,6 +224,12 @@ abstract class Oop_Drupal_Module
      */
     protected function _storeModuleVar( $name, $value )
     {
-        return self::$_utils->storeModuleVariable( $this->_modName, $name, $value );
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
+        return self::$_utils->storeModuleVariable( $modName, $name, $value );
     }
 }

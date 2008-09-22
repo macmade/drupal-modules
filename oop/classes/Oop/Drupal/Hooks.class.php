@@ -49,6 +49,12 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function createModuleContent( $callbackMethod, array $args = array() )
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Checks the callback method
         $this->_checkMethod( $callbackMethod );
         
@@ -56,17 +62,17 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         if( $callbackMethod === 'getBlock' ) {
             
             // CSS class - Block content
-            $cssClass = 'module-' . $this->_modName . '-block';
+            $cssClass = 'module-' . $modName . '-block';
             
         } elseif( $callbackMethod === 'getNode' ) {
             
             // CSS class - Node content
-            $cssClass = 'module-' . $this->_modName . '-node';
+            $cssClass = 'module-' . $modName . '-node';
             
         } else {
             
             // CSS class - Custom content
-            $cssClass = 'module-' . $this->_modName;
+            $cssClass = 'module-' . $modName;
         }
         
         // Creates the storage tag for the module
@@ -123,11 +129,17 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function help( $path, $arg )
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Checks the path
         switch( $path ) {
             
             // Admin help
-            case 'admin/help#' . $this->_modName:
+            case 'admin/help#' . $modName:
                 
                 // Returns the localized help text
                 return '<p>' . $this->_lang->getLabel( 'help', 'system' ) . '</p>';
@@ -144,10 +156,16 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function node_info()
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         return array(
-            $this->_modName => array(
+            $modName => array(
                 'name'        => $this->_lang->getLabel( 'node_info_name', 'system' ),
-                'module'      => $this->_modName,
+                'module'      => $modName,
                 'description' => $this->_lang->getLabel( 'node_info_description', 'system' )
             )
         );
@@ -234,14 +252,30 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function form( stdClass $node, $addTitle = true )
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Gets the path of the configuration file
         $confPath  = self::$_classManager->getModulePath( $this->_modName )
                    . 'settings'
                    . DIRECTORY_SEPARATOR
                    . 'node.form.php';
         
+        // Checks if we are in an override and if we have to take the original form
+        if( $override && !file_exists( $confPath ) ) {
+            
+            // Original configuration file
+            $confPath  = self::$_classManager->getModulePath( $override )
+                       . 'settings'
+                       . DIRECTORY_SEPARATOR
+                       . 'node.form.php';
+        }
+        
         // Creates the form
-        $form      = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang );
+        $form      = new Oop_Drupal_Form_Builder( $confPath, $modName, $this->_lang );
         
         // Gets the node type
         $type      = node_get_types( 'type', $node );
@@ -274,14 +308,20 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function insert( stdClass $node )
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Process the node properties
         foreach( $node as $key => $value ) {
             
             // Checks the property name
-            if( substr( $key, 0, strlen( $this->_modName ) + 1 ) === $this->_modName . '_' ) {
+            if( substr( $key, 0, strlen( $modName ) + 1 ) === $modName . '_' ) {
                 
                 // Gets the variable short name
-                $varName = substr( $key, strlen( $this->_modName ) + 1 );
+                $varName = substr( $key, strlen( $modName ) + 1 );
                 
                 // Sets the variable
                 $this->_storeModuleVar( $varName, $value );
@@ -297,14 +337,20 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function update( stdClass $node )
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Process the node properties
         foreach( $node as $key => $value ) {
             
             // Checks the property name
-            if( substr( $key, 0, strlen( $this->_modName ) + 1 ) === $this->_modName . '_' ) {
+            if( substr( $key, 0, strlen( $modName ) + 1 ) === $modName . '_' ) {
                 
                 // Gets the variable short name
-                $varName = substr( $key, strlen( $this->_modName ) + 1 );
+                $varName = substr( $key, strlen( $modName ) + 1 );
                 
                 // Sets the variable
                 $this->_storeModuleVar( $varName, $value );
@@ -403,11 +449,21 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
                           . DIRECTORY_SEPARATOR
                           . 'block.' . $formIndex . '.form.php';
                 
+                // Checks if we are in an override and if we have to take the original form
+                if( $override && !file_exists( $confPath ) ) {
+                    
+                    // Original configuration file
+                    $confPath  = self::$_classManager->getModulePath( $override )
+                               . 'settings'
+                               . DIRECTORY_SEPARATOR
+                               . 'node.form.php';
+                }
+                
                 // Checks for a configuration file
                 if( file_exists( $confPath ) ) {
                     
                     // Creates the form
-                    $form  = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang, $delta );
+                    $form  = new Oop_Drupal_Form_Builder( $confPath, $modName, $this->_lang, $delta );
                     
                     // Returns the form
                     $block = $form->getConf();
@@ -416,14 +472,20 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
         } elseif( $op === 'save' ) {
             
+            // Checks if the current module is an override
+            $override = self::$_classManager->isOverride( $this->_modName );
+            
+            // Name of the module, to support the overrides
+            $modName  = ( $override ) ? $override : $this->_modName;
+            
             // Process each item
             foreach( $edit as $key => $value ) {
                 
                 // Checks the property name
-                if( substr( $key, 0, strlen( $this->_modName ) + 1 ) === $this->_modName . '_' ) {
+                if( substr( $key, 0, strlen( $modName ) + 1 ) === $modName . '_' ) {
                     
                     // Gets the variable short name
-                    $varName = substr( $key, strlen( $this->_modName ) + 1 );
+                    $varName = substr( $key, strlen( $modName ) + 1 );
                     
                     // Sets the variable
                     $this->_storeModuleVar( $varName, $value );
@@ -560,11 +622,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         $items = array();
         
         // Creates the item array
-        $items[ 'admin/settings/' . $this->_modName ] = array(
+        $items[ 'admin/settings/' . $modName ] = array(
             'title'            => $this->_lang->getLabel( 'menu_admin_title', 'system' ),
             'description'      => $this->_lang->getLabel( 'menu_admin_description', 'system' ),
             'page callback'    => 'drupal_get_form',
-            'page arguments'   => array( $this->_modName . '_adminForm' ),
+            'page arguments'   => array( $modName . '_adminForm' ),
             'access arguments' => array( $accessArgs ),
             'type'             => MENU_NORMAL_ITEM
         );
@@ -578,16 +640,32 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      */
     public function getAdminForm()
     {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
         // Gets the path of the configuration file
-        $confPath                      = self::$_classManager->getModulePath( $this->_modName )
-                                       . 'settings'
-                                       . DIRECTORY_SEPARATOR
-                                       . 'admin.form.php';
+        $confPath  = self::$_classManager->getModulePath( $this->_modName )
+                   . 'settings'
+                   . DIRECTORY_SEPARATOR
+                   . 'admin.form.php';
+        
+        // Checks if we are in an override and if we have to take the original form
+        if( $override && !file_exists( $confPath ) ) {
+            
+            // Original configuration file
+            $confPath  = self::$_classManager->getModulePath( $override )
+                       . 'settings'
+                       . DIRECTORY_SEPARATOR
+                       . 'admin.form.php';
+        }
         
         // Creates the form
         $form                          = new Oop_Drupal_Form_Builder(
             $confPath,
-            $this->_modName,
+            $modName,
             $this->_lang
         );
         
