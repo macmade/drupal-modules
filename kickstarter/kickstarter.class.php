@@ -296,7 +296,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             }
             
             // Adds the access hook
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_access( $op, stdClass $node, stdClass $account )';
+            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_access( $op, $node, $account )';
             $this->_files[ $path ][] = '{';
             $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->access( $op, $node, $account );';
             $this->_files[ $path ][] = '}';
