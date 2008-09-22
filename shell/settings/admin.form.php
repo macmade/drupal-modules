@@ -47,5 +47,9 @@ $formConf = array(
     'allow_commands' => array(
         '#type' => 'textfield',
         '#size' => 100
+    ),
+    'restrict_path' => array(
+        '#type'          => 'checkbox',
+        '#default_value' => 1
     )
 );

@@ -13,6 +13,7 @@
         <notNumeric>Please enter a numeric value</notNumeric>
         <noChdir>Error: cwd could not be changed. It has been reset to %s. Commands have been aborted.</noChdir>
         <commandNotAllowed>Command %s is not allowed</commandNotAllowed>
+        <cdNotAllowed>Sorry, you cannot access the requested directory %s</cdNotAllowed>1
     </module>
     <settings>
         <font_size_title>Font size</font_size_title>
@@ -37,5 +38,7 @@
         <disallow_commands_description>A comma separeted list of the shell commands to disallow.</disallow_commands_description>
         <allow_commands_title>Allowed commands</allow_commands_title>
         <allow_commands_description>A comma separeted list of the shell commands to allow. If set, all other commands will automatically be disallowed.</allow_commands_description>
+        <restrict_path_title>Restrict path</restrict_path_title>
+        <restrict_path_description>Restrict all operations to the Drupal site root.</restrict_path_description>
     </settings>
 </labels>

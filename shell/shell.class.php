@@ -218,6 +218,27 @@ class shell extends Oop_Drupal_ModuleBase
         // Rebuilds the path
         $this->_cwd = implode( '/', $cwd );
         
+        // Checks if we have to restrict the path to the site root
+        if( isset( $this->_modVars[ 'restrict_path' ] ) && $this->_modVars[ 'restrict_path' ] ) {
+            
+            // Checks if the site root is contained in the CWD
+            if( !strstr( $this->_cwd, self::$_classManager->getDrupalPath() ) ) {
+                
+                // Prints the error message
+                print sprintf( $this->_lang->cdNotAllowed, $this->_cwd );
+                
+                // Resets the CWD
+                $this->_cwd = self::$_classManager->getDrupalPath();
+                
+                // Stores the CWD in the session
+                $this->_storeSessionVar( 'cwd', $this->_cwd );
+                
+                // Aborts the script
+                print self::$_NL . $this->_cwd;
+                exit();
+            }
+        }
+        
         // Stores the CWD in the session
         $this->_storeSessionVar( 'cwd', $this->_cwd );
     }
