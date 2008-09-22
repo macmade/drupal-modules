@@ -384,4 +384,15 @@ final class Oop_Core_ClassManager
         // Returns the loaded classes from this project
         return $this->_loadedClasses;
     }
+    
+    /**
+     * Tells if a module is an override of another
+     * 
+     * @param   string  The name of the module
+     * @return  mixed   The name of the overriden module, otherwise false
+     */
+    public function isOverride( $name )
+    {
+        return array_search( $name, $this->_overrides, true );
+    }
 }
