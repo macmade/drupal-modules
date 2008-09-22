@@ -32,6 +32,14 @@ class ddmenu extends Oop_Drupal_ModuleBase
     protected $_delta    = 0;
     
     /**
+     * Permissions array
+     */
+    protected $_perms    = array(
+        'access ddmenu block',
+        'access ddmenu block config'
+    );
+    
+    /**
      * 
      */
     protected function _getPages( Oop_Xhtml_Tag $list, $type, $parent )

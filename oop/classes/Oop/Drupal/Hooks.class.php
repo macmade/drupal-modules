@@ -340,23 +340,37 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         
         } elseif( $op === 'configure' ) {
             
-            // Index for the forms
-            $formIndex = ( $this->_sameBlocks ) ? 0 : $delta;
+            // By default, access is granted to the block
+            $access = true;
             
-            // Gets the path of the configuration file
-            $confPath = self::$_classManager->getModulePath( $this->_modName )
-                      . 'settings'
-                      . DIRECTORY_SEPARATOR
-                      . 'block.' . $formIndex . '.form.php';
+            // Checks for a block permission
+            if( in_array( 'access ' . $this->_modName . ' block config', $this->_perms ) ) {
+                
+                // Checks the access for the block
+                $access = user_access( 'configure ' . $this->_modName . ' block' );
+            }
             
-            // Checks for a configuration file
-            if( file_exists( $confPath ) ) {
+            // Checks the access
+            if( $access ) {
                 
-                // Creates the form
-                $form  = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang, $delta );
+                // Index for the forms
+                $formIndex = ( $this->_sameBlocks ) ? 0 : $delta;
                 
-                // Returns the form
-                $block = $form->getConf();
+                // Gets the path of the configuration file
+                $confPath = self::$_classManager->getModulePath( $this->_modName )
+                          . 'settings'
+                          . DIRECTORY_SEPARATOR
+                          . 'block.' . $formIndex . '.form.php';
+                
+                // Checks for a configuration file
+                if( file_exists( $confPath ) ) {
+                    
+                    // Creates the form
+                    $form  = new Oop_Drupal_Form_Builder( $confPath, $this->_modName, $this->_lang, $delta );
+                    
+                    // Returns the form
+                    $block = $form->getConf();
+                }
             }
             
         } elseif( $op === 'save' ) {
@@ -377,20 +391,34 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
         } elseif( $op === 'view' ) {
             
-            // Index for the label
-            $langIndex = ( $this->_sameBlocks ) ? 0 : $delta;
+            // By default, access is granted to the block
+            $access = true;
             
-            // Creates the module content
-            $content   = $this->createModuleContent(
-                'getBlock',
-                array(
-                    $delta
-                )
-            );
+            // Checks for a block permission
+            if( in_array( 'access ' . $this->_modName . ' block', $this->_perms ) ) {
+                
+                // Checks the access for the block
+                $access = user_access( 'access ' . $this->_modName . ' block' );
+            }
             
-            // Adds the title and the content, wrapped in HTML comments
-            $block['subject'] = $this->_lang->getLabel( 'block_' . $langIndex . '_subject', 'system' ); 
-            $block['content'] = $content;
+            // Checks the access
+            if( $access ) {
+                
+                // Index for the label
+                $langIndex = ( $this->_sameBlocks ) ? 0 : $delta;
+                
+                // Creates the module content
+                $content   = $this->createModuleContent(
+                    'getBlock',
+                    array(
+                        $delta
+                    )
+                );
+                
+                // Adds the title and the content, wrapped in HTML comments
+                $block['subject'] = $this->_lang->getLabel( 'block_' . $langIndex . '_subject', 'system' ); 
+                $block['content'] = $content;
+            }
         }
         
         // Returns the block

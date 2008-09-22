@@ -14,6 +14,13 @@
 class helloworld extends Oop_Drupal_ModuleBase
 {
     /**
+     * Permissions array
+     */
+    protected $_perms = array(
+        'access helloworld block'
+    );
+    
+    /**
      * Gets the block view
      * 
      * @param   Oop_Xhtml_Tag   The placeholder for the module content
