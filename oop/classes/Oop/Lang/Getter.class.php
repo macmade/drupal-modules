@@ -165,9 +165,20 @@ final class Oop_Lang_Getter
             return nl2br( ( string )$this->_labels->$section->$name );
         }
         
-        if( $section === 'module' && isset( self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name ) ) {
+        $override = self::$_classManager->isOverride( $this->_instanceName );
+        
+        if( $override ) {
             
-            return nl2br( ( string )self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name );
+            $parent = self::getInstance( $override );
+            
+            return $parent->getLabel( $name, $section );
+            
+        } else {
+            
+            if( isset( self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name ) ) {
+                
+                return nl2br( ( string )self::$_instances[ self::$_defaultInstanceName ]->_labels->$section->$name );
+            }
         }
         
         return '[LABEL: ' . $name . ']';
