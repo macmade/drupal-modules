@@ -79,7 +79,7 @@ class helloworld extends Oop_Drupal_ModuleBase
         $backTraceBlock->spacer( 20 );
         
         // Gets the backtrace
-        $backTrace = debug_backtrace( $this );
+        $backTrace = debug_backtrace();
         
         // Gets the info icon
         $infoIcon  = $this->_getIcon( 'information.png' );
