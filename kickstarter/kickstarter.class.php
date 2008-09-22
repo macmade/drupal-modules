@@ -1005,6 +1005,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '        }';
             $this->_files[ $path ][] = '        */';
             $this->_files[ $path ][] = '    }';
+            $this->_files[ $path ][] = ');';
             
             // Ends the file
             $this->_files[ $path ][] = '';
