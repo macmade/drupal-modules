@@ -26,6 +26,11 @@ final class Oop_Drupal_Database
     private $_pdo             = NULL;
     
     /**
+     * The available PDO drivers
+     */
+    private $_drivers         = array();
+    
+    /**
      * The distinguised server name for the Drupal database
      */
     private $_dsn             = '';
@@ -49,6 +54,9 @@ final class Oop_Drupal_Database
             throw new Oop_Drupal_Database_Exception( 'PDO is not available', Oop_Drupal_Database_Exception::EXCEPTION_NO_CONNECTION );
         }
         
+        // Gets the available PDO drivers
+        $this->_drivers = array_flip( PDO::getAvailableDrivers() );
+        
         // Storage
         $dsnParts = array();
         
@@ -57,6 +65,13 @@ final class Oop_Drupal_Database
         
         // Stores the driver (mysqli is not a valid PDO driver, so it will be replaced by mysql)
         $driver     = ( $dsnParts[ 1 ] === 'mysqli' ) ? 'mysql' : $dsnParts[ 1 ];
+        
+        // Checks if PDO supports the Drupal database driver
+        if( !isset( $this->_drivers[ $driver ] ) ) {
+            
+            // Error - Driver not available
+            throw new Oop_Drupal_Database_Exception( 'Driver ' . $driver . ' is not available in PDO', Oop_Drupal_Database_Exception::EXCEPTION_NO_PDO_DRIVER );
+        }
         
         // Stores the other DSN informations
         $user       = $dsnParts[ 2 ];
