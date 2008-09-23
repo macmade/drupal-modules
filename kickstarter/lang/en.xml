@@ -87,6 +87,10 @@
         <table_add_description>Wheter the module has a custom database table or not. The options below are only relevant is this checkbox is set.</table_add_description>
         <table_name_title>Table name</table_name_title>
         <table_name_description>The name of the database table (will be automatically prefixed by the module name).</table_name_description>
+        <template_title>Template</template_title>
+        <template_description>Template options for the module</template_description>
+        <template_add_title>Add template support</template_add_title>
+        <template_add_description>Wheter the module will use Smarty templates</template_add_description>
         <misc_title>Miscellaneous</misc_title>
         <misc_description>Miscellaneous options for the module.</misc_description>
         <misc_css_title>CSS</misc_css_title>

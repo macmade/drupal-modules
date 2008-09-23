@@ -17,39 +17,44 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
     /**
      * 
      */
-    protected $_files             = array();
+    protected $_files              = array();
     
     /**
      * 
      */
-    protected $_formValues        = array();
+    protected $_formValues         = array();
     
     /**
      * 
      */
-    protected $_perms             = array(
+    protected $_perms              = array(
         'access kickstarter admin/build/oopkickstarter'
     );
     
     /**
      * 
      */
-    protected $_moduleName        = '';
+    protected $_moduleName         = '';
     
     /**
      * 
      */
-    protected $_moduleDir         = '';
+    protected $_moduleDir          = '';
     
     /**
      * 
      */
-    protected $_moduleLangDir     = '';
+    protected $_moduleLangDir      = '';
     
     /**
      * 
      */
-    protected $_moduleSettingsDir = '';
+    protected $_moduleSettingsDir  = '';
+    
+    /**
+     * 
+     */
+    protected $_moduleTemplatesDir = '';
     
     /**
      * 
@@ -85,6 +90,19 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
                 
                 // Error- Cannot create the settings directory
                 drupal_set_message( sprintf( $this->_lang->cannotCreateDir, $this->_moduleSettingsDir ) );
+                
+                return false;
+            }
+        }
+        
+        // Checks if the templates directory is needed
+        if( $this->_formValues[ 'kickstarter_template_add' ] ) {
+            
+            // Tries to create the settings directory
+            if( !mkdir( $this->_moduleTemplatesDir ) ) {
+                
+                // Error- Cannot create the settings directory
+                drupal_set_message( sprintf( $this->_lang->cannotCreateDir, $this->_moduleTemplatesDir ) );
                 
                 return false;
             }
@@ -680,6 +698,17 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
         $this->_files[ $path ][] = 'class ' . $this->_moduleName . ' extends Oop_Drupal_ModuleBase' . $implements;
         $this->_files[ $path ][] = '{';
         
+        // Checks if we have Smarty templates
+        if( $this->_formValues[ 'kickstarter_template_add' ] ) {
+            
+            // Adds the template object property
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * The template object';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    protected $_tmpl  = NULL;';
+            $this->_files[ $path ][] = '    ';
+        }
+        
         // Checks if the perm hook is implemented
         if( $this->_formValues[ 'kickstarter_block_add' ]
             || $this->_formValues[ 'kickstarter_node_add' ]
@@ -767,6 +796,15 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
                 $this->_files[ $path ][] = '        ';
             }
             
+            // Checks if we have Smarty templates
+            if( $this->_formValues[ 'kickstarter_template_add' ] ) {
+                
+                // Adds the template object
+                $this->_files[ $path ][] = '        // Gets the template object';
+                $this->_files[ $path ][] = '        $this->_tmpl   = $this->_getTemplate();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
             // Ends the getBlock() method
             $this->_files[ $path ][] = '        // Adds some content';
             $this->_files[ $path ][] = '        $content->span = \'Block content for the module \' . __CLASS__;';
@@ -811,6 +849,15 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
                 // Adds the JS inclusion
                 $this->_files[ $path ][] = '        // Includes the JS file';
                 $this->_files[ $path ][] = '        $this->_includeModuleScript();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
+            // Checks if we have Smarty templates
+            if( $this->_formValues[ 'kickstarter_template_add' ] ) {
+                
+                // Adds the template object
+                $this->_files[ $path ][] = '        // Gets the template object';
+                $this->_files[ $path ][] = '        $this->_tmpl   = $this->_getTemplate();';
                 $this->_files[ $path ][] = '        ';
             }
             
@@ -934,7 +981,16 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
                 $this->_files[ $path ][] = '        ';
             }
             
-            // Ends the getNode() method
+            // Checks if we have Smarty templates
+            if( $this->_formValues[ 'kickstarter_template_add' ] ) {
+                
+                // Adds the template object
+                $this->_files[ $path ][] = '        // Gets the template object';
+                $this->_files[ $path ][] = '        $this->_tmpl   = $this->_getTemplate();';
+                $this->_files[ $path ][] = '        ';
+            }
+            
+            // Ends the show() method
             $this->_files[ $path ][] = '        // Adds some content';
             $this->_files[ $path ][] = '        $content->span = \'Menu item content for the module \' . __CLASS__;';
             $this->_files[ $path ][] = '    }';
@@ -1436,30 +1492,35 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
     public function submitForm( $formId, $formValues )
     {
         // Stores the submitted values
-        $this->_formValues        =& $formValues[ 'values' ];
+        $this->_formValues         =& $formValues[ 'values' ];
         
         // Path to the module directory
-        $this->_moduleDir         = self::$_classManager->getDrupalPath()
-                                  . 'sites'
-                                  . DIRECTORY_SEPARATOR
-                                  . 'all'
-                                  . DIRECTORY_SEPARATOR
-                                  . 'modules'
-                                  . DIRECTORY_SEPARATOR
-                                  . $this->_formValues[ 'kickstarter_infos_name' ];
+        $this->_moduleDir          = self::$_classManager->getDrupalPath()
+                                   . 'sites'
+                                   . DIRECTORY_SEPARATOR
+                                   . 'all'
+                                   . DIRECTORY_SEPARATOR
+                                   . 'modules'
+                                   . DIRECTORY_SEPARATOR
+                                   . $this->_formValues[ 'kickstarter_infos_name' ];
         
         // Path to the lang directory
-        $this->_moduleLangDir     = $this->_moduleDir
-                                  . DIRECTORY_SEPARATOR
-                                  . 'lang';
+        $this->_moduleLangDir      = $this->_moduleDir
+                                   . DIRECTORY_SEPARATOR
+                                   . 'lang';
         
         // Path to the settings directory
-        $this->_moduleSettingsDir = $this->_moduleDir
-                                  . DIRECTORY_SEPARATOR
-                                  . 'settings';
+        $this->_moduleSettingsDir  = $this->_moduleDir
+                                   . DIRECTORY_SEPARATOR
+                                   . 'settings';
+        
+        // Path to the templates directory
+        $this->_moduleTemplatesDir = $this->_moduleDir
+                                   . DIRECTORY_SEPARATOR
+                                   . 'templates';
         
         // Name of the module to write
-        $this->_moduleName        = $this->_formValues[ 'kickstarter_infos_name' ];
+        $this->_moduleName         = $this->_formValues[ 'kickstarter_infos_name' ];
         
         // Checks if the directories can be created
         if( file_exists( $this->_moduleDir ) ) {
