@@ -5,7 +5,7 @@
 /**
  * Hello World module for Drupal
  * 
- * This module is a demonstration for the Drupal OOP framework.
+ * A Drupal test module to test the Drupal OOP framework
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008

@@ -5,6 +5,9 @@
 /**
  * Email crypt filter for Drupal
  * 
+ * A Drupal filter that will automatically crypt the email addresses to
+ * prevent spam
+ * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @version         0.1

@@ -5,6 +5,8 @@
 /**
  * Drop-Down Site Map module for Drupal
  * 
+ * Displays a drop-down site map for the primary, secondary or navigation links
+ * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @version         0.1

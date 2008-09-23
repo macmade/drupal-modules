@@ -5,6 +5,10 @@
 /**
  * Terminal module for Drupal
  * 
+ * This module allows you to run shell commands on the server. This may
+ * be useful for changing files permissions, creating symbolic links,
+ * uncompressing archives, etc.
+ * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @version         0.1

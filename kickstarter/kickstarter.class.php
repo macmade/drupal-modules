@@ -5,6 +5,9 @@
 /**
  * OOP kickstarter module for Drupal
  * 
+ * Creation wizard for the OOP modules that will create all the necessary
+ * development files to build an OOP module
+ * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @version         0.1

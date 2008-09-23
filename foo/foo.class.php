@@ -5,6 +5,8 @@
 /**
  * Foo module for Drupal
  * 
+ * A Drupal test module
+ * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
  * @version         0.1
