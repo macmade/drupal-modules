@@ -15,6 +15,28 @@
  */
 function oop_install()
 {
+    // Root directory of the Drupal installation
+    $drupalRoot = substr( $_SERVER[ 'SCRIPT_FILENAME' ], 0, -9 );
+    
+    // Path to the 'files' directory
+    $filesDir   = $drupalRoot . file_directory_path() . DIRECTORY_SEPARATOR;
+    
+    // Directories to create
+    $createDirs = array(
+        $filesDir . 'oop',
+        $filesDir . 'oop' . DIRECTORY_SEPARATOR . 'smarty',
+        $filesDir . 'oop' . DIRECTORY_SEPARATOR . 'smarty' . DIRECTORY_SEPARATOR . 'cache',
+        $filesDir . 'oop' . DIRECTORY_SEPARATOR . 'smarty' . DIRECTORY_SEPARATOR . 'compiled'
+    );
+    
+    // Process each directory
+    foreach( $createDirs as $dir ) {
+        
+        // Ensure the directory exists and is writeable
+        file_check_directory( $dir, FILE_CREATE_DIRECTORY );
+    }
+    
+    // Installs the databases
     drupal_install_schema( 'oop' );
 }
 
@@ -32,6 +54,7 @@ function oop_install()
  */
 function oop_uninstall()
 {
+    // Uninstalls the databases
     drupal_uninstall_schema( 'oop' );
 }
 
