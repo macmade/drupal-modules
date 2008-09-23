@@ -77,17 +77,15 @@ function oop_perm()
  * Drupal 'menu' hook
  * 
  * This function lets Drupal know that the module has custom menu items.
- * An administration settings page can be automatically added with the
- * Oop_Drupal_Hooks::addAdminSettingsMenu() method.
+ * An administration settings page will be automatically added if the file
+ * 'settings/admin.form.php' exists.
  * 
  * @return  array   An array with the menu items
- * @see     Oop_Drupal_Hooks::addMenuItems
- * @see     Oop_Drupal_Hooks::addAdminSettingsMenu
- * @see     Oop_Drupal_Hooks::perm
+ * @see     Oop_Drupal_Hooks::menu
  */
 function oop_menu()
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->addAdminSettingsMenu();
+    return Oop_Core_ClassManager::getInstance()->getModule( 'oop' )->menu();
 }
 
 /**

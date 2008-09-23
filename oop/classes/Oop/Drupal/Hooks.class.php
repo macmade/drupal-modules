@@ -577,6 +577,65 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     }
     
     /**
+     * Drupal 'menu' hook
+     * 
+     * @return  array   The menu items
+     */
+    public function menu()
+    {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_MenuItem_Interface' );
+        
+        // Storage
+        $items = array();
+    
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Name of the module, to support the overrides
+        $modName  = ( $override ) ? $override : $this->_modName;
+        
+        // Gets the path of the administration settings form configuration file
+        $confPath = self::$_classManager->getModulePath( $this->_modName )
+                  . 'settings'
+                  . DIRECTORY_SEPARATOR
+                  . 'admin.form.php';
+        
+        // Checks if we are in an override and if we have to take the original form
+        if( $override && !file_exists( $confPath ) ) {
+            
+            // Original configuration file
+            $confPath  = self::$_classManager->getModulePath( $override )
+                       . 'settings'
+                       . DIRECTORY_SEPARATOR
+                       . 'admin.form.php';
+        }
+        
+        // Checks for a administration settings form configuration file
+        if( file_exists( $confPath ) ) {
+            
+            // Access arguments
+            $accessArgs = ( in_array( 'access ' . $modName . ' admin', $this->_perms ) ) ? 'access ' . $modName . ' admin' : 'access administration pages';
+            
+            // Adds the administration settings page
+            $items[ 'admin/settings/' . $modName ] = array(
+                'title'            => $this->_lang->getLabel( 'menu_admin_title', 'system' ),
+                'description'      => $this->_lang->getLabel( 'menu_admin_description', 'system' ),
+                'page callback'    => 'drupal_get_form',
+                'page arguments'   => array( $modName . '_adminForm' ),
+                'access arguments' => array( $accessArgs ),
+                'type'             => MENU_NORMAL_ITEM
+            );
+        }
+        
+        // Calls the addMenuItems() method, to add or change menu items
+        $this->addMenuItems( $items );
+        
+        // Returns the menu items
+        return $items;
+    }
+    
+    /**
      * Drupal 'filter' hook
      * 
      * @param   string                      Which filtering operation to perform
@@ -637,39 +696,6 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         
         // Returns the text
         return $text;
-    }
-    
-    /**
-     * Adds a section in admin/settings pages for the current module
-     * 
-     * @return  array   The menu items array
-     */
-    public function addAdminSettingsMenu()
-    {
-        // Checks if the current module is an override
-        $override   = self::$_classManager->isOverride( $this->_modName );
-        
-        // Name of the module, to support the overrides
-        $modName    = ( $override ) ? $override : $this->_modName;
-        
-        // Access arguments
-        $accessArgs = ( in_array( 'access ' . $modName . ' admin', $this->_perms ) ) ? 'access ' . $modName . ' admin' : 'access administration pages';
-        
-        // Storage
-        $items = array();
-        
-        // Creates the item array
-        $items[ 'admin/settings/' . $modName ] = array(
-            'title'            => $this->_lang->getLabel( 'menu_admin_title', 'system' ),
-            'description'      => $this->_lang->getLabel( 'menu_admin_description', 'system' ),
-            'page callback'    => 'drupal_get_form',
-            'page arguments'   => array( $modName . '_adminForm' ),
-            'access arguments' => array( $accessArgs ),
-            'type'             => MENU_NORMAL_ITEM
-        );
-        
-        // Returns the items array
-        return $items;
     }
     
     /**

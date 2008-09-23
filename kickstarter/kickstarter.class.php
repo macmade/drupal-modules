@@ -12,7 +12,7 @@
  * @copyright       Copyright &copy; 2008
  * @version         0.1
  */
-class kickstarter extends Oop_Drupal_ModuleBase
+class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_Interface
 {
     /**
      * 
@@ -488,15 +488,15 @@ class kickstarter extends Oop_Drupal_ModuleBase
         }
         
         // Checks if an administration and/or a menu item page must be added
-        if( $this->_formValues[ 'kickstarter_admin_add' ] && $this->_formValues[ 'kickstarter_menu_add' ] ) {
+        if( $this->_formValues[ 'kickstarter_admin_add' ] || $this->_formValues[ 'kickstarter_menu_add' ] ) {
             
             // Adds the menu hook
             $this->_files[ $path ][] = '/**';
             $this->_files[ $path ][] = ' * Drupal \'menu\' hook';
             $this->_files[ $path ][] = ' * ';
             $this->_files[ $path ][] = ' * This function lets Drupal know that the module has custom menu items.';
-            $this->_files[ $path ][] = ' * An administration settings page can be automatically added with the';
-            $this->_files[ $path ][] = ' * Oop_Drupal_Hooks::addAdminSettingsMenu() method.';
+            $this->_files[ $path ][] = ' * An administration settings page will be automatically added if the file';
+            $this->_files[ $path ][] = ' * \'settings/admin.form.php\' exists.';
             $this->_files[ $path ][] = ' * ';
             $this->_files[ $path ][] = ' * @return  array   An array with the menu items';
             $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addMenuItems';
@@ -505,82 +505,13 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
             $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    $module = Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' );';
-            $this->_files[ $path ][] = '    return $module->addMenuItems( $module->addAdminSettingsMenu() );';
+            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->menu();';
             $this->_files[ $path ][] = '}';
             $this->_files[ $path ][] = '';
-            
-            // Adds the adminForm function
-            $this->_files[ $path ][] = '/**';
-            $this->_files[ $path ][] = ' * Gets the admin form';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * This function returns the form configuration for the administration settings';
-            $this->_files[ $path ][] = ' * page. The form configuration must be defined in the \'settings/admin.form.php\'';
-            $this->_files[ $path ][] = ' * file.';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * @return  array   An array with the form configuration';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::getAdminForm';
-            $this->_files[ $path ][] = ' */';
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm()';
-            $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->getAdminForm();';
-            $this->_files[ $path ][] = '}';
-            $this->_files[ $path ][] = '';
-            
-            // Adds the validate hook
-            $this->_files[ $path ][] = '/**';
-            $this->_files[ $path ][] = ' * Validates the admin form';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * This function will be called when the form in the administration settings';
-            $this->_files[ $path ][] = ' * page is submitted.';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * @param   array   The form configuration';
-            $this->_files[ $path ][] = ' * @param   array   The submitted values';
-            $this->_files[ $path ][] = ' * @return  NULL';
-            $this->_files[ $path ][] = ' * @see     ' . $this->_moduleName . '::validateAdminForm';
-            $this->_files[ $path ][] = ' */';
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm_validate( array $form, array &$formState )';
-            $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
-            $this->_files[ $path ][] = '}';
-            $this->_files[ $path ][] = '';
-            
-            // Adds the show() function
-            $this->_files[ $path ][] = '/**';
-            $this->_files[ $path ][] = ' * Displays the page for a menu item';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * This function generates the content for a page placed in a custom menu item';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * @return  string  The content of the page';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::menu';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::createModuleContent';
-            $this->_files[ $path ][] = ' */';
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_show()';
-            $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->createModuleContent( \'show\' );';
-            $this->_files[ $path ][] = '}';
-            $this->_files[ $path ][] = '';
-            
-        } elseif( $this->_formValues[ 'kickstarter_admin_add' ] ) {
-            
-            // Adds the menu hook
-            $this->_files[ $path ][] = '/**';
-            $this->_files[ $path ][] = ' * Drupal \'menu\' hook';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * This function lets Drupal know that the module has custom menu items.';
-            $this->_files[ $path ][] = ' * An administration settings page can be automatically added with the';
-            $this->_files[ $path ][] = ' * Oop_Drupal_Hooks::addAdminSettingsMenu() method.';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * @return  array   An array with the menu items';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addMenuItems';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addAdminSettingsMenu';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::perm';
-            $this->_files[ $path ][] = ' */';
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
-            $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->addAdminSettingsMenu();';
-            $this->_files[ $path ][] = '}';
-            $this->_files[ $path ][] = '';
+        }
+        
+        // Checks if an administration settings page has been added
+        if( $this->_formValues[ 'kickstarter_admin_add' ] ) {
             
             // Adds the adminForm() function
             $this->_files[ $path ][] = '/**';
@@ -617,26 +548,10 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '}';
             $this->_files[ $path ][] = '';
             
-        } elseif( $this->_formValues[ 'kickstarter_menu_add' ] ) {
-            
-            // Adds the menu hook
-            $this->_files[ $path ][] = '/**';
-            $this->_files[ $path ][] = ' * Drupal \'menu\' hook';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * This function lets Drupal know that the module has custom menu items.';
-            $this->_files[ $path ][] = ' * An administration settings page can be automatically added with the';
-            $this->_files[ $path ][] = ' * Oop_Drupal_Hooks::addAdminSettingsMenu() method.';
-            $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * @return  array   An array with the menu items';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addMenuItems';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::addAdminSettingsMenu';
-            $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::perm';
-            $this->_files[ $path ][] = ' */';
-            $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_menu()';
-            $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->addMenuItems();';
-            $this->_files[ $path ][] = '}';
-            $this->_files[ $path ][] = '';
+        }
+        
+        // Checks if a menu item has been added
+        if( $this->_formValues[ 'kickstarter_menu_add' ] ) {
             
             // Adds the show() function
             $this->_files[ $path ][] = '/**';
@@ -742,6 +657,13 @@ class kickstarter extends Oop_Drupal_ModuleBase
             
             // Adds the interface to the list
             $interfaces[] = 'Oop_Drupal_Filter_Interface';
+        }
+        
+        // Checks if we have to implement the menu item interface
+        if( $this->_formValues[ 'kickstarter_admin_add' ] || $this->_formValues[ 'kickstarter_menu_add' ] ) {
+            
+            // Adds the interface to the list
+            $interfaces[] = 'Oop_Drupal_MenuItem_Interface';
         }
         
         // Builds the implements statement if interfaces should be implemented in the module class
@@ -891,8 +813,8 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = '    }';
         }
         
-        // Checks if the admin form has been added
-        if( $this->_formValues[ 'kickstarter_admin_add' ] ) {
+        // Checks if we must declare the addMenuItems() method
+        if( $this->_formValues[ 'kickstarter_admin_add' ] || $this->_formValues[ 'kickstarter_menu_add' ] ) {
             
             // Checks if a method has already been added
             if( $this->_formValues[ 'kickstarter_block_add' ]
@@ -902,6 +824,41 @@ class kickstarter extends Oop_Drupal_ModuleBase
                 // Adds a blank line
                 $this->_files[ $path ][] = '    ';
             }
+            
+            // Starts the addMenuItems() method
+            $this->_files[ $path ][] = '    /**';
+            $this->_files[ $path ][] = '     * Adds items to the Drupal menu';
+            $this->_files[ $path ][] = '     * ';
+            $this->_files[ $path ][] = '     * @param   array   An array in which to place the menu items, passed by reference. It may contains existing menu items, for instance if an administration settings form exists';
+            $this->_files[ $path ][] = '     * @return  NULL';
+            $this->_files[ $path ][] = '     */';
+            $this->_files[ $path ][] = '    public function addMenuItems( array &$items )';
+            
+            // Checks if a custom menu item has been defined
+            if( $this->_formValues[ 'kickstarter_menu_add' ] ) {
+                
+                // Adds the custom menu item
+                $this->_files[ $path ][] = '    {';
+                $this->_files[ $path ][] = '        $items[ \'' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ] = array(';
+                $this->_files[ $path ][] = '            \'title\'            => $this->_lang->getLabel( \'menu_item_title\', \'system\' ),';
+                $this->_files[ $path ][] = '            \'description\'      => $this->_lang->getLabel( \'menu_item_description\', \'system\' ),';
+                $this->_files[ $path ][] = '            \'page callback\'    => \'' . $this->_moduleName . '_show\',';
+                $this->_files[ $path ][] = '            \'access arguments\' => array( \'access ' . $this->_moduleName . ' ' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' )';
+                $this->_files[ $path ][] = '        );';
+                $this->_files[ $path ][] = '    }';
+                
+            } else {
+                
+                // Ends the method
+                $this->_files[ $path ][] = '    {}';
+            }
+        }
+        
+        // Checks if the admin form has been added
+        if( $this->_formValues[ 'kickstarter_admin_add' ] ) {
+            
+            // Adds a blank line
+            $this->_files[ $path ][] = '    ';
             
             // Adds the validateAdminForm() method
             $this->_files[ $path ][] = '    /**';
@@ -938,35 +895,6 @@ class kickstarter extends Oop_Drupal_ModuleBase
         
         // Checks if a menu item has been added
         if( $this->_formValues[ 'kickstarter_menu_add' ] ) {
-            
-            // Checks if a method has already been added
-            if( $this->_formValues[ 'kickstarter_block_add' ]
-                || $this->_formValues[ 'kickstarter_node_add' ]
-                || $this->_formValues[ 'kickstarter_admin_add' ]
-            ) {
-                
-                // Adds a blank line
-                $this->_files[ $path ][] = '    ';
-            }
-            
-            // Adds the addMenuItems() method
-            $this->_files[ $path ][] = '    /**';
-            $this->_files[ $path ][] = '     * Adds items to the Drupal menu';
-            $this->_files[ $path ][] = '     * ';
-            $this->_files[ $path ][] = '     * @param   array   An array in which to place the menu items (may have existing items, depending on the call context)';
-            $this->_files[ $path ][] = '     * @return  array   The modified items array';
-            $this->_files[ $path ][] = '     */';
-            $this->_files[ $path ][] = '    public function addMenuItems( array $items = array() )';
-            $this->_files[ $path ][] = '    {';
-            $this->_files[ $path ][] = '        $items[ \'' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ] = array(';
-            $this->_files[ $path ][] = '            \'title\'            => $this->_lang->getLabel( \'menu_item_title\', \'system\' ),';
-            $this->_files[ $path ][] = '            \'description\'      => $this->_lang->getLabel( \'menu_item_description\', \'system\' ),';
-            $this->_files[ $path ][] = '            \'page callback\'    => \'' . $this->_moduleName . '_show\',';
-            $this->_files[ $path ][] = '            \'access arguments\' => array( \'access ' . $this->_moduleName . ' ' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' )';
-            $this->_files[ $path ][] = '        );';
-            $this->_files[ $path ][] = '        ';
-            $this->_files[ $path ][] = '        return $items;';
-            $this->_files[ $path ][] = '    }';
             
             // Adds a blank line
             $this->_files[ $path ][] = '    ';
@@ -1584,9 +1512,12 @@ class kickstarter extends Oop_Drupal_ModuleBase
     }
     
     /**
+     * Adds items to the Drupal menu
      * 
+     * @param   array   An array in which to place the menu items, passed by reference. It may contains existing menu items, for instance if an administration settings form exists
+     * @return  NULL
      */
-    public function addMenuItems( array $items = array() )
+     public function addMenuItems( array &$items )
     {
         // Adds the menu item for the kickstarter in the admin pages
         $items[ 'admin/build/oopkickstarter' ] = array(

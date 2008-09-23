@@ -13,7 +13,7 @@
  * @copyright       Copyright &copy; 2008
  * @version         0.1
  */
-class shell extends Oop_Drupal_ModuleBase
+class shell extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_Interface
 {
     /**
      * The permissions array
@@ -598,17 +598,18 @@ class shell extends Oop_Drupal_ModuleBase
     }
     
     /**
+     * Adds items to the Drupal menu
      * 
+     * @param   array   An array in which to place the menu items, passed by reference. It may contains existing menu items, for instance if an administration settings form exists
+     * @return  NULL
      */
-    public function addMenuItems( array $items = array() )
+     public function addMenuItems( array &$items )
     {
         $items[ 'admin/shell' ] = array(
             'title'            => $this->_lang->menuTitle,
             'page callback'    => 'shell_show',
             'access arguments' => array( 'access shell admin/shell' ),
         );
-        
-        return $items;
     }
     
     /**

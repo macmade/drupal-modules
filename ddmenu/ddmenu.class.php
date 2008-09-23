@@ -11,7 +11,7 @@
  * @copyright       Copyright &copy; 2008
  * @version         0.1
  */
-class ddmenu extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interface
+class ddmenu extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interface, Oop_Drupal_MenuItem_Interface
 {
     /**
      * The icon for the pages with subpages
@@ -202,6 +202,15 @@ class ddmenu extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interface
             $this->_getPages( $pages, $list, $section );
         }
     }
+    
+    /**
+     * Adds items to the Drupal menu
+     * 
+     * @param   array   An array in which to place the menu items, passed by reference. It may contains existing menu items, for instance if an administration settings form exists
+     * @return  NULL
+     */
+     public function addMenuItems( array &$items )
+     {}
     
     /**
      * Validates the admin form
