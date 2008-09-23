@@ -14,27 +14,27 @@
 class ddmenu extends Oop_Drupal_ModuleBase
 {
     /**
-     * 
+     * The icon for the pages with subpages
      */
     protected $_iconDir  = NULL;
     
     /**
-     * 
+     * The icon for the pages without subpages
      */
     protected $_iconPage = NULL;
     
     /**
-     * 
+     * The path of the current page
      */
     protected $_path     = '';
     
     /**
-     * 
+     * The delta offset, for the multiple blocks
      */
     protected $_delta    = 0;
     
     /**
-     * Permissions array
+     * The permissions array
      */
     protected $_perms    = array(
         'access ddmenu block',
@@ -139,17 +139,22 @@ class ddmenu extends Oop_Drupal_ModuleBase
      */
     public function getBlock( Oop_Xhtml_Tag $content, $delta )
     {
+        // Checks for a custom CSS file
         if( isset( $this->_modVars[ 'css_file' ] ) && $this->_modVars[ 'css_file' ] ) {
             
+            // Includes the custom CSS file
             $this->_includeCss( $this->_modVars[ 'css_file' ] );
             
         } else {
             
+            // Includes the default CSS file
             $this->_includeModuleCSS();
         }
         
+        // Stores the delta
         $this->_delta = $delta;
         
+        // Gets the kind of link to display
         $linkType = ( isset( $this->_modVars[ 'linktype_' . $delta ] ) ) ? $this->_modVars[ 'linktype_' . $delta ] : 'primary';
         
         switch( $linkType ) {
@@ -158,7 +163,7 @@ class ddmenu extends Oop_Drupal_ModuleBase
                 
                 $section = 'primary-links';
                 break;
-                
+            
             case 'secondary':
                 
                 $section = 'secondary-links';
@@ -199,14 +204,24 @@ class ddmenu extends Oop_Drupal_ModuleBase
     }
     
     /**
+     * Validates the admin form
      * 
+     * This function will be called when the form in the administration settings
+     * page is submitted.
+     * 
+     * @param   array   The form configuration
+     * @param   array   The submitted values
+     * @return  NULL
      */
     public function validateAdminForm( $form, &$formState )
     {
+        // Gets the number of blocks
         $number = $formState[ 'values' ][ 'ddmenu_number_of_blocks' ];
         
+        // Checks if the value is a numeric value
         if( !is_numeric( $number ) ) {
             
+            // Error - the value is not numeric
             form_set_error( 'ddmenu_number_of_blocks', $this->_lang->notNumeric );
         }
     }
