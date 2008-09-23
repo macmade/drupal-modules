@@ -667,7 +667,7 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
         }
         
         // Builds the implements statement if interfaces should be implemented in the module class
-        $implements = ( count( $interfaces ) ) ? ' implements ' . explode( ', ', $interfaces ) : '';
+        $implements = ( count( $interfaces ) ) ? ' implements ' . implode( ', ', $interfaces ) : '';
         
         // Starts the class
         $this->_files[ $path ][] = 'class ' . $this->_moduleName . ' extends Oop_Drupal_ModuleBase' . $implements;
