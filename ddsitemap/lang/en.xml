@@ -4,6 +4,7 @@
 
 <labels>
     <system>
+        <help>Displays a drop-down site map for the primary, secondary or navigation links</help>
         <menu_admin_title>Drop-Down Site Map</menu_admin_title>
         <menu_admin_description>Configures the general settings of the Drop-Down Site Map module.</menu_admin_description>
         <node_info_name>Drop-Down Site Map</node_info_name>

@@ -4,6 +4,7 @@
 
 <labels>
     <system>
+        <help>This module allows you to run shell commands on the server. This may be useful for changing files permissions, creating symbolic links, uncompressing archives, etc.</help>
         <menu_admin_title>Shell</menu_admin_title>
         <menu_admin_description>Allows you to run shell commands on the server. This may be useful for changing files permissions, creating symbolic links, uncompressing archives, etc.</menu_admin_description>
     </system>

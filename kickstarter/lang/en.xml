@@ -4,6 +4,7 @@
 
 <labels>
     <system>
+        <help>Creation wizard for the OOP modules that will create all the necessary development files to build an OOP module</help>
         <admin_build_oopkickstarter_title>OOP kickstarter</admin_build_oopkickstarter_title>
         <admin_build_oopkickstarter_description>Creation wizard for the OOP modules that will create all the necessary development files to build an OOP module.</admin_build_oopkickstarter_description>
     </system>

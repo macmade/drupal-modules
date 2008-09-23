@@ -2,6 +2,23 @@
 
 # $Id$
 
+/**
+ * Drupal 'help' hook
+ * 
+ * This function returns the help text for the admin/help# page. The label
+ * returned must be placed in the module's lang file, in the 'lang/'
+ * directory. It's the 'help' node of the 'system' section.
+ * 
+ * @param   string  The path for which to display help
+ * @param   array   An array that holds the current path as would be returned from the arg() function
+ * @return  string  The help text
+ * @see     Oop_Drupal_Hooks::help
+ */
+function shell_help( $path, $arg )
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->help( $path, $arg );
+}
+
 function shell_menu()
 {
     $module = Oop_Core_ClassManager::getInstance()->getModule( 'shell' );

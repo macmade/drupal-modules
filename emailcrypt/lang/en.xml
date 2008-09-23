@@ -4,6 +4,7 @@
 
 <labels>
     <system>
+        <help>A Drupal filter that will automatically crypt the email addresses to prevent spam</help>
         <filter_title>Email crypt</filter_title>
         <filter_description>Automatically crypts the email addresses to prevent spam</filter_description>
     </system>

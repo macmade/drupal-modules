@@ -4,6 +4,7 @@
 
 <labels>
     <system>
+        <help>A Drupal test module</help>
         <block_0_subject>Foo</block_0_subject>
         <block_0_info>Foo</block_0_info>
     </system>

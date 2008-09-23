@@ -4,6 +4,7 @@
 
 <labels>
     <system>
+        <help>A Drupal test module to test the Drupal OOP framework</help>
         <block_0_subject>Hello World</block_0_subject>
         <block_0_info>Hello World</block_0_info>
     </system>

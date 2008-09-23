@@ -4,6 +4,7 @@
 
 <labels>
     <system>
+        <help>Displays a drop-down menu for the primary, secondary or navigation links</help>
         <block_0_subject>Drop-Down Menu</block_0_subject>
         <block_0_info>Drop-Down Menu</block_0_info>
         <menu_admin_title>Drop-Down Menu</menu_admin_title>
