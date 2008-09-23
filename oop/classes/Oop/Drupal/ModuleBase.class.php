@@ -541,4 +541,32 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
         // Returns the link
         return $link;
     }
+    
+    /**
+     * Gets an instance of the template class
+     * 
+     * @return  Oop_Drupal_Template The instance of the template class
+     */
+    protected function _getTemplate()
+    {
+        // Checks if the current module is an override
+        $override = self::$_classManager->isOverride( $this->_modName );
+        
+        // Gets the path of the template directory
+        $tmplDir  = self::$_classManager->getModulePath( $this->_modName )
+                   . 'templates'
+                   . DIRECTORY_SEPARATOR;
+        
+        // Checks if we are in an override and if we have to take the original template directory
+        if( $override && !file_exists( $tmplDir ) ) {
+            
+            // Original template directory
+            $tmplDir  = self::$_classManager->getModulePath( $override )
+                       . 'templates'
+                       . DIRECTORY_SEPARATOR;
+        }
+        
+        // Returns the instance of the template class
+        return new Oop_Drupal_Template( $tmplDir );
+    }
 }
