@@ -120,7 +120,7 @@ final class Oop_Drupal_Database
         // Gets the number of arguments
         $argCount = count( $args );
         
-        // Ww won't use call_user_func_array, as it cannot return references
+        // We won't use call_user_func_array, as it cannot return references
         switch( $argCount ) {
             
             case 1:
