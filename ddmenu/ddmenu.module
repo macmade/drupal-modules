@@ -2,15 +2,22 @@
 
 # $Id$
 
-// Sets the number of blocks available from this module
-Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->setNumberOfBlocks(
-    Oop_Drupal_Utils::getInstance()->getModuleVariable(
-        'ddmenu',
-        'number_of_blocks',
-        1
-    ),
-    true
-);
+try {
+
+    // Sets the number of blocks available from this module
+    Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->setNumberOfBlocks(
+        Oop_Drupal_Utils::getInstance()->getModuleVariable(
+            'ddmenu',
+            'number_of_blocks',
+            1
+        ),
+        true
+    );
+    
+} catch( Exception $e ) {
+    
+    // Nothing, as we want to avoid an error that may occure during the installation process
+}
 
 /**
  * Drupal 'help' hook
