@@ -40,7 +40,7 @@ function oop_uninstall()
  * 
  * This function will install the database needed by the module.
  * 
- * @return  NULL
+ * @return  array   The database schema
  * @see     Oop_Drupal_Database::createSchema
  */
 function oop_schema()

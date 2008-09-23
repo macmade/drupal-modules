@@ -79,12 +79,33 @@ function kickstarter_form()
     return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->getForm();
 }
 
+/**
+ * Validates the kickstarter form
+ * 
+ * This function will be called when the kickstarter form is submitted.
+ * 
+ * @param   array   The form configuration
+ * @param   array   The submitted values
+ * @return  NULL
+ * @see     kickstarter::validateAdminForm
+ */
 function kickstarter_form_validate( $form, &$formState )
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->validateForm( $form, $formState );
+    Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->validateForm( $form, $formState );
 }
 
+/**
+ * Submits the admin form
+ * 
+ * This function will be called when the form kickstarter is submitted and
+ * validated. It will create the module files.
+ * 
+ * @param   array   The form configuration
+ * @param   array   The submitted values
+ * @return  NULL
+ * @see     kickstarter::submitForm
+ */
 function kickstarter_form_submit( $formId, $formValues )
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->submitForm( $formId, $formValues );
+    Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->submitForm( $formId, $formValues );
 }

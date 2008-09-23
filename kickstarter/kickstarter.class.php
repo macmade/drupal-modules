@@ -246,7 +246,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = ' * ';
             $this->_files[ $path ][] = ' * This function will install the database needed by the module.';
             $this->_files[ $path ][] = ' * ';
-            $this->_files[ $path ][] = ' * @return  NULL';
+            $this->_files[ $path ][] = ' * @return  array   The database schema';
             $this->_files[ $path ][] = ' * @see     Oop_Drupal_Database::createSchema';
             $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_schema()';
@@ -538,7 +538,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm_validate( array $form, array &$formState )';
             $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
+            $this->_files[ $path ][] = '    Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
             $this->_files[ $path ][] = '}';
             $this->_files[ $path ][] = '';
             
@@ -610,7 +610,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_adminForm_validate( array $form, array &$formState )';
             $this->_files[ $path ][] = '{';
-            $this->_files[ $path ][] = '    return Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
+            $this->_files[ $path ][] = '    Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->validateAdminForm( $form, $formState );';
             $this->_files[ $path ][] = '}';
             $this->_files[ $path ][] = '';
             

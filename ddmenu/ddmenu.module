@@ -107,5 +107,5 @@ function ddmenu_adminForm()
  */
 function ddmenu_adminForm_validate( $form, &$formState )
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->validateAdminForm( $form, $formState );
+    Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->validateAdminForm( $form, $formState );
 }

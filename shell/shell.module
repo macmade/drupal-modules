@@ -79,7 +79,7 @@ function shell_adminForm()
  */
 function shell_adminForm_validate( $form, &$formState )
 {
-    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->validateAdminForm( $form, $formState );
+    Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->validateAdminForm( $form, $formState );
 }
 
 /**
