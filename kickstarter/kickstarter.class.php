@@ -293,15 +293,22 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
         if( $this->_formValues[ 'kickstarter_admin_add' ] && $this->_formValues[ 'kickstarter_admin_blocks_number' ] ) {
             
             // Sets the number of blocks
-            $this->_files[ $path ][] = '// Sets the number of blocks available from this module';
-            $this->_files[ $path ][] = 'Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->setNumberOfBlocks(';
-            $this->_files[ $path ][] = '    Oop_Drupal_Utils::getInstance()->getModuleVariable(';
-            $this->_files[ $path ][] = '        \'test\',';
-            $this->_files[ $path ][] = '        \'number_of_blocks\',';
-            $this->_files[ $path ][] = '        1';
-            $this->_files[ $path ][] = '    ),';
-            $this->_files[ $path ][] = '    true';
-            $this->_files[ $path ][] = ');';
+            $this->_files[ $path ][] = 'try {';
+            $this->_files[ $path ][] = '    ';
+            $this->_files[ $path ][] = '    // Sets the number of blocks available from this module';
+            $this->_files[ $path ][] = '    Oop_Core_ClassManager::getInstance()->getModule( \'' . $this->_moduleName . '\' )->setNumberOfBlocks(';
+            $this->_files[ $path ][] = '        Oop_Drupal_Utils::getInstance()->getModuleVariable(';
+            $this->_files[ $path ][] = '            \'test\',';
+            $this->_files[ $path ][] = '            \'number_of_blocks\',';
+            $this->_files[ $path ][] = '            1';
+            $this->_files[ $path ][] = '        ),';
+            $this->_files[ $path ][] = '        true';
+            $this->_files[ $path ][] = '    );';
+            $this->_files[ $path ][] = '    ';
+            $this->_files[ $path ][] = '} catch( Exception $e ) {';
+            $this->_files[ $path ][] = '    ';
+            $this->_files[ $path ][] = '    // Nothing, as we want to avoid an error that may occur during the installation process';
+            $this->_files[ $path ][] = '}';
             $this->_files[ $path ][] = '';
         }
         

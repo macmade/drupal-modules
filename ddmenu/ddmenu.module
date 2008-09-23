@@ -16,7 +16,7 @@ try {
     
 } catch( Exception $e ) {
     
-    // Nothing, as we want to avoid an error that may occure during the installation process
+    // Nothing, as we want to avoid an error that may occur during the installation process
 }
 
 /**
