@@ -720,8 +720,35 @@ class kickstarter extends Oop_Drupal_ModuleBase
         $this->_files[ $path ][] = ' * @version         0.1';
         $this->_files[ $path ][] = ' */';
         
+        // Storage for the interfaces
+        $interfaces = array();
+        
+        // Checks if we have to implement the block interface
+        if( $this->_formValues[ 'kickstarter_block_add' ] ) {
+            
+            // Adds the interface to the list
+            $interfaces[] = 'Oop_Drupal_Block_Interface';
+        }
+        
+        // Checks if we have to implement the node interface
+        if( $this->_formValues[ 'kickstarter_node_add' ] ) {
+            
+            // Adds the interface to the list
+            $interfaces[] = 'Oop_Drupal_Node_Interface';
+        }
+        
+        // Checks if we have to implement the filter interface
+        if( $this->_formValues[ 'kickstarter_filter_add' ] ) {
+            
+            // Adds the interface to the list
+            $interfaces[] = 'Oop_Drupal_Filter_Interface';
+        }
+        
+        // Builds the implements statement if interfaces should be implemented in the module class
+        $implements = ( count( $interfaces ) ) ? ' implements ' . explode( ', ', $interfaces ) : '';
+        
         // Starts the class
-        $this->_files[ $path ][] = 'class ' . $this->_moduleName . ' extends Oop_Drupal_ModuleBase';
+        $this->_files[ $path ][] = 'class ' . $this->_moduleName . ' extends Oop_Drupal_ModuleBase' . $implements;
         $this->_files[ $path ][] = '{';
         
         // Checks if the perm hook is implemented

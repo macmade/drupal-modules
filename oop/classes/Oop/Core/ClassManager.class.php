@@ -18,42 +18,42 @@ final class Oop_Core_ClassManager
     /**
      * The unique instance of the class (singleton)
      */
-    private static $_instance = NULL;
+    private static $_instance  = NULL;
     
     /**
      * The loaded classes from this project
      */
-    private $_loadedClasses   = array();
+    private $_loadedClasses    = array();
     
     /**
      * The available top packages
      */
-    private $_packages        = array();
+    private $_packages         = array();
     
     /**
      * The instances of the modules
      */
-    private $_modules         = array();
+    private $_modules          = array();
     
     /**
      * The list of the loaded modules
      */
-    private $_moduleList      = array();
+    private $_moduleList       = array();
     
     /**
      * Overrides for the modules
      */
-    private $_overrides       = array();
+    private $_overrides        = array();
     
     /**
      * The directory which contains the classes
      */
-    private $_classDir        = '';
+    private $_classDir         = '';
     
     /**
      * The directory of the Drupal installation
      */
-    private $_drupalRootDir   = '';
+    private $_drupalRootDir    = '';
     
     /**
      * Class constructor
@@ -209,34 +209,60 @@ final class Oop_Core_ClassManager
      */
     private function _loadClass( $className )
     {
-        // Gets the class path
-        $classPath = $this->_classDir . str_replace( '_', DIRECTORY_SEPARATOR, substr( $className, 4 ) ) . '.class.php';
+        // Gets the paths for a class file or an interface file
+        $classPath     = $this->_classDir . str_replace( '_', DIRECTORY_SEPARATOR, substr( $className, 4 ) ) . '.class.php';
         
-        // Checks if the class file exists
+        // Checks if a class file exists
         if( file_exists( $classPath ) ) {
             
             // Includes the class file
             require_once( $classPath );
-        
-            // Checks if the class is defined
-            if( !class_exists( $className ) ) {
+            
+            // Checks if the requested class is an interface
+            if( substr( $className, -10 ) === '_Interface' ) {
                 
-                // Error message
-                $errorMsg = 'The class ' . $className . ' is not defined in file ' . $classPath;
+                // Checks if the interface is defined
+                if( !interface_exists( $className ) ) {
+                    
+                    // Error message
+                    $errorMsg = 'The interface ' . $className . ' is not defined in file ' . $classPath;
+                    
+                    // The interface is not defined
+                    trigger_error( $errorMsg, E_USER_ERROR );
+                    
+                    // Prints the error message and exits the script, as Drupal will intercept the error message
+                    print $errorMsg;
+                    exit();
+                }
                 
-                // The class is not defined
-                trigger_error( $errorMsg, E_USER_ERROR );
+                // Adds the interface to the loaded classes array
+                $this->_loadedClasses[ $className ] = $classPath;
                 
-                // Prints the error message and exits the script, as Drupal will intercept the error message
-                print $errorMsg;
-                exit();
+                // Interface was successfully loaded
+                return true;
+                
+            } else {
+                
+                // Checks if the class is defined
+                if( !class_exists( $className ) ) {
+                    
+                    // Error message
+                    $errorMsg = 'The class ' . $className . ' is not defined in file ' . $classPath;
+                    
+                    // The class is not defined
+                    trigger_error( $errorMsg, E_USER_ERROR );
+                    
+                    // Prints the error message and exits the script, as Drupal will intercept the error message
+                    print $errorMsg;
+                    exit();
+                }
+                
+                // Adds the class to the loaded classes array
+                $this->_loadedClasses[ $className ] = $classPath;
+                
+                // Class was successfully loaded
+                return true;
             }
-            
-            // Adds the class to the loaded classes array
-            $this->_loadedClasses[ $className ] = $classPath;
-            
-            // Class was successfully loaded
-            return true;
         }
         
         // Class file was not found

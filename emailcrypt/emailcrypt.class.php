@@ -12,7 +12,7 @@
  * @copyright       Copyright &copy; 2008
  * @version         0.1
  */
-class emailcrypt extends Oop_Drupal_ModuleBase
+class emailcrypt extends Oop_Drupal_ModuleBase implements Oop_Drupal_Filter_Interface
 {
     /**
      * The pattern to detect a valid email address

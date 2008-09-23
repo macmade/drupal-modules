@@ -13,6 +13,11 @@
 abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
 {
     /**
+     * The interface that the module implements
+     */
+    private $_interfaces       = array();
+     
+    /**
      * An array with the Drupal permission for the module
      */
     protected $_perms          = array();
@@ -28,19 +33,29 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     protected $_sameBlocks     = false;
     
     /**
-     * Checks if a method is defined in a module
+     * Class constructor
      * 
-     * @param   string                      The name of the method to check
+     * @param   string  The path of the module
      * @return  NULL
-     * @throws  Oop_Drupal_Hook_Exceptions  If the method does not exist
+     * @see     Oop_Drupal_Module::__construct
      */
-    private function _checkMethod( $name )
+    public function __construct( $modPath )
     {
-        // Checks for the method
-        if( !method_exists( $this, $name ) ) {
+        // Calls the parent constructor
+        parent::__construct( $modPath );
+        
+        // Gets the interfaces that the module class implements
+        $this->_interfaces = array_flip( class_implements( $this ) );
+    }
+    
+    /**
+     * 
+     */
+    private function _checkInterface( $interface )
+    {
+        if( !isset( $this->_interfaces[ $interface ] ) ) {
             
-            // The method does not exist
-            throw new Oop_Drupal_Hooks_Exception( 'The required method ' . $name . ' is not defined in the class of module ' . $this->_modName, Oop_Drupal_Hooks_Exception::EXCEPTION_NO_METHOD );
+            throw new Oop_Drupal_Hooks_Exception( 'The class for the module ' . $this->_modName . ' must the implements the interface ' . $interface, Oop_Drupal_Hooks_Exception::EXCEPTION_NO_INTERFACE );
         }
     }
     
@@ -54,9 +69,6 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         
         // Name of the module, to support the overrides
         $modName  = ( $override ) ? $override : $this->_modName;
-        
-        // Checks the callback method
-        $this->_checkMethod( $callbackMethod );
         
         // Checks the callback method to set the CSS class name
         if( $callbackMethod === 'getBlock' ) {
@@ -113,9 +125,14 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   int     The desired number of blocks
      * @param   boolean Wheter the new blocks must be the same as the first one (for the labels, configuration, etc)
      * @return  NULL
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Block_Interface interface
      */
     public function setNumberOfBlocks( $number, $sameAsFirst = false )
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Block_Interface' );
+        
+        // Sets the number of blocks properties
         $this->_numberOfBlocks   = ( int )$number;
         $this->_sameBlocks       = ( boolean )$sameAsFirst;
     }
@@ -153,9 +170,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * Drupal 'node_info' hook
      * 
      * @return array    The information array for the Drupal node
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
     public function node_info()
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
+        
         // Checks if the current module is an override
         $override = self::$_classManager->isOverride( $this->_modName );
         
@@ -184,10 +205,14 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * Drupal 'access' hook
      * 
-     * @return boolean
+     * @return  boolean
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
     public function access( $op, $node, $account )
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
+        
         // Checks if the current module is an override
         $override = self::$_classManager->isOverride( $this->_modName );
         
@@ -249,9 +274,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   stdClass    The node object
      * @param   boolean     Wheter to add the title field or not
      * @return  array       An array with the form configuration
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
     public function form( stdClass $node, $addTitle = true )
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
+        
         // Checks if the current module is an override
         $override = self::$_classManager->isOverride( $this->_modName );
         
@@ -305,9 +334,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * 
      * @param   stdClass    The node object
      * @return  NULL
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
     public function insert( stdClass $node )
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
+        
         // Checks if the current module is an override
         $override = self::$_classManager->isOverride( $this->_modName );
         
@@ -334,9 +367,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * 
      * @param   stdClass    The node object
      * @return  NULL
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
     public function update( stdClass $node )
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
+        
         // Checks if the current module is an override
         $override = self::$_classManager->isOverride( $this->_modName );
         
@@ -365,10 +402,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   boolean     Wheter a teaser must be generated instead of the full content
      * @param   boolean     Whether the node is being displayed as a standalone page
      * @return  stdClass    The node object
-     * @throws  Oop_Drupal_Hooks_Exception  If the method getNode() is not defined in the module class
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
     public function view( stdClass $node, $teaser, $page)
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
+        
         // Prepares the node
         $node = node_prepare( $node, $teaser );
         
@@ -396,11 +436,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   int                         The delta offset, used to generate different contents for different blocks
      * @param   array                       The edited items (only if $op is 'save')
      * @return  array                       The Drupal block
-     * @throws  Oop_Drupal_Hooks_Exception  If the method getBlock() is not defined in the module class
-     * @see     _checkMethod
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Block_Interface interface
      */
     public function block( $op, $delta, $edit )
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Block_Interface' );
+        
         // Storage
         $block = array();
         
@@ -542,12 +584,13 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   int                         Which input format the filter is being used
      * @param   string                      The content to filter
      * @return  mixed                       Depends on $op
-     * @throws  Oop_Drupal_Hooks_Exception  If the method prepareFilter() is not defined in the module class
-     * @throws  Oop_Drupal_Hooks_Exception  If the method processFilter() is not defined in the module class
-     * @see     _checkMethod
+     * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Filter_Interface interface
      */
     public function filter( $op, $delta, $format, $text )
     {
+        // Checks that the module class implements the requested interfaces
+        $this->_checkInterface( 'Oop_Drupal_Filter_Interface' );
+        
         // Checks the operation to perform
         if( $op === 'list' ) {
             
@@ -563,9 +606,6 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
         } elseif( $op === 'prepare' ) {
             
-            // Checks the prepare method
-            $this->_checkMethod( 'prepareFilter' );
-            
             // Prepares the filter
             return Oop_Callback_Helper::apply(
                 array(
@@ -580,9 +620,6 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             );
             
         } elseif( $op === 'process' ) {
-            
-            // Process the filter
-            $this->_checkMethod( 'processFilter' );
             
             // Prepares the filter
             return Oop_Callback_Helper::apply(

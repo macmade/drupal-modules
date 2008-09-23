@@ -11,7 +11,7 @@
  * @copyright       Copyright &copy; 2008
  * @version         0.1
  */
-class helloworld extends Oop_Drupal_ModuleBase
+class helloworld extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interface
 {
     /**
      * Permissions array
