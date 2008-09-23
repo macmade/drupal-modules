@@ -18,4 +18,5 @@ class Oop_Core_ClassManager_Exception extends Oop_Core_Exception_Base
     const EXCEPTION_MODULE_NOT_LOADED    = 0x01;
     const EXCEPTION_NO_MODULE_CLASS_FILE = 0x02;
     const EXCEPTION_NO_MODULE_CLASS      = 0x03;
+    const EXCEPTION_BAD_INHERITANCE      = 0x04;
 }

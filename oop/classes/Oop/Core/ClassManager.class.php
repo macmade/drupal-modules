@@ -273,11 +273,12 @@ final class Oop_Core_ClassManager
      * Loads a module class
      * 
      * @param   string                          The module name
+     * @param   string                          The parent class to check for
      * @return  NULL
      * @throws  Oop_Core_ClassManager_Exception If the class file for the module does not exist
      * @throws  Oop_Core_ClassManager_Exception If the module class is not defined
      */
-    private function _loadModuleClass( $name )
+    private function _loadModuleClass( $name, $parentClass )
     {
         // Path to the module class file
         $path = $this->_moduleList[ $name ][ 0 ]
@@ -300,6 +301,13 @@ final class Oop_Core_ClassManager
             // The class is not defined
             throw new Oop_Core_ClassManager_Exception( 'The class for module ' . $name . ' is not defined in file ' . $path, Oop_Core_ClassManager_Exception::EXCEPTION_NO_MODULE_CLASS );
         }
+        
+        // Checks if the class extends the parent class
+        if( !is_subclass_of( $name, $parentClass ) ) {
+            
+            // Inheritance error
+            throw new Oop_Core_ClassManager_Exception( 'The class for module ' . $name . ' must inherit from class ' . $parentClass, Oop_Core_ClassManager_Exception::EXCEPTION_BAD_INHERITANCE );
+        }
     }
     
     /**
@@ -315,10 +323,18 @@ final class Oop_Core_ClassManager
         if( isset( $this->_overrides[ $name ] ) ) {
             
             // Loads the initial module class, so the override can extend it
-            $this->_loadModuleClass( $name );
+            $this->_loadModuleClass( $name, 'Oop_Drupal_ModuleBase' );
+            
+            // Module class should extend the overrided module
+            $parentClass = $name;
             
             // Sets the new module name
             $name = $this->_overrides[ $name ];
+            
+        } else {
+            
+            // Module class should extend Oop_Drupal_ModuleBase
+            $parentClass = 'Oop_Drupal_ModuleBase';
         }
         
         // Checks if the module class has already been instanciated
@@ -336,7 +352,7 @@ final class Oop_Core_ClassManager
         }
         
         // Loads the module class
-        $this->_loadModuleClass( $name );
+        $this->_loadModuleClass( $name, $parentClass );
         
         // Creates an instance of the module
         $this->_modules[ $name ] = new $name( dirname( $path ) . DIRECTORY_SEPARATOR );
