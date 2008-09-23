@@ -66,7 +66,7 @@ final class Oop_Core_ClassManager
     private function __construct()
     {
         // Sets the Drupal installation directory
-        $this->_drupalRootDir = substr( $_SERVER[ 'SCRIPT_FILENAME' ], 0, -strlen( $_SERVER[ 'PHP_SELF' ] ) + 1 );
+        $this->_drupalRootDir = substr( $_SERVER[ 'SCRIPT_FILENAME' ], 0, -9 );
         
         // Gets the list of the Drupal modules
         $this->_moduleList = module_list();
