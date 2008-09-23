@@ -1114,7 +1114,7 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
         $files = array();
         
         // Checks if a block has been added
-        if( $this->_formValues[ 'kickstarter_block_add' ] ) {
+        if( $this->_formValues[ 'kickstarter_block_add' ] && $this->_formValues[ 'block_add_config' ] ) {
             
             // Config file path
             $files[] = $this->_moduleSettingsDir
