@@ -644,6 +644,7 @@ class kickstarter extends Oop_Drupal_ModuleBase
             $this->_files[ $path ][] = ' * @return  string  The content of the page';
             $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::menu';
             $this->_files[ $path ][] = ' * @see     Oop_Drupal_Hooks::createModuleContent';
+            $this->_files[ $path ][] = ' * @see     ' . $this->_moduleName . '::show';
             $this->_files[ $path ][] = ' */';
             $this->_files[ $path ][] = 'function ' . $this->_moduleName . '_show()';
             $this->_files[ $path ][] = '{';

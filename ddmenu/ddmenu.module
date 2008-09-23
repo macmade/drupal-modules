@@ -2,7 +2,15 @@
 
 # $Id$
 
-Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->setNumberOfBlocks( Oop_Drupal_Utils::getInstance()->getModuleVariable( 'ddmenu', 'number_of_blocks', 1 ), true );
+// Sets the number of blocks available from this module
+Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->setNumberOfBlocks(
+    Oop_Drupal_Utils::getInstance()->getModuleVariable(
+        'ddmenu',
+        'number_of_blocks',
+        1
+    ),
+    true
+);
 
 /**
  * Drupal 'help' hook
@@ -21,26 +29,82 @@ function ddmenu_help( $path, $arg )
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->help( $path, $arg );
 }
 
+/**
+ * Drupal 'perm' hook
+ * 
+ * This function returns the available permissions for the module. They must
+ * be declared in the $_perm property of the module class.
+ * 
+ * @return  array   The permissions array
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function ddmenu_perm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->perm();
 }
 
+/**
+ * Drupal 'block' hook
+ * 
+ * This function lets Drupal know that the module has block content. The method
+ * used to generate the block content is getBlock(), defined in the module
+ * class.
+ * 
+ * @param   string  The kind of block to display
+ * @param   int     The delta offset, used to generate different contents for different blocks
+ * @param   array   The edited items (only if $op is 'save')
+ * @return  array   The Drupal block
+ * @see     Oop_Drupal_Hooks::block
+ * @see     ddmenu::getBlock
+ */
 function ddmenu_block( $op = 'list', $delta = 0, array $edit = array() )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->block( $op, $delta, $edit );
 }
 
+/**
+ * Drupal 'menu' hook
+ * 
+ * This function lets Drupal know that the module has custom menu items.
+ * An administration settings page can be automatically added with the
+ * Oop_Drupal_Hooks::addAdminSettingsMenu() method.
+ * 
+ * @return  array   An array with the menu items
+ * @see     Oop_Drupal_Hooks::addMenuItems
+ * @see     Oop_Drupal_Hooks::addAdminSettingsMenu
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function ddmenu_menu()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->addAdminSettingsMenu();
 }
 
+/**
+ * Gets the admin form
+ * 
+ * This function returns the form configuration for the administration settings
+ * page. The form configuration must be defined in the 'settings/admin.form.php'
+ * file.
+ * 
+ * @return  array   An array with the form configuration
+ * @see     Oop_Drupal_Hooks::getAdminForm
+ */
 function ddmenu_adminForm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->getAdminForm();
 }
 
+/**
+ * Validates the admin form
+ * 
+ * This function will be called when the form in the administration settings
+ * page is submitted.
+ * 
+ * @param   array   The form configuration
+ * @param   array   The submitted values
+ * @return  NULL
+ * @see     ddmenu::validateAdminForm
+ */
 function ddmenu_adminForm_validate( $form, &$formState )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddmenu' )->validateAdminForm( $form, $formState );

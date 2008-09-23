@@ -19,21 +19,61 @@ function kickstarter_help( $path, $arg )
     return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->help( $path, $arg );
 }
 
+/**
+ * Drupal 'perm' hook
+ * 
+ * This function returns the available permissions for the module. They must
+ * be declared in the $_perm property of the module class.
+ * 
+ * @return  array   The permissions array
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function kickstarter_perm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->perm();
 }
 
+/**
+ * Drupal 'menu' hook
+ * 
+ * This function lets Drupal know that the module has custom menu items.
+ * An administration settings page can be automatically added with the
+ * Oop_Drupal_Hooks::addAdminSettingsMenu() method.
+ * 
+ * @return  array   An array with the menu items
+ * @see     Oop_Drupal_Hooks::addMenuItems
+ * @see     Oop_Drupal_Hooks::addAdminSettingsMenu
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function kickstarter_menu()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->addMenuItems();
 }
 
+/**
+ * Displays the page for a menu item
+ * 
+ * This function generates the content for a page placed in a custom menu item
+ * 
+ * @return  string  The content of the page
+ * @see     Oop_Drupal_Hooks::menu
+ * @see     Oop_Drupal_Hooks::createModuleContent
+ */
 function kickstarter_show()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->createModuleContent( 'show' );
 }
 
+/**
+ * Drupal 'form' hook
+ * 
+ * This function returns the form configuration for the node creation/ edition.
+ * The form configuration must be defined in the 'settings/node.form.php' file.
+ * 
+ * @param   stdClass    The node object
+ * @return  array       An array with the form configuration
+ * @see     Oop_Drupal_Hooks::form
+ */
 function kickstarter_form()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'kickstarter' )->getForm();

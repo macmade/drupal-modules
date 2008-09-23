@@ -19,46 +19,145 @@ function ddsitemap_help( $path, $arg )
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->help( $path, $arg );
 }
 
+/**
+ * Drupal 'perm' hook
+ * 
+ * This function returns the available permissions for the module. They must
+ * be declared in the $_perm property of the module class.
+ * 
+ * @return  array   The permissions array
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function ddsitemap_perm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->perm();
 }
 
+/**
+ * Drupal 'menu' hook
+ * 
+ * This function lets Drupal know that the module has custom menu items.
+ * An administration settings page can be automatically added with the
+ * Oop_Drupal_Hooks::addAdminSettingsMenu() method.
+ * 
+ * @return  array   An array with the menu items
+ * @see     Oop_Drupal_Hooks::addMenuItems
+ * @see     Oop_Drupal_Hooks::addAdminSettingsMenu
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function ddsitemap_menu()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->addAdminSettingsMenu();
 }
 
+/**
+ * Gets the admin form
+ * 
+ * This function returns the form configuration for the administration settings
+ * page. The form configuration must be defined in the 'settings/admin.form.php'
+ * file.
+ * 
+ * @return  array   An array with the form configuration
+ * @see     Oop_Drupal_Hooks::getAdminForm
+ */
 function ddsitemap_adminForm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->getAdminForm();
 }
 
+/**
+ * Drupal 'access' hook
+ * 
+ * This function controls the access for the node content. Permissions must
+ * be declared in the $_perm property of the module class.
+ * 
+ * @param   string  The requested operation
+ * @param   mixed   The node object, if any
+ * @param   mixed   The user account, if any
+ * @return  boolean Wheter the access is granted or not for the given operation
+ * @see     Oop_Drupal_Hooks::access
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function ddsitemap_access( $op, $node, $account )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->access( $op, $node, $account );
 }
 
+/**
+ * Drupal 'form' hook
+ * 
+ * This function returns the form configuration for the node creation/ edition.
+ * The form configuration must be defined in the 'settings/node.form.php' file.
+ * 
+ * @param   stdClass    The node object
+ * @return  array       An array with the form configuration
+ * @see     Oop_Drupal_Hooks::form
+ */
 function ddsitemap_form( stdClass $node )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->form( $node );
 }
 
+/**
+ * Drupal 'node_info' hook
+ * 
+ * This function returns informations about the node. The labels used must be
+ * placed in the module's lang file, in the 'lang/' directory. They are all
+ * in the 'system' section, and are called 'node_info_name' and
+ * 'node_info_description'.
+ * 
+ * @return  array    The information array for the Drupal node
+ * @see     Oop_Drupal_Hooks::node_info
+ */
 function ddsitemap_node_info()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->node_info();
 }
 
+/**
+ * Drupal 'view' hook
+ * 
+ * This function lets Drupal know that the module has node content. The method
+ * used to generate the node content is getNode(), defined in the module
+ * class.
+ * 
+ * @param   stdClass    The node object
+ * @param   boolean     Wheter a teaser must be generated instead of the full content
+ * @param   boolean     Whether the node is being displayed as a standalone page
+ * @return  stdClass    The node object
+ * @see     Oop_Drupal_Hooks::view
+ * @see     ddsitemap::getNode
+ */
 function ddsitemap_view( stdClass $node, $teaser = false, $page = false )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->view( $node, $teaser, $page );
 }
 
+/**
+ * Drupal 'insert' hook
+ * 
+ * This function is called when a new node is created. All fields will be
+ * automatically stored in the database and placed in the $_modVars property
+ * of the module class.
+ * 
+ * @param   stdClass    The node object
+ * @see     Oop_Drupal_Hooks::insert
+ */
 function ddsitemap_insert( stdClass $node )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->insert( $node );
 }
 
+/**
+ * Drupal 'update' hook
+ * 
+ * This function is called when a node is updated. All fields will be
+ * automatically stored in the database and placed in the $_modVars property
+ * of the module class.
+ * 
+ * @param   stdClass    The node object
+ * @see     Oop_Drupal_Hooks::insert
+ */
 function ddsitemap_update( stdClass $node )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'ddsitemap' )->update( $node );

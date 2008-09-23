@@ -5,6 +5,12 @@
 /**
  * Drupal 'install' hook
  * 
+ * This function will be called when the module is installed.
+ * It will automatically set the weight of the module to be sure that the 'oop'
+ * module will be loded first.
+ * If you have custom database tables, you should also install them here,
+ * using the drupal_install_schema() function.
+ * 
  * @return  NULL
  */
 function oop_install()
@@ -15,7 +21,14 @@ function oop_install()
 /**
  * Drupal 'uninstall' hook
  * 
+ * This function will be called when the module is uninstalled.
+ * It will automatically delete all the variables belonging to this module,
+ * stored in the database.
+ * If you have custom database tables, you should also uninstall them here,
+ * using the drupal_uninstall_schema() function.
+ * 
  * @return  NULL
+ * @see     Oop_Drupal_Utils::deleteModuleVariables
  */
 function oop_uninstall()
 {
@@ -25,7 +38,10 @@ function oop_uninstall()
 /**
  * Drupal 'schema' hook
  * 
- * @return  array   The schema array
+ * This function will install the database needed by the module.
+ * 
+ * @return  NULL
+ * @see     Oop_Drupal_Database::createSchema
  */
 function oop_schema()
 {

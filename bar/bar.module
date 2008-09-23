@@ -2,4 +2,5 @@
 
 # $Id$
 
+// Registers an override for the 'foo' module
 Oop_Core_ClassManager::getInstance()->overrideModule( 'foo', 'bar' );

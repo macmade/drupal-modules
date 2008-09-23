@@ -19,6 +19,21 @@ function emailcrypt_help( $path, $arg )
     return Oop_Core_ClassManager::getInstance()->getModule( 'emailcrypt' )->help( $path, $arg );
 }
 
+/**
+ * Drupal 'filter' hook
+ * 
+ * Process a filter. The methods used to prepare and process the filter must
+ * be declared in the module class. They are prepareFilter() and processFilter().
+ * 
+ * @param   string  Which filtering operation to perform
+ * @param   int     Which of the module's filters to use
+ * @param   int     Which input format the filter is being used
+ * @param   string  The content to filter
+ * @return  mixed   Depends on $op
+ * @see     Oop_Drupal_Hooks::filter
+ * @see     emailcrypt::prepareFilter
+ * @see     emailcrypt::processFilter
+ */
 function emailcrypt_filter( $op, $delta = 0, $format = -1, $text = '' )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'emailcrypt' )->filter( $op, $delta, $format, $text );

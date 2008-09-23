@@ -19,11 +19,34 @@ function helloworld_help( $path, $arg )
     return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->help( $path, $arg );
 }
 
+/**
+ * Drupal 'perm' hook
+ * 
+ * This function returns the available permissions for the module. They must
+ * be declared in the $_perm property of the module class.
+ * 
+ * @return  array   The permissions array
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function helloworld_perm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->perm();
 }
 
+/**
+ * Drupal 'block' hook
+ * 
+ * This function lets Drupal know that the module has block content. The method
+ * used to generate the block content is getBlock(), defined in the module
+ * class.
+ * 
+ * @param   string  The kind of block to display
+ * @param   int     The delta offset, used to generate different contents for different blocks
+ * @param   array   The edited items (only if $op is 'save')
+ * @return  array   The Drupal block
+ * @see     Oop_Drupal_Hooks::block
+ * @see     helloworld::getBlock
+ */
 function helloworld_block( $op = 'list', $delta = 0, array $edit = array() )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'helloworld' )->block( $op, $delta, $edit );

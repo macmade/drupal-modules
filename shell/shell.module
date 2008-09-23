@@ -19,28 +19,80 @@ function shell_help( $path, $arg )
     return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->help( $path, $arg );
 }
 
+/**
+ * Drupal 'perm' hook
+ * 
+ * This function returns the available permissions for the module. They must
+ * be declared in the $_perm property of the module class.
+ * 
+ * @return  array   The permissions array
+ * @see     Oop_Drupal_Hooks::perm
+ */
+function shell_perm()
+{
+    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->perm();
+}
+
+/**
+ * Drupal 'menu' hook
+ * 
+ * This function lets Drupal know that the module has custom menu items.
+ * An administration settings page can be automatically added with the
+ * Oop_Drupal_Hooks::addAdminSettingsMenu() method.
+ * 
+ * @return  array   An array with the menu items
+ * @see     Oop_Drupal_Hooks::addMenuItems
+ * @see     Oop_Drupal_Hooks::addAdminSettingsMenu
+ * @see     Oop_Drupal_Hooks::perm
+ */
 function shell_menu()
 {
     $module = Oop_Core_ClassManager::getInstance()->getModule( 'shell' );
     return $module->addMenuItems( $module->addAdminSettingsMenu() );
 }
 
+/**
+ * Gets the admin form
+ * 
+ * This function returns the form configuration for the administration settings
+ * page. The form configuration must be defined in the 'settings/admin.form.php'
+ * file.
+ * 
+ * @return  array   An array with the form configuration
+ * @see     Oop_Drupal_Hooks::getAdminForm
+ */
 function shell_adminForm()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->getAdminForm();
 }
 
+/**
+ * Validates the admin form
+ * 
+ * This function will be called when the form in the administration settings
+ * page is submitted.
+ * 
+ * @param   array   The form configuration
+ * @param   array   The submitted values
+ * @return  NULL
+ * @see     shell::validateAdminForm
+ */
 function shell_adminForm_validate( $form, &$formState )
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->validateAdminForm( $form, $formState );
 }
 
+/**
+ * Displays the page for a menu item
+ * 
+ * This function generates the content for a page placed in a custom menu item
+ * 
+ * @return  string  The content of the page
+ * @see     Oop_Drupal_Hooks::menu
+ * @see     Oop_Drupal_Hooks::createModuleContent
+ * @see     shell::show
+ */
 function shell_show()
 {
     return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->createModuleContent( 'show' );
-}
-
-function shell_perm()
-{
-    return Oop_Core_ClassManager::getInstance()->getModule( 'shell' )->perm();
 }

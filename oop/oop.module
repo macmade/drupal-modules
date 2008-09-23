@@ -62,7 +62,11 @@ function oop_help( $path, $arg )
 /**
  * Drupal 'perm' hook
  * 
- * @return  array   An array with the permissions
+ * This function returns the available permissions for the module. They must
+ * be declared in the $_perm property of the module class.
+ * 
+ * @return  array   The permissions array
+ * @see     Oop_Drupal_Hooks::perm
  */
 function oop_perm()
 {
@@ -72,7 +76,14 @@ function oop_perm()
 /**
  * Drupal 'menu' hook
  * 
- * @return  array   The menu items
+ * This function lets Drupal know that the module has custom menu items.
+ * An administration settings page can be automatically added with the
+ * Oop_Drupal_Hooks::addAdminSettingsMenu() method.
+ * 
+ * @return  array   An array with the menu items
+ * @see     Oop_Drupal_Hooks::addMenuItems
+ * @see     Oop_Drupal_Hooks::addAdminSettingsMenu
+ * @see     Oop_Drupal_Hooks::perm
  */
 function oop_menu()
 {
@@ -80,9 +91,14 @@ function oop_menu()
 }
 
 /**
- * Drupal 'menu' callback for the administration settings
+ * Gets the admin form
  * 
- * @return  string  The configuration form
+ * This function returns the form configuration for the administration settings
+ * page. The form configuration must be defined in the 'settings/admin.form.php'
+ * file.
+ * 
+ * @return  array   An array with the form configuration
+ * @see     Oop_Drupal_Hooks::getAdminForm
  */
 function oop_adminForm()
 {
@@ -92,9 +108,14 @@ function oop_adminForm()
 /**
  * Submission callback for the administration settings form
  * 
+ * This function is a replacement for the built-in system_settings_form_submit()
+ * function. It's used to store all the fields in the 'oop_modules_variables'
+ * table instead of the default 'variable' table.
+ * 
  * @param   array   The form configuration
  * @param   array   The submitted form values
  * @return  NULL
+ * @see     Oop_Drupal_Hooks::getAdminForm
  */
 function oop_submitAdminForm( array $form, array &$formState )
 {
