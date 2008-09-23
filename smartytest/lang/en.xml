@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- $Id$ -->
+
+<labels>
+    <system>
+        <help>A test module to demonstrate the use of Smarty in an OOP Drupal module</help>
+        <block_0_subject>Smarty</block_0_subject>
+        <block_0_info>A test block to demonstrate the use of Smarty in an OOP Drupal module</block_0_info>
+    </system>
+    <settings>
+    </settings>
+    <module>
+    </module>
+</labels>

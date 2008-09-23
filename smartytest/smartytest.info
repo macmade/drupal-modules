@@ -1,0 +1,8 @@
+; $Id$
+
+name = Smarty test
+description = A test module to demonstrate the use of Smarty in an OOP Drupal module
+core = 6.x
+php = 5.2
+package = Testing
+dependencies[] = oop
