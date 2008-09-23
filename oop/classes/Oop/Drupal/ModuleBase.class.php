@@ -15,42 +15,47 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     /**
      * Whether the Mootools JS framework has been included
      */
-    private static $_hasMootools      = false;
+    private static $_hasMootools             = false;
     
     /**
      * Whether the Prototype JS framework has been included
      */
-    private static $_hasPrototype     = false;
+    private static $_hasPrototype            = false;
     
     /**
      * Whether the Scriptaculous JS framework has been included
      */
-    private static $_hasScriptaculous = false;
+    private static $_hasScriptaculous        = false;
+    
+    /**
+     * The webtoolkit scripts that have been included
+     */
+    private static $_webtoolkitLoadedScripts = array();
     
     /**
      * Whether the Oop JS file has been included
      */
-    private static $_hasOopJs         = false;
+    private static $_hasOopJs                = false;
     
     /**
      * Whether the CSS file for the current module has been included
      */
-    private $_cssFiles                = array();
+    private $_cssFiles                       = array();
     
     /**
      * The substitution symbol for the @ character
      */
-    private static $_emailCryptSymbol = '';
+    private static $_emailCryptSymbol        = '';
     
     /**
      * Whether the JS file for the current module has been included
      */
-    private $_hasScriptFile           = false;
+    private $_hasScriptFile                  = false;
     
     /**
      * Whether the CSS file for the current module has been included
      */
-    private $_hasCssFile              = false;
+    private $_hasCssFile                     = false;
     
     /**
      * Sets the substitution character for the @ symbol
@@ -66,13 +71,18 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     /**
      * Includes the Mootools JS framework
      * 
+     * Please be aware that using Mootools with Drupal will probably create
+     * a conflict with the jQuery JS framework, that is used by Drupal.
+     * Please take a look at the jQuery documentation to see if you can
+     * do without Mootools: http://docs.jquery.com/.
+     * 
      * @return  NULL
      * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
     protected function _includeMootools()
     {
         // Only includes the script once
-        if( !self::$_hasMootools ) {
+        if( self::$_hasMootools === false ) {
             
             // Adds the JS script
             drupal_add_js(
@@ -80,14 +90,19 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
               . 'ressources/javascript/mootools/mootools.js',
                 'module'
             );
+            
+            // Script has been included
+            self::$_hasMootools = true;
         }
-        
-        // Script has been included
-        self::$_hasMootools = true;
     }
     
     /**
      * Includes the Prototype JS framework
+     * 
+     * Please be aware that using Prototype with Drupal will probably create
+     * a conflict with the jQuery JS framework, that is used by Drupal.
+     * Please take a look at the jQuery documentation to see if you can
+     * do without Prototype: http://docs.jquery.com/.
      * 
      * @return  NULL
      * @see     Oop_Core_ClassManager::getModuleRelativePath
@@ -95,7 +110,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     protected function _includePrototype()
     {
         // Only includes the script once
-        if( !self::$_hasPrototype ) {
+        if( self::$_hasPrototype === false ) {
             
             // Adds the JS script
             drupal_add_js(
@@ -103,22 +118,28 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
               . 'ressources/javascript/prototype/prototype.js',
                 'module'
             );
+            
+            // Script has been included
+            self::$_hasPrototype = true;
         }
-        
-        // Script has been included
-        self::$_hasPrototype = true;
     }
     
     /**
      * Includes the Scriptaculous JS framework
      * 
+     * Please be aware that using Scriptaculous with Drupal will probably create
+     * a conflict with the jQuery JS framework, that is used by Drupal.
+     * Please take a look at the jQuery documentation to see if you can
+     * do without Scriptaculous: http://docs.jquery.com/.
+     * 
      * @return  NULL
+     * @see     _includePrototype
      * @see     Oop_Core_ClassManager::getModuleRelativePath
      */
     protected function _includeScriptaculous()
     {
         // Only includes the script once
-        if( !self::$_hasScriptaculous ) {
+        if( self::$_hasScriptaculous === false ) {
             
             // Includes the Prototype JS framework
             $this->_includePrototype();
@@ -129,10 +150,43 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
               . 'ressources/javascript/scriptaculous/scriptaculous.js',
                 'module'
             );
+            
+            // Script has been included
+            self::$_hasScriptaculous = true;
         }
-        
-        // Script has been included
-        self::$_hasScriptaculous = true;
+    }
+    
+    /**
+     * Includes a Webtoolkit script
+     * 
+     * Available scripts are:
+     * - base64
+     * - crc32
+     * - md5
+     * - sha1
+     * - sha256
+     * - url
+     * - utf8
+     * 
+     * @param   string  The name of the script to include
+     * @return  NULL
+     * @see     Oop_Core_ClassManager::getModuleRelativePath
+     */
+    protected function _includeWebtoolkitScript( $script )
+    {
+        // Only includes the script once
+        if( !isset( self::$_webtoolkitLoadedScripts[ $script ] ) ) {
+            
+            // Adds the JS script
+            drupal_add_js(
+                self::$_classManager->getModuleRelativePath( 'oop' )
+              . 'ressources/javascript/webtoolkit/' . $script . '.js',
+                'module'
+            );
+            
+            // Script has been included
+            self::$_webtoolkitLoadedScripts[ $script ] = true;
+        }
     }
     
     /**
@@ -144,7 +198,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     protected function _includeOopJs()
     {
         // Only includes the script once
-        if( !self::$_hasOopJs ) {
+        if( self::$_hasOopJs === false ) {
             
             // Adds the JS script
             drupal_add_js(
@@ -152,10 +206,10 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
               . 'oop.js',
                 'module'
             );
+            
+            // Script has been included
+            self::$_hasOopJs = true;
         }
-        
-        // Script has been included
-        self::$_hasOopJs = true;
     }
     
     /**
@@ -167,7 +221,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     protected function _includeModuleScript()
     {
         // Only includes the script once
-        if( !$this->_hasScriptFile ) {
+        if( $this->_hasScriptFile === false ) {
             
             // Includes the OOP JS script
             $this->_includeOopJs();
@@ -192,10 +246,10 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
               . $this->_modName . '.js',
                 'module'
             );
+            
+            // Script has been included
+            $this->_hasScriptFile = true;
         }
-        
-        // Script has been included
-        $this->_hasScriptFile = true;
     }
     
     /**
@@ -226,7 +280,7 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     protected function _includeModuleCss()
     {
         // Only includes the script once
-        if( !$this->_hasCssFile ) {
+        if( $this->_hasCssFile === false ) {
             
             // Gets the override status
             $override = self::$_classManager->isOverride( $this->_modName );
@@ -248,10 +302,10 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
               . $this->_modName . '.css',
                 'module'
             );
+            
+            // CSS have been included
+            $this->_hasCssFile = true;
         }
-        
-        // CSS have been included
-        $this->_hasCssFile = true;
     }
     
     /**
