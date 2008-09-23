@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Drupal
+ * @package         Oop/Drupal/Filter
  * @version         0.1
  */
 interface Oop_Drupal_Filter_Interface

@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Oop/String
+ * @package         Oop/Drupal
  * @version         0.1
  */
 final class Oop_Drupal_Utils

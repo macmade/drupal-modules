@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Drupal
+ * @package         Oop/Drupal/Page
  * @version         0.1
  */
 final class Oop_Drupal_Page_Getter implements ArrayAccess

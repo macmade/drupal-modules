@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Drupal
+ * @package         Oop/Drupal
  * @version         0.1
  */
 abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module

@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Drupal
+ * @package         Oop/Drupal/Form
  * @version         0.1
  */
 class Oop_Drupal_Form_Builder

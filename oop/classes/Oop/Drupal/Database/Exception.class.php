@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Oop/Drupal/Exception
+ * @package         Oop/Drupal/Database
  * @version         0.1
  */
 class Oop_Drupal_Database_Exception extends Oop_Core_Exception_Base

@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Oop/Core/ClassManager
+ * @package         Oop/Callback/Helper
  * @version         0.1
  */
 class Oop_Callback_Helper_Exception extends Oop_Core_Exception_Base

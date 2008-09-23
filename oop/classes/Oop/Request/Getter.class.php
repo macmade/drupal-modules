@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Oop/Core
+ * @package         Oop/Request
  * @version         0.1
  */
 final class Oop_Request_Getter

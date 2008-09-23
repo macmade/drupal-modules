@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Oop/Lang
+ * @package         Oop/Lang/Getter
  * @version         0.1
  */
 class Oop_Lang_Getter_Exception extends Oop_Core_Exception_Base

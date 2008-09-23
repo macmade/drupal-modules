@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Html
+ * @package         Oop/Xhtml
  * @version         0.1
  */
 class Oop_Xhtml_Comment extends Oop_Xhtml_Tag implements ArrayAccess

@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Oop/Core
+ * @package         Oop/Callback
  * @version         0.1
  */
 class Oop_Callback_Helper

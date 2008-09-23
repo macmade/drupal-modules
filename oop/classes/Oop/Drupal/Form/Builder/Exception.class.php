@@ -7,7 +7,7 @@
  * 
  * @author          Jean-David Gadina <macmade@eosgarden.com>
  * @copyright       Copyright &copy; 2008
- * @package         Oop/Drupal/Exception
+ * @package         Oop/Drupal/Form/Builder
  * @version         0.1
  */
 class Oop_Drupal_Form_Builder_Exception extends Oop_Core_Exception_Base
