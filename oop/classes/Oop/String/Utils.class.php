@@ -140,4 +140,30 @@ final class Oop_String_Utils
         // Return encrypted / decrypted email
         return $crypt;
     }
+    
+    /**
+     * Gets an HTML list from a string
+     * 
+     * @param   string          The string to process
+     * @param   string          The separator for the list items
+     * @return  Oop_Xhtml_Tag   The HTML list
+     */
+    public function strToList( $str, $sep = ',' )
+    {
+        // Gets all the list items
+        $items = explode( $sep, $str );
+        
+        // Creates the list tag
+        $list = new Oop_Xhtml_Tag( 'ul' );
+        
+        // Process each list item
+        foreach( $items as $item ) {
+            
+            // Adds the list item to the list tag
+            $list->li = trim( $item );
+        }
+        
+        // Returns the list tag
+        return $list;
+    }
 }
