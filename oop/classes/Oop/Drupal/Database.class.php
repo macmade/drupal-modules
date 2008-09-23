@@ -305,6 +305,9 @@ final class Oop_Drupal_Database
                 $schema[ $tableName ][ 'unique keys' ][ $uniqueName ] = $value;
             }
         }
+        
+        // Returns the schema
+        return $schema;
     }
     
     /**
