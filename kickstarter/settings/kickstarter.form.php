@@ -146,6 +146,16 @@ $formConf = array(
         'menu_description' => array(
             '#type' => 'textfield',
             '#size' => 100
+        ),
+        'menu_name' => array(
+            '#type'          => 'select',
+            '#options'       => 'primary,secondary,navigation',
+            '#default_value' => 'navigation'
+        ),
+        'menu_type' => array(
+            '#type'          => 'select',
+            '#options'       => 'menu_normal_item,menu_callback,menu_suggested_item,menu_local_task,menu_default_local_task',
+            '#default_value' => 'menu_normal_item'
         )
     ),
     'filter' => array(

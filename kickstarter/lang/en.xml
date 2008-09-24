@@ -73,6 +73,18 @@
         <menu_title_description>The title of the menu item.</menu_title_description>
         <menu_description_title>Description</menu_description_title>
         <menu_description_description>The description of the menu item.</menu_description_description>
+        <menu_name_title>Menu name</menu_name_title>
+        <menu_name_description>The name of the menu in which to place the menu item.</menu_name_description>
+        <menu_name_option_primary>Primary links</menu_name_option_primary>
+        <menu_name_option_secondary>Secondary links</menu_name_option_secondary>
+        <menu_name_option_navigation>Navigation</menu_name_option_navigation>
+        <menu_type_title>Type</menu_type_title>
+        <menu_type_description>The type of the menu item.</menu_type_description>
+        <menu_type_option_menu_normal_item>Normal item</menu_type_option_menu_normal_item>
+        <menu_type_option_menu_callback>Callback</menu_type_option_menu_callback>
+        <menu_type_option_menu_suggested_item>Suggested item</menu_type_option_menu_suggested_item>
+        <menu_type_option_menu_local_task>Local task</menu_type_option_menu_local_task>
+        <menu_type_option_menu_default_local_task>Default local task</menu_type_option_menu_default_local_task>
         <filter_title>Filter</filter_title>
         <filter_description>Controls the filter options for the module.</filter_description>
         <filter_add_title>Add filter</filter_add_title>

@@ -891,13 +891,18 @@ class kickstarter extends Oop_Drupal_ModuleBase implements Oop_Drupal_MenuItem_I
             // Checks if a custom menu item has been defined
             if( $this->_formValues[ 'kickstarter_menu_add' ] ) {
                 
+                // Name of the menu in which to place the item
+                $menuName                = ( $this->_formValues[ 'kickstarter_menu_name' ] === 'navigation' ) ? $this->_formValues[ 'kickstarter_menu_name' ] : $this->_formValues[ 'kickstarter_menu_name' ] . '-links';
+                
                 // Adds the custom menu item
                 $this->_files[ $path ][] = '    {';
                 $this->_files[ $path ][] = '        $items[ \'' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ] = array(';
                 $this->_files[ $path ][] = '            \'title\'            => $this->_lang->getLabel( \'menu_item_title\', \'system\' ),';
                 $this->_files[ $path ][] = '            \'description\'      => $this->_lang->getLabel( \'menu_item_description\', \'system\' ),';
                 $this->_files[ $path ][] = '            \'page callback\'    => \'' . $this->_moduleName . '_show\',';
-                $this->_files[ $path ][] = '            \'access arguments\' => array( \'access ' . $this->_moduleName . ' ' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' )';
+                $this->_files[ $path ][] = '            \'access arguments\' => array( \'access ' . $this->_moduleName . ' ' . $this->_formValues[ 'kickstarter_menu_path' ] . '\' ),';
+                $this->_files[ $path ][] = '            \'menu_name\'        => \'' . $menuName . '\',';
+                $this->_files[ $path ][] = '            \'type\'             => ' . strtoupper( $this->_formValues[ 'kickstarter_menu_type' ] );
                 $this->_files[ $path ][] = '        );';
                 $this->_files[ $path ][] = '    }';
                 
