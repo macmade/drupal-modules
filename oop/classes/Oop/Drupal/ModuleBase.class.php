@@ -33,6 +33,20 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     private static $_webtoolkitLoadedScripts = array();
     
     /**
+     * The jQuery plugins that have been included
+     */
+    private static $_jQueryLoadedPlugins     = array();
+    
+    /**
+     * The dependancies for the jQuery plugins
+     */
+    private static $_jQueryPluginsDeps       = array(
+        'accordion' => array(
+            'dimensions'
+        )
+    );
+    
+    /**
      * Whether the Oop JS file has been included
      */
     private static $_hasOopJs                = false;
@@ -186,6 +200,44 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
             
             // Script has been included
             self::$_webtoolkitLoadedScripts[ $script ] = true;
+        }
+    }
+    
+    /**
+     * Includes a jQuery plugin
+     * 
+     * Available plugins are:
+     * - accordion
+     * - dimensions
+     * 
+     * @param   string  The name of the plugin to include
+     * @return  NULL
+     */
+    protected function _includeJQueryPlugin( $plugin )
+    {
+        // Only includes the script once
+        if( !isset( self::$_jQueryLoadedPlugins[ $plugin ] ) ) {
+            
+            // Checks for dependancies
+            if( isset( self::$_jQueryPluginsDeps[ $plugin ] ) ) {
+                
+                // Process each dependancy
+                foreach( self::$_jQueryPluginsDeps[ $plugin ] as $deps ) {
+                    
+                    // Includes the plugin
+                    $this->_includeJQueryPlugin( $deps );
+                }
+            }
+            
+            // Adds the JS script
+            drupal_add_js(
+                self::$_classManager->getModuleRelativePath( 'oop' )
+              . 'ressources/javascript/jquery/jquery' . $plugin . '.js',
+                'module'
+            );
+            
+            // Script has been included
+            self::$_jQueryLoadedPlugins[ $plugin ] = true;
         }
     }
     
