@@ -17,6 +17,13 @@ if( !function_exists( 'spl_autoload_register' ) ) {
     throw new Exception( 'The SPL (Standard PHP Library) is required to use this script' );
 }
 
+// Checks for the SimpleXmlElement class
+if( !class_exists( 'SimpleXmlElement' ) ) {
+    
+    // SimpleXml is unavailable
+    throw new Exception( 'The SimpleXmlElement class is required to use this script' );
+}
+
 // Includes the class manager
 require_once(
     dirname( __FILE__ )
