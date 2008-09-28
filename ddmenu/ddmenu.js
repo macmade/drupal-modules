@@ -22,12 +22,12 @@ oopManager.getInstance().registerModuleClass(
             if( el.is( ':hidden' ) ) {
                 
                 // Makes it appear
-                el.slideDown();
+                el.show( 'blind', {}, 1000 );
                 
             } else {
                 
                 // Makes it disappear
-                el.slideUp();
+                el.hide( 'blind', {}, 1000 );
             }
         }
     }

@@ -151,6 +151,9 @@ class ddmenu extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interface
             $this->_includeModuleCSS();
         }
         
+        // Includes the jQuery UI script
+        $this->_includeJQueryUi();
+        
         // Stores the delta
         $this->_delta = $delta;
         

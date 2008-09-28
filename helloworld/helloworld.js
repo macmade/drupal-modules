@@ -24,7 +24,7 @@ oopManager.getInstance().registerModuleClass(
             if( _displayed[ id ] === undefined || _displayed[ id ] === false ) {
                 
                 // Makes it appear
-                $( 'div#' + id ).slideDown();
+                $( 'div#' + id ).show( 'blind', {}, 1000 );
                 
                 // Sets the display state
                 _displayed[ id ] = true;
@@ -32,7 +32,7 @@ oopManager.getInstance().registerModuleClass(
             } else {
                 
                 // Makes it disappear
-                $( 'div#' + id ).slideUp();
+                $( 'div#' + id ).hide( 'blind', {}, 1000 );
                 
                 // Sets the display state
                 _displayed[ id ] = false;

@@ -29,6 +29,9 @@ class helloworld extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Inter
      */
     public function getBlock( Oop_Xhtml_Tag $content, $delta )
     {
+        // Includes the jQuery UI script
+        $this->_includeJQueryUi();
+        
         // Adds the hello world message
         $content->div->strong = $this->_lang->hello;
         
@@ -58,12 +61,12 @@ class helloworld extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Inter
         
         // Modules container
         $content->comment( 'Start of the module list' );
-        $modulesBlock                = $content->div;
+        $modulesBlock = $content->div;
         $content->comment( 'End of the module list' );
         
         // Backtrace containers
         $content->comment( 'Start of the backtrace' );
-        $backTraceBlock              = $content->div;
+        $backTraceBlock = $content->div;
         $content->comment( 'End of the backtrace' );
         
         // CSS class for the containers

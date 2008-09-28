@@ -147,6 +147,9 @@ class ddsitemap extends Oop_Drupal_ModuleBase implements Oop_Drupal_Node_Interfa
             $this->_includeModuleCSS();
         }
         
+        // Includes the jQuery UI script
+        $this->_includeJQueryUi();
+        
         $linkType = ( isset( $this->_modVars[ 'linktype_' . $delta ] ) ) ? $this->_modVars[ 'linktype_' . $delta ] : 'primary';
         
         switch( $linkType ) {
