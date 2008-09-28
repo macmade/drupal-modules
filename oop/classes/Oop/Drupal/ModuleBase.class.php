@@ -13,6 +13,11 @@
 abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
 {
     /**
+     * Whether the jQuery UI framework has been included
+     */
+    private static $_hasJQueryUi             = false;
+    
+    /**
      * Whether the Mootools JS framework has been included
      */
     private static $_hasMootools             = false;
@@ -80,6 +85,28 @@ abstract class Oop_Drupal_ModuleBase extends Oop_Drupal_Hooks
     public static function setEmailCryptSymbol( $symbol )
     {
         self::$_emailCryptSymbol = ( string )$symbol;
+    }
+    
+    /**
+     * Includes the jQuery UI JS framework
+     * 
+     * @return  NULL
+     */
+    protected function _includeJQueryUi()
+    {
+        // Only includes the script once
+        if( self::$_hasJQueryUi === false ) {
+            
+            // Adds the JS script
+            drupal_add_js(
+                self::$_classManager->getModuleRelativePath( 'oop' )
+              . 'ressources/javascript/jquery-ui/jquery-ui.js',
+                'module'
+            );
+            
+            // Script has been included
+            self::$_hasJQueryUi = true;
+        }
     }
     
     /**
