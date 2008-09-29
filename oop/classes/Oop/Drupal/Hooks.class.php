@@ -430,7 +430,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         $node = node_prepare( $node, $teaser );
         
         // Checks if the AOP join point exists
-        if( !Oop_Aop_Advisor::isJoinPoint( $modName, 'getModuleNode' ) ) {
+        if( !Oop_Aop_Advisor::joinPointExists( $modName, 'getModuleNode' ) ) {
             
             // Registers the AOP join point
             $this->_registerJoinPoint( 'getModuleNode', 'getNode' );
@@ -580,7 +580,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             if( $access ) {
                 
                 // Checks if the AOP join point exists
-                if( !Oop_Aop_Advisor::isJoinPoint( $modName, 'getModuleBlock' ) ) {
+                if( !Oop_Aop_Advisor::joinPointExists( $modName, 'getModuleBlock' ) ) {
                     
                     // Registers the AOP join point
                     $this->_registerJoinPoint( 'getModuleBlock', 'getBlock' );
@@ -660,7 +660,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         }
         
         // Checks if the AOP join point exists
-        if( !Oop_Aop_Advisor::isJoinPoint( $modName, 'addModuleMenuItems' ) ) {
+        if( !Oop_Aop_Advisor::joinPointExists( $modName, 'addModuleMenuItems' ) ) {
             
             // Registers the AOP join point
             $this->_registerJoinPoint( 'addModuleMenuItems', 'addMenuItems' );
@@ -704,7 +704,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         } elseif( $op === 'prepare' ) {
             
             // Checks if the AOP join point exists
-            if( !Oop_Aop_Advisor::isJoinPoint( $modName, 'prepareModuleFilter' ) ) {
+            if( !Oop_Aop_Advisor::joinPointExists( $modName, 'prepareModuleFilter' ) ) {
                 
                 // Registers the AOP join point
                 $this->_registerJoinPoint( 'prepareModuleFilter', 'prepareFilter' );
@@ -726,7 +726,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         } elseif( $op === 'process' ) {
             
             // Checks if the AOP join point exists
-            if( !Oop_Aop_Advisor::isJoinPoint( $modName, 'processModuleFilter' ) ) {
+            if( !Oop_Aop_Advisor::joinPointExists( $modName, 'processModuleFilter' ) ) {
                 
                 // Registers the AOP join point
                 $this->_registerJoinPoint( 'processModuleFilter', 'processFilter' );
