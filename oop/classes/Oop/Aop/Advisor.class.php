@@ -44,8 +44,9 @@
  *      -# Oop_Aop_Advisor::ADVICE_TYPE_AFTER_CALL
  *         Called after the join point is executed
  *      -# Oop_Aop_Advisor::ADVICE_TYPE_AFTER_THROWING
- *         Called after an exception is thrown from the join point, and may
- *         caught it
+ *         Called after an exception is thrown from the join point. The
+ *         original exception won't be thrown if the callback method
+ *         returns true
  * 
  * Please take a look at the documentation for the addAdvice() method, to learn
  * more about the type of advices.
@@ -457,6 +458,9 @@ abstract class Oop_Aop_Advisor
                     
                 } else {
                     
+                    // Boolean value to check if the exception has been caught, and so should not be thrown
+                    $exceptionCaught = false;
+                    
                     // Process each 'afterThrowing' advice
                     foreach( self::$_advices[ self::ADVICE_TYPE_AFTER_THROWING ][ $this->_className ][ $name ] as $advice ) {
                         
@@ -464,44 +468,62 @@ abstract class Oop_Aop_Advisor
                         if( $advice[ 1 ] === false || $advice[ 1 ] === $this->_objectHash ) {
                             
                             // Invokes the advice
-                            self::_invoke( $advice[ 0 ], array( $e ), $this, $name );
+                            $exceptionCaught = self::_invoke( $advice[ 0 ], array( $e, $this ), $this, $name );
+                            
+                            // Checks if the exception has been caught by the advice
+                            if( $exceptionCaught === true ) {
+                                
+                                // Exception was caught - Do not executes the next advices
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // Checks if the exception has been caught by the advice
+                    if( $exceptionCaught !== true ) {
+                        
+                        // Exception was not caught by an advice - Throws it back
+                        throw $e;
+                    }
+                }
+            }
+            
+            // Checks if we have a return value, meaning no exception was thrown
+            if( isset( $returnValue ) ) {
+                
+                // Checks if we ca have advices that will be able to modify the return value of the internal method
+                if( self::ADVICE_TYPE_BEFORE_RETURN & $allowedAdviceType ) {
+                    
+                    // Process each 'beforeReturn' advice
+                    foreach( self::$_advices[ self::ADVICE_TYPE_BEFORE_RETURN ][ $this->_className ][ $name ] as $advice ) {
+                        
+                        // Checks if the advice can be called on the current instance
+                        if( $advice[ 1 ] === false || $advice[ 1 ] === $this->_objectHash ) {
+                            
+                            // Invokes the advice and stores the return value
+                            $returnValue = self::_invoke( $advice[ 0 ], array( $returnValue, $args ), $this, $name );
                         }
                     }
                 }
-            }
-            
-            // Checks if we ca have advices that will be able to modify the return value of the internal method
-            if( self::ADVICE_TYPE_BEFORE_RETURN & $allowedAdviceType ) {
                 
-                // Process each 'beforeReturn' advice
-                foreach( self::$_advices[ self::ADVICE_TYPE_BEFORE_RETURN ][ $this->_className ][ $name ] as $advice ) {
+                // Checks if we can have advices after the call to the internal method
+                if( self::ADVICE_TYPE_AFTER_CALL & $allowedAdviceType ) {
                     
-                    // Checks if the advice can be called on the current instance
-                    if( $advice[ 1 ] === false || $advice[ 1 ] === $this->_objectHash ) {
+                    // Process each 'afterCall' advice
+                    foreach( self::$_advices[ self::ADVICE_TYPE_AFTER_CALL ][ $this->_className ][ $name ] as $advice ) {
                         
-                        // Invokes the advice and stores the return value
-                        $returnValue = self::_invoke( $advice[ 0 ], array( $returnValue, $args ), $this, $name );
+                        // Checks if the advice can be called on the current instance
+                        if( $advice[ 1 ] === false || $advice[ 1 ] === $this->_objectHash ) {
+                            
+                            // Invokes the advice
+                            self::_invoke( $advice[ 0 ], $args, $this, $name );
+                        }
                     }
                 }
-            }
-            
-            // Checks if we can have advices after the call to the internal method
-            if( self::ADVICE_TYPE_AFTER_CALL & $allowedAdviceType ) {
                 
-                // Process each 'afterCall' advice
-                foreach( self::$_advices[ self::ADVICE_TYPE_AFTER_CALL ][ $this->_className ][ $name ] as $advice ) {
-                    
-                    // Checks if the advice can be called on the current instance
-                    if( $advice[ 1 ] === false || $advice[ 1 ] === $this->_objectHash ) {
-                        
-                        // Invokes the advice
-                        self::_invoke( $advice[ 0 ], $args, $this, $name );
-                    }
-                }
+                // Returns the return value
+                return $returnValue;
             }
-            
-            // Returns the return value
-            return $returnValue;
         }
     }
     
@@ -729,8 +751,9 @@ abstract class Oop_Aop_Advisor
      *      -# Oop_Aop_Advisor::ADVICE_TYPE_AFTER_CALL
      *         Called after the join point is executed
      *      -# Oop_Aop_Advisor::ADVICE_TYPE_AFTER_THROWING
-     *         Called after an exception is thrown from the join point, and may
-     *         caught it
+     *         Called after an exception is thrown from the join point. The
+     *         original exception won't be thrown if the callback method
+     *         returns true
      * 
      * @param   int                         The type of the advice (one of the
      *                                      Oop_Aop_Advisor::ADVICE_TYPE_XXX
