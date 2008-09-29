@@ -29,14 +29,14 @@ class Oop_Callback_Helper
     {
         $argsCount = count( $args );
         
-        if( $argCount > 10 ) {
+        if( $argsCount > 10 ) {
             
             trigger_error( 'More than ten arguments were passed to callback, so the call_user_func_array() function was used', E_USER_NOTICE );
         }
         
         if( is_array( $callback ) ) {
             
-            if( !isset( $callback[ 0 ] ) || !isset( $callback[ 0 ] ) ) {
+            if( !isset( $callback[ 0 ] ) && !isset( $callback[ 1 ] ) ) {
                 
                 throw new Oop_Callback_Helper_Exception( 'Invalid callback', Oop_Callback_Helper_Exception::EXCEPTION_INVALID_CALLBACK );
             }
@@ -105,13 +105,13 @@ class Oop_Callback_Helper
                     
                     default:
                         
-                        return call_user_func_array( $callback, $arguments );
+                        return call_user_func_array( $callback, $args );
                         break;
                 }
                 
             }
             
-            return call_user_func_array( $callback, $arguments );
+            return call_user_func_array( $callback, $args );
         }
         
         switch( $argsCount ) {
@@ -173,7 +173,7 @@ class Oop_Callback_Helper
             
             default:
                 
-                return call_user_func_array( $callback, $arguments );
+                return call_user_func_array( $callback, $args );
                 break;
         }
     }
