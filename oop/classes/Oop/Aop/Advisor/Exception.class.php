@@ -10,7 +10,7 @@
  * @package         Oop/Aop/Advisor
  * @version         0.1
  */
-class Oop_Aop_Advisor_Exception extends Exception
+class Oop_Aop_Advisor_Exception extends Oop_Core_Exception_Base
 {
     /**
      * Error codes for the exceptions

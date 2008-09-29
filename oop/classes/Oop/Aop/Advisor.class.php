@@ -350,14 +350,21 @@ abstract class Oop_Aop_Advisor
      */
     private static function _processGlobalAdvices( $type, Oop_Aop_Advisor $object, $method, array $args = array() )
     {
-        // Adds the object instance to the arguments
-        array_unshift( $args, $object );
+        // Gets the class of the object
+        $className = get_class( $object );
         
-        // Process the advices for the given type
-        foreach( self::$_advices[ $type ] as $callback ) {
+        // Checks for advices
+        if( isset( self::$_advices[ $type ][ $className ] ) ) {
             
-            // Invokes the advice callback
-            self::_invoke( $callback, $args, $object, $method );
+            // Adds the object instance to the arguments
+            array_unshift( $args, $object );
+            
+            // Process the advices for the given type
+            foreach( self::$_advices[ $type ][ $className ] as $callback ) {
+                
+                // Invokes the advice callback
+                self::_invoke( $callback, $args, $object, $method );
+            }
         }
     }
     
@@ -374,8 +381,6 @@ abstract class Oop_Aop_Advisor
      * @return  mixed                       The return value of the join point method
      * @throws  Oop_Aop_Advisor_Exception   If the called join point has not been
      *                                      registered
-     * @throws  Oop_Aop_Advisor_Exception   If the method to use for the join point
-     *                                      does not exist
      * @see     _invoke
      */
     public function __call( $name, array $args = array() )
@@ -390,13 +395,6 @@ abstract class Oop_Aop_Advisor
         // Gets the method to use and the allowed advices type for the join point
         $method            = self::$_joinPoints[ $this->_className ][ $this->_objectHash ][ $name ][ 0 ];
         $allowedAdviceType = self::$_joinPoints[ $this->_className ][ $this->_objectHash ][ $name ][ 1 ];
-        
-        // Checks of the method for the join point exists
-        if( !method_exists( $this, $method ) ) {
-            
-            // Error - The method does not exist
-            throw new Oop_Aop_Advisor_Exception( 'The method ' . $method . ' for join point ' . $name .' does not exist in class ' . $this->_className, Oop_Aop_Advisor_Exception::EXCEPTION_NO_JOINPOINT_METHOD );
-        }
         
         // By default, the call on the join point internal method is allowed
         $valid = true;
@@ -752,6 +750,20 @@ abstract class Oop_Aop_Advisor
      */
     final public static function addAdvice( $type, $callback, $target, $joinPoint = '' )
     {
+        // Checks if the callback must be executed for a specific object or for all instances
+        if( is_object( $target ) ) {
+            
+            // Gets the class name and object hash, so the callback will be added for the specific object only
+            $className  = get_class( $target );
+            $objectHash = spl_object_hash( $target );
+            
+        } else {
+            
+            // Callback will be executed for all instances
+            $className  = $target;
+            $objectHash = false;
+        }
+        
         // Checks if the advice type is for a specific join point or not
         if(    $type === self::ADVICE_TYPE_CONSTRUCT
             || $type === self::ADVICE_TYPE_DESTRUCT
@@ -761,25 +773,18 @@ abstract class Oop_Aop_Advisor
             || $type === self::ADVICE_TYPE_TO_STRING
         ) {
             
-            // Adds the advice callback for the join point
-            self::$_advices[ $type ][ $target ] = $callback;
-            return true;
-               
-        } else {
-            
-            // Checks if the callback must be executed for a specific object or for all instances
-            if( is_object( $target ) ) {
+            // Checks if the storage array for the advice exists
+            if( !isset( self::$_advices[ $type ][ $className ] ) ) {
                 
-                // Gets the class name and object hash, so the callback will be added for the specific object only
-                $className  = get_class( $target );
-                $objectHash = spl_object_hash( $target );
-                
-            } else {
-                
-                // Callback will be executed for all instances
-                $className  = $target;
-                $objectHash = false;
+                // Creates the storage array for the advice
+                self::$_advices[ $type ][ $className ] = array();
             }
+            
+            // Adds the advice callback for the join point
+            self::$_advices[ $type ][ $className ][] = $callback;
+            return true;
+            
+        } else {
             
             // Checks if the join point exists
             if( !isset( self::$_joinPointsByName[ $className ][ $joinPoint ] ) ) {
@@ -855,11 +860,19 @@ abstract class Oop_Aop_Advisor
      *                                      Oop_Aop_Advisor::ADVICE_TYPE_XXX
      *                                      constants)
      * @return  NULL
+     * @throws  Oop_Aop_Advisor_Exception   If the joint point method does not exist
      * @throws  Oop_Aop_Advisor_Exception   If a join point with the same name is
      *                                      already registered
      */
     final protected function _registerJoinPoint( $name, $method, $availableAdviceTypes = 0 )
     {
+        // Checks of the method for the join point exists
+        if( !method_exists( $this, $method ) ) {
+            
+            // Error - The method does not exist
+            throw new Oop_Aop_Advisor_Exception( 'The method ' . $method . ' for join point ' . $name .' does not exist in class ' . $this->_className, Oop_Aop_Advisor_Exception::EXCEPTION_NO_JOINPOINT_METHOD );
+        }
+        
         // Checks if the storage array for the join points of the child class already exists
         if( !isset( self::$_joinPoints[ $this->_className ] ) ) {
             
@@ -906,5 +919,17 @@ abstract class Oop_Aop_Advisor
         // Registers the join point
         self::$_joinPoints[ $this->_className ][ $this->_objectHash ][ $name ]       = array( $method, $availableAdviceTypes );
         self::$_joinPointsByName[ $this->_className ][ $name ]                       = true;
+    }
+    
+    /**
+     * Checks if a join point exists in a class
+     * 
+     * @param   string  The name of the class
+     * @param   string  The name of the join point
+     * @return  boolean
+     */
+    final public static function isJoinPoint( $className, $joinPoint )
+    {
+        return isset( self::$_joinPointsByName[ $className ][ $joinPoint ] );
     }
 }
