@@ -389,7 +389,7 @@ abstract class Oop_Aop_Advisor
         if( !isset( self::$_joinPoints[ $this->_className ][ $this->_objectHash ][ $name ] ) ) {
             
             // Error - The join point has not been registered
-            throw new Oop_Aop_Advisor_Exception( 'The join point ' . $name .' does not exist in class ' . $this->_className, Oop_Aop_Advisor_Exception::EXCEPTION_NO_JOINPOINT );
+            throw new Oop_Aop_Advisor_Exception( 'No joint point named ' . $name . '. Call to undefined method ' . $this->_className . '::' . $name . '()', Oop_Aop_Advisor_Exception::EXCEPTION_NO_JOINPOINT );
         }
         
         // Gets the method to use and the allowed advices type for the join point
