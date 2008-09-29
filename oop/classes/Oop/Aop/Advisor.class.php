@@ -722,7 +722,7 @@ abstract class Oop_Aop_Advisor
      *         Called before the join point is executed, and may prevents the join
      *         point to be executed
      *      -# Oop_Aop_Advisor::ADVICE_TYPE_BEFORE_CALL
-               Called before the join point is executed
+     *         Called before the join point is executed
      *      -# Oop_Aop_Advisor::ADVICE_TYPE_BEFORE_RETURN
      *         Called before the return value of the join point is return, and may
      *         change the return value
@@ -928,7 +928,7 @@ abstract class Oop_Aop_Advisor
      * @param   string  The name of the join point
      * @return  boolean
      */
-    final public static function isJoinPoint( $className, $joinPoint )
+    final public static function joinPointExists( $className, $joinPoint )
     {
         return isset( self::$_joinPointsByName[ $className ][ $joinPoint ] );
     }
