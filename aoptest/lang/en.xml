@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- $Id$ -->
+
+<labels>
+    <system>
+        <help>A test module to show the AOP functionnalities of the OOP framework</help>
+        <block_0_subject>AOP</block_0_subject>
+        <block_0_info>AOP test block</block_0_info>
+    </system>
+    <settings>
+    </settings>
+    <module>
+        <info>Please take a look at the top of the page...</info>
+        <construct>AOP debug: Object of type '%s' was constructed</construct>
+        <afterBlock>AOP debug: join point 'block' was called</afterBlock>
+    </module>
+</labels>
