@@ -554,7 +554,7 @@ abstract class Oop_Aop_Advisor
             $exceptionMessage = ( $joinPoint ) ? 'Invalid advice callback for join point ' . $joinPoint : 'Invalid callback';
             
             // Error - The callback is not valid
-            throw new Oop_Aop_Advisor_Exception( $exceptionMessage, Oop_Aop_Advisor_Exception::EXCEPTION_INVALID_ADVICE_TYPE_CALLBACK );
+            throw new Oop_Aop_Advisor_Exception( $exceptionMessage, Oop_Aop_Advisor_Exception::EXCEPTION_INVALID_ADVICE_CALLBACK );
         }
         
         // Gets the number of arguments to pass to the callbak
