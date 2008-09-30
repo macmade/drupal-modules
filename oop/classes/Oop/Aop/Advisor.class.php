@@ -61,7 +61,6 @@ abstract class Oop_Aop_Advisor
     /**
      * The types of AOP advices that can be used
      */
-    const ADVICE_TYPE_ALL             = 0x00007FFF;
     const ADVICE_TYPE_CONSTRUCT       = 0x00000001;
     const ADVICE_TYPE_DESTRUCT        = 0x00000002;
     const ADVICE_TYPE_CLONE           = 0x00000004;
@@ -77,6 +76,13 @@ abstract class Oop_Aop_Advisor
     const ADVICE_TYPE_BEFORE_RETURN   = 0x00001000;
     const ADVICE_TYPE_AFTER_CALL      = 0x00002000;
     const ADVICE_TYPE_AFTER_THROWING  = 0x00004000;
+    
+    /**
+     * The categories of advice types
+     */
+    const ADVICE_TYPE_ALL             = 0x00007FFF;
+    const ADVICE_TYPE_GLOBAL          = 0x000003FF;
+    const ADVICE_TYPE_USER_DEFINED    = 0x00007C00;
     
     /**
      * The join points defined in each child class
@@ -788,13 +794,7 @@ abstract class Oop_Aop_Advisor
         }
         
         // Checks if the advice type is for a specific join point or not
-        if(    $type === self::ADVICE_TYPE_CONSTRUCT
-            || $type === self::ADVICE_TYPE_DESTRUCT
-            || $type === self::ADVICE_TYPE_CLONE
-            || $type === self::ADVICE_TYPE_SLEEP
-            || $type === self::ADVICE_TYPE_WAKEUP
-            || $type === self::ADVICE_TYPE_TO_STRING
-        ) {
+        if( $type & self::ADVICE_TYPE_GLOBAL ) {
             
             // Checks if the storage array for the advice exists
             if( !isset( self::$_advices[ $type ][ $className ] ) ) {
@@ -817,12 +817,7 @@ abstract class Oop_Aop_Advisor
             }
             
             // Checks the advice type
-            if(    $type === self::ADVICE_TYPE_VALID_CALL
-                || $type === self::ADVICE_TYPE_BEFORE_CALL
-                || $type === self::ADVICE_TYPE_BEFORE_RETURN
-                || $type === self::ADVICE_TYPE_AFTER_CALL
-                || $type === self::ADVICE_TYPE_AFTER_THROWING
-            ) {
+        if( $type & self::ADVICE_TYPE_USER_DEFINED ) {
                 
                 // Storage for the allowed advice types
                 $allowedAdviceTypes = 0;
@@ -902,8 +897,8 @@ abstract class Oop_Aop_Advisor
         if( !isset( self::$_joinPoints[ $this->_className ] ) ) {
             
             // Creates the storage arrays for the join points
-            self::$_joinPoints[ $this->_className ]                             = array();
-            self::$_joinPointsByName[ $this->_className ]                       = array();
+            self::$_joinPoints[ $this->_className ]                                  = array();
+            self::$_joinPointsByName[ $this->_className ]                            = array();
             
             // Creates the storage arrays for the advices
             self::$_advices[ self::ADVICE_TYPE_VALID_CALL ][ $this->_className ]     = array();
@@ -942,8 +937,8 @@ abstract class Oop_Aop_Advisor
         }
         
         // Registers the join point
-        self::$_joinPoints[ $this->_className ][ $this->_objectHash ][ $name ]       = array( $method, $availableAdviceTypes );
-        self::$_joinPointsByName[ $this->_className ][ $name ]                       = true;
+        self::$_joinPoints[ $this->_className ][ $this->_objectHash ][ $name ] = array( $method, $availableAdviceTypes );
+        self::$_joinPointsByName[ $this->_className ][ $name ]                 = true;
     }
     
     /**
