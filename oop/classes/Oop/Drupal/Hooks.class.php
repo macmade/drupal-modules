@@ -659,15 +659,8 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             );
         }
         
-        // Checks if the AOP join point exists
-        if( !Oop_Aop_Advisor::joinPointExists( $modName, 'addModuleMenuItems' ) ) {
-            
-            // Registers the AOP join point
-            $this->_registerJoinPoint( 'addModuleMenuItems', 'addMenuItems' );
-        }
-        
         // Calls the addMenuItems() method, to add or change menu items
-        $this->addModuleMenuItems( $items );
+        $this->addMenuItems( $items );
         
         // Returns the menu items
         return $items;
