@@ -868,11 +868,13 @@ abstract class Oop_Aop_Advisor
      * allowing only the 'before' and 'after' advices types, use the following
      * statement:
      * 
+     * <code>
      * $this->_registerJoinPoint(
      *      'joinPointName',
      *      'internalMethodName',
      *      Oop_Aop_Advisor::ADVICE_TYPE_AFTER_CALL | Oop_Aop_Advisor::ADVICE_TYPE_AFTER_CALL
      * );
+     * </code>
      * 
      * @param   string                      The name of the join point
      * @param   string                      The method to use when the join point
