@@ -364,7 +364,7 @@ abstract class Oop_Aop_Advisor
             foreach( self::$_advices[ $type ][ $className ] as $callback ) {
                 
                 // Invokes the advice callback
-                self::_invoke( $callback, $args, $object, $method );
+                self::_invoke( $callback, $args, $method );
             }
         }
     }
