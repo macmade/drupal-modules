@@ -2,10 +2,19 @@
 
 /* $Id$ */
 
-div.module-aoptest-aopDebug pre {
+div.module-aoptest-aopDebug {
     padding:          5px;
     margin:           5px;
-    font-size:        10px;
+    font-size:        0.8em;
+    background-color: #FFFFFF;
+    border:           solid 1px #D3E7F4;
+    color:            #0062A0;
+}
+
+div.module-aoptest-description {
+    padding:          5px;
+    margin-top:       5px;
+    font-size:        0.8em;
     background-color: #FFFFFF;
     border:           solid 1px #D3E7F4;
 }

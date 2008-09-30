@@ -27,18 +27,49 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
     {
         $div = new Oop_Xhtml_Tag( 'div' );
         $this->_cssClass( $div, 'aopDebug' );
-        $div->pre = sprintf( $this->_lang->construct, get_class( $object ) );
+        $div->strong = $this->_lang->trace;
+        $div->span   = sprintf( $this->_lang->construct, get_class( $object ) );
+        $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
         print $div;
     }
     
     /**
      * 
      */
-    protected function _traceAfterBlock()
+    protected function _traceBeforeCall()
     {
         $div = new Oop_Xhtml_Tag( 'div' );
         $this->_cssClass( $div, 'aopDebug' );
-        $div->pre = $this->_lang->afterBlock;
+        $div->strong = $this->_lang->trace;
+        $div->span   = $this->_lang->beforeCall;
+        $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
+        print $div;
+    }
+    
+    /**
+     * 
+     */
+    protected function _traceBeforeReturn( $returnValue )
+    {
+        $div = new Oop_Xhtml_Tag( 'div' );
+        $this->_cssClass( $div, 'aopDebug' );
+        $div->strong = $this->_lang->trace;
+        $div->span   = sprintf( $this->_lang->beforeReturn, substr( htmlspecialchars( $returnValue[ 'content' ] ), 0, 100 ) ) . ' [...]';
+        $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
+        print $div;
+        return $returnValue;
+    }
+    
+    /**
+     * 
+     */
+    protected function _traceAfterCall()
+    {
+        $div = new Oop_Xhtml_Tag( 'div' );
+        $this->_cssClass( $div, 'aopDebug' );
+        $div->strong = $this->_lang->trace;
+        $div->span   = $this->_lang->afterCall;
+        $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
         print $div;
     }
     
@@ -53,6 +84,10 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
     {
         $this->_includeModuleCss();
         $content->div = $this->_lang->info;
+        $content->spacer( 10 );
+        $description = $content->div;
+        $description->addTextData( $this->_lang->description );
+        $this->_cssClass( $description, 'description' );
         
         Oop_Aop_Advisor::addAdvice(
             Oop_Aop_Advisor::ADVICE_TYPE_CONSTRUCT,
@@ -61,8 +96,22 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
         );
         
         Oop_Aop_Advisor::addAdvice(
+            Oop_Aop_Advisor::ADVICE_TYPE_BEFORE_CALL,
+            array( $this, '_traceBeforeCall' ),
+            self::$_classManager->getModule( 'helloworld' ),
+            'block'
+        );
+        
+        Oop_Aop_Advisor::addAdvice(
+            Oop_Aop_Advisor::ADVICE_TYPE_BEFORE_RETURN,
+            array( $this, '_traceBeforeReturn' ),
+            self::$_classManager->getModule( 'helloworld' ),
+            'block'
+        );
+        
+        Oop_Aop_Advisor::addAdvice(
             Oop_Aop_Advisor::ADVICE_TYPE_AFTER_CALL,
-            array( $this, '_traceAfterBlock' ),
+            array( $this, '_traceAfterCall' ),
             self::$_classManager->getModule( 'helloworld' ),
             'block'
         );
