@@ -367,11 +367,15 @@ abstract class Oop_Aop_Advisor
             array_unshift( $args, $object );
             
             // Process the advices for the given type
-            foreach( self::$_advices[ $type ][ $className ] as $callback ) {
+            foreach( self::$_advices[ $type ][ $className ] as $advice ) {
                 
-                // Invokes the advice callback
-                self::_invoke( $callback, $args, $method );
-            }
+                // Checks if the advice can be executed for the current instance
+                if( $advice[ 1 ] === false || $advice[ 1 ] === $this->_objectHash ) {
+                    
+                    // Invokes the advice callback
+                    self::_invoke( $advice[ 0 ], $args, $method );
+                }
+            
         }
     }
     
@@ -804,7 +808,7 @@ abstract class Oop_Aop_Advisor
             }
             
             // Adds the advice callback for the join point
-            self::$_advices[ $type ][ $className ][] = $callback;
+            self::$_advices[ $type ][ $className ][] = array( $callback, $objectHash );
             return true;
             
         } else {
