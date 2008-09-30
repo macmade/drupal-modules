@@ -956,4 +956,113 @@ abstract class Oop_Aop_Advisor
     {
         return isset( self::$_joinPointsByName[ $className ][ $joinPoint ] );
     }
+    
+    /**
+     * Gets the advice chain for a specific advice type on a target
+     * 
+     * @param   int     The type of the advice (one of the
+     *                  Aop_Advisor::ADVICE_TYPE_XXX constant)
+     * @param   mixed   The target for which to get the advices (either
+     *                  a class name or an object)
+     * @param   string  The join point for wich to return the advices
+     * @return  array   An array with all the advice callbacks
+     */
+    final public static function getAdviceChain( $type, $target, $joinPoint = '' )
+    {
+        // Checks if the target is an object or a class name
+        if( is_object( $target ) ) {
+            
+            // Gets the class name and object hash, so we'll return only the advices added on the target object
+            $className  = $target->_className;
+            $objectHash = $target->_objectHash;
+            
+        } else {
+            
+            // All advices for the class will be returned
+            $className  = $target;
+            $objectHash = false;
+        }
+        
+        // Storage for the advice chain
+        $chain = array();
+        
+        // Checks if we have advices for the given type and for the given class
+        if( isset( self::$_advices[ $type ][ $className ] ) ) {
+            
+            // Checks if the advice is for a user-defined join point or not
+            if( $type & self::ADVICE_TYPE_GLOBAL ) {
+                
+                // Process each advice for the given type and the given class
+                foreach( self::$_advices[ $type ][ $className ] as $advice ) {
+                    
+                    // Checks if the advice is for a specific object or not
+                    if( $advice[ 1 ] === false || $advice[ 1 ] === $objectHash ) {
+                        
+                        // Adds the advice to the advice chain
+                        $chain[] = $advice[ 0 ];
+                    }
+                }
+                
+            } elseif( isset( self::$_advices[ $type ][ $className ][ $joinPoint ] ) ) {
+                
+                // Process each advice for the given type, the given class and the given join point
+                foreach( self::$_advices[ $type ][ $className ][ $joinPoint ] as $advice ) {
+                    
+                    // Checks if the advice is for a specific object or not
+                    if( $advice[ 1 ] === false || $advice[ 1 ] === $objectHash ) {
+                        
+                        // Adds the advice to the advice chain
+                        $chain[] = $advice[ 0 ];
+                    }
+                }
+            }
+        }
+        
+        // Returns the advice chain
+        return $chain;
+    }
+    
+    /**
+     * Gets the available AOP join points for a class or an object
+     * 
+     * @param   mixed   The target in which to get the join points (either
+     *                  a class name or an object)
+     * @return  array   An array with the name of the available join points
+     *                  in the given target
+     */
+    final public static function getAvailableJoinPoints( $target )
+    {
+        // Checks if the target is an object or a class name
+        if( is_object( $target ) ) {
+            
+            // Gets the class name and object hash, so we'll return only the join points available on the target object
+            $className  = $target->_className;
+            $objectHash = $target->_objectHash;
+            
+        } else {
+            
+            // All joint points for the class will be returned
+            $className  = $target;
+            $objectHash = false;
+        }
+        
+        // Checks if joint points are registered for the given class name
+        if( isset( self::$_joinPoints[ $className ] ) ) {
+            
+            // Checks if we have to return the join points for a specific object
+            if( $objectHash !== false && isset( self::$_joinPoints[ $className ][ $objectHash ] ) ) {
+                
+                // Returns all the available join points for the given object
+                return array_keys( self::$_joinPoints[ $className ][ $objectHash ] );
+                
+            } elseif( $objectHash === false ) {
+                
+                // Returns all the available join points for the given class
+                return array_keys( self::$_joinPointsByName[ $className ] );
+            }
+        }
+        
+        // No join point - Returns an empty array
+        return array();
+    }
 }
