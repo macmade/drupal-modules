@@ -3,11 +3,8 @@
 /* $Id$ */
 
 div.module-aoptest-aopDebug {
-    padding:          5px;
-    margin:           5px;
     font-size:        0.8em;
     background-color: #FFFFFF;
-    border:           solid 1px #D3E7F4;
     color:            #0062A0;
 }
 

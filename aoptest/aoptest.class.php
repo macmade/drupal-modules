@@ -31,7 +31,7 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
         $div->strong = $this->_lang->trace;
         $div->span   = sprintf( $this->_lang->construct, get_class( $object ) );
         $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
-        print $div;
+        drupal_set_message( $div );
     }
     
     /**
@@ -45,7 +45,7 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
         $div->strong = $this->_lang->trace;
         $div->span   = $this->_lang->beforeCall;
         $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
-        print $div;
+        drupal_set_message( $div );
     }
     
     /**
@@ -59,7 +59,7 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
         $div->strong = $this->_lang->trace;
         $div->span   = sprintf( $this->_lang->beforeReturn, substr( htmlspecialchars( $returnValue[ 'content' ] ), 0, 100 ) ) . ' [...]';
         $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
-        print $div;
+        drupal_set_message( $div );
         return $returnValue;
     }
     
@@ -74,7 +74,7 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
         $div->strong = $this->_lang->trace;
         $div->span   = $this->_lang->afterCall;
         $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
-        print $div;
+        drupal_set_message( $div );
     }
     
     /**
@@ -87,8 +87,6 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
     public function getBlock( Oop_Xhtml_Tag $content, $delta )
     {
         $this->_includeModuleCss();
-        $content->div = $this->_lang->info;
-        $content->spacer( 10 );
         $description = $content->div;
         $description->addTextData( $this->_lang->description );
         $this->_cssClass( $description, 'description' );

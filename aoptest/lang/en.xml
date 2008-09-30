@@ -11,7 +11,6 @@
     <settings>
     </settings>
     <module>
-        <info>Please take a look at the top of the page to see the AOP trace.</info>
         <description>Aspect-Oriented Programming (AOP) is a programming paradigm which complements Object-Oriented Programming (OOP) by separating concerns of a software application to improve modularization. The separation of concerns (SoC) aims for making a software easier to maintain by grouping features and behaviour into manageable parts which all have a specific purpose and business to take care of.</description>
         <trace>AOP trace: </trace>
         <construct>object of type '%s' is beeing constructed</construct>
