@@ -27,6 +27,7 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
     {
         $div = new Oop_Xhtml_Tag( 'div' );
         $this->_cssClass( $div, 'aopDebug' );
+        $div->span   = $this->_getIcon( 'accept.png' );
         $div->strong = $this->_lang->trace;
         $div->span   = sprintf( $this->_lang->construct, get_class( $object ) );
         $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
@@ -40,6 +41,7 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
     {
         $div = new Oop_Xhtml_Tag( 'div' );
         $this->_cssClass( $div, 'aopDebug' );
+        $div->span   = $this->_getIcon( 'accept.png' );
         $div->strong = $this->_lang->trace;
         $div->span   = $this->_lang->beforeCall;
         $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
@@ -53,6 +55,7 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
     {
         $div = new Oop_Xhtml_Tag( 'div' );
         $this->_cssClass( $div, 'aopDebug' );
+        $div->span   = $this->_getIcon( 'accept.png' );
         $div->strong = $this->_lang->trace;
         $div->span   = sprintf( $this->_lang->beforeReturn, substr( htmlspecialchars( $returnValue[ 'content' ] ), 0, 100 ) ) . ' [...]';
         $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
@@ -67,6 +70,7 @@ class aoptest extends Oop_Drupal_ModuleBase implements Oop_Drupal_Block_Interfac
     {
         $div = new Oop_Xhtml_Tag( 'div' );
         $this->_cssClass( $div, 'aopDebug' );
+        $div->span   = $this->_getIcon( 'accept.png' );
         $div->strong = $this->_lang->trace;
         $div->span   = $this->_lang->afterCall;
         $div->span   = sprintf( $this->_lang->advice, __METHOD__ );
