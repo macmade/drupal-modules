@@ -352,7 +352,7 @@ abstract class Oop_Aop_Advisor
     private static function _processGlobalAdvices( $type, Oop_Aop_Advisor $object, $method, array $args = array() )
     {
         // Gets the class of the object
-        $className = get_class( $object );
+        $className = $object->_className;
         
         // Checks for advices
         if( isset( self::$_advices[ $type ][ $className ] ) ) {
@@ -777,8 +777,8 @@ abstract class Oop_Aop_Advisor
         if( is_object( $target ) ) {
             
             // Gets the class name and object hash, so the callback will be added for the specific object only
-            $className  = get_class( $target );
-            $objectHash = spl_object_hash( $target );
+            $className  = $target->_className;
+            $objectHash = $target->_objectHash;
             
         } else {
             
