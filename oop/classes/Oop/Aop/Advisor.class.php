@@ -375,7 +375,7 @@ abstract class Oop_Aop_Advisor
                     // Invokes the advice callback
                     self::_invoke( $advice[ 0 ], $args, $method );
                 }
-            
+            }
         }
     }
     
