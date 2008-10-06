@@ -44,23 +44,6 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         // Calls the parent constructor
         parent::__construct( $modPath );
         
-        // Registers an AOP join point for each Drupal hook
-        $this->_registerJoinPoint( 'access',              '_access' );
-        $this->_registerJoinPoint( 'block',               '_block' );
-        $this->_registerJoinPoint( 'createModuleContent', '_createModuleContent' );
-        $this->_registerJoinPoint( 'filter',              '_filter' );
-        $this->_registerJoinPoint( 'form',                '_form' );
-        $this->_registerJoinPoint( 'getAdminForm',        '_getAdminForm' );
-        $this->_registerJoinPoint( 'help',                '_help' );
-        $this->_registerJoinPoint( 'insert',              '_insert' );
-        $this->_registerJoinPoint( 'menu',                '_menu' );
-        $this->_registerJoinPoint( 'node_info',           '_node_info' );
-        $this->_registerJoinPoint( 'perm',                '_perm' );
-        $this->_registerJoinPoint( 'setNumberOfBlocks',   '_setNumberOfBlocks' );
-        $this->_registerJoinPoint( 'submitAdminForm',     '_submitAdminForm' );
-        $this->_registerJoinPoint( 'update',              '_update' );
-        $this->_registerJoinPoint( 'view',                '_view' );
-        
         // Gets the interfaces that the module class implements
         $this->_interfaces = array_flip( class_implements( $this ) );
     }
@@ -79,7 +62,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * 
      */
-    protected function _createModuleContent( $callbackMethod, array $args = array() )
+    public function createModuleContent( $callbackMethod, array $args = array() )
     {
         // Checks if the current module is an override
         $override = self::$_classManager->isOverride( $this->_modName );
@@ -88,12 +71,12 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         $modName  = ( $override ) ? $override : $this->_modName;
         
         // Checks the callback method to set the CSS class name
-        if( $callbackMethod === 'getModuleBlock' ) {
+        if( $callbackMethod === 'getBlock' ) {
             
             // CSS class - Block content
             $cssClass = 'module-' . $modName . '-block';
             
-        } elseif( $callbackMethod === 'getModuleNode' ) {
+        } elseif( $callbackMethod === 'getNode' ) {
             
             // CSS class - Node content
             $cssClass = 'module-' . $modName . '-node';
@@ -144,7 +127,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  NULL
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Block_Interface interface
      */
-    protected function _setNumberOfBlocks( $number, $sameAsFirst = false )
+    public function setNumberOfBlocks( $number, $sameAsFirst = false )
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Block_Interface' );
@@ -161,7 +144,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   array   An array that holds the current path as would be returned from arg() function
      * @return  string  The help text for the Drupal module
      */
-    protected function _help( $path, $arg )
+    public function help( $path, $arg )
     {
         // Checks if the current module is an override
         $override = self::$_classManager->isOverride( $this->_modName );
@@ -189,7 +172,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return array    The information array for the Drupal node
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
-    protected function _node_info()
+    public function node_info()
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
@@ -214,7 +197,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * 
      * @return array    The permissions array for the Drupal module
      */
-    protected function _perm()
+    public function perm()
     {
         return $this->_perms;
     }
@@ -225,7 +208,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  boolean
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
-    protected function _access( $op, $node, $account )
+    public function access( $op, $node, $account )
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
@@ -293,7 +276,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  array       An array with the form configuration
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
-    protected function _form( stdClass $node, $addTitle = true )
+    public function form( stdClass $node, $addTitle = true )
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
@@ -353,7 +336,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  NULL
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
-    protected function _insert( stdClass $node )
+    public function insert( stdClass $node )
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
@@ -386,7 +369,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  NULL
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
-    protected function _update( stdClass $node )
+    public function update( stdClass $node )
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
@@ -421,7 +404,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  stdClass    The node object
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Node_Interface interface
      */
-    protected function _view( stdClass $node, $teaser, $page)
+    public function view( stdClass $node, $teaser, $page)
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Node_Interface' );
@@ -429,16 +412,9 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
         // Prepares the node
         $node = node_prepare( $node, $teaser );
         
-        // Checks if the AOP join point exists
-        if( !Oop_Aop_Advisor::joinPointExists( $modName, 'getModuleNode' ) ) {
-            
-            // Registers the AOP join point
-            $this->_registerJoinPoint( 'getModuleNode', 'getNode' );
-        }
-        
         // Creates the module content
         $content            = $this->createModuleContent(
-            'getModuleNode',
+            'getNode',
             array(
                 $node,
                 $teaser,
@@ -462,7 +438,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  array                       The Drupal block
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Block_Interface interface
      */
-    protected function _block( $op, $delta, $edit )
+    public function block( $op, $delta, $edit )
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Block_Interface' );
@@ -579,19 +555,12 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             // Checks the access
             if( $access ) {
                 
-                // Checks if the AOP join point exists
-                if( !Oop_Aop_Advisor::joinPointExists( $modName, 'getModuleBlock' ) ) {
-                    
-                    // Registers the AOP join point
-                    $this->_registerJoinPoint( 'getModuleBlock', 'getBlock' );
-                }
-                
                 // Index for the label
                 $langIndex = ( $this->_sameBlocks ) ? 0 : $delta;
                 
                 // Creates the module content
                 $content   = $this->createModuleContent(
-                    'getModuleBlock',
+                    'getBlock',
                     array(
                         $delta
                     )
@@ -612,7 +581,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * 
      * @return  array   The menu items
      */
-    protected function _menu()
+    public function menu()
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_MenuItem_Interface' );
@@ -676,7 +645,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @return  mixed                       Depends on $op
      * @throws  Oop_Drupal_Hooks_Exception  If the module class does not implements the Oop_Drupal_Filter_Interface interface
      */
-    protected function _filter( $op, $delta, $format, $text )
+    public function filter( $op, $delta, $format, $text )
     {
         // Checks that the module class implements the requested interfaces
         $this->_checkInterface( 'Oop_Drupal_Filter_Interface' );
@@ -696,18 +665,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
         } elseif( $op === 'prepare' ) {
             
-            // Checks if the AOP join point exists
-            if( !Oop_Aop_Advisor::joinPointExists( $modName, 'prepareModuleFilter' ) ) {
-                
-                // Registers the AOP join point
-                $this->_registerJoinPoint( 'prepareModuleFilter', 'prepareFilter' );
-            }
-            
             // Prepares the filter
             return Oop_Callback_Helper::apply(
                 array(
                     $this,
-                    'prepareModuleFilter'
+                    'prepareFilter'
                 ),
                 array(
                     $delta,
@@ -718,18 +680,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
             
         } elseif( $op === 'process' ) {
             
-            // Checks if the AOP join point exists
-            if( !Oop_Aop_Advisor::joinPointExists( $modName, 'processModuleFilter' ) ) {
-                
-                // Registers the AOP join point
-                $this->_registerJoinPoint( 'processModuleFilter', 'processFilter' );
-            }
-            
             // Prepares the filter
             return Oop_Callback_Helper::apply(
                 array(
                     $this,
-                    'processModuleFilter'
+                    'processFilter'
                 ),
                 array(
                     $delta,
@@ -746,7 +701,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
     /**
      * 
      */
-    protected function _getAdminForm()
+    public function getAdminForm()
     {
         // Checks if the current module is an override
         $override = self::$_classManager->isOverride( $this->_modName );
@@ -819,11 +774,11 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
      * @param   array   The submitted form values
      * @return  NULL
      */
-    protected function _submitAdminForm( array $form, array &$formState )
+    public function submitAdminForm( array $form, array &$formState )
     {
         // Gets the operation
         $op = isset( $formState[ 'values' ][ 'op' ] ) ? $formState[ 'values' ][ 'op' ] : '';
-        
+
         // Excludes all unnecessary elements from the array
         unset(
             $formState[ 'values' ][ 'submit' ],
@@ -862,7 +817,7 @@ abstract class Oop_Drupal_Hooks extends Oop_Drupal_Module
                 self::$_utils->storeModuleVariable( $modName, $varName, $value );
             }
         }
-        
+    
         // Checks the operation
         if( $op === t( 'Reset to defaults' ) ) {
             

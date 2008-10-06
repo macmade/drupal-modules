@@ -10,7 +10,7 @@
  * @package         Oop/Drupal
  * @version         0.1
  */
-abstract class Oop_Drupal_Module extends Oop_Aop_Advisor
+abstract class Oop_Drupal_Module
 {
     /**
      * Wether the static variables are set or not
@@ -84,9 +84,6 @@ abstract class Oop_Drupal_Module extends Oop_Aop_Advisor
      */
     public function __construct( $modPath )
     {
-        // Calls the parent constructor
-        parent::__construct();
-        
         // Sets the module path
         $this->_modPath = $modPath;
         

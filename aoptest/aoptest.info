@@ -1,8 +1,0 @@
-; $Id$
-
-name = AOP test
-description = A test module to show the AOP functionnalities of the OOP framework
-core = 6.x
-php = 5.2
-package = Testing
-dependencies[] = oop
